@@ -1,0 +1,30 @@
+﻿@model TapToTweetReserved.Models.HomeViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Tap To Tweet Reserved";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>@ViewBag.Title</h1>
+
+    <ul class="loaded-tweets">
+        @foreach (var tweet in Model.LoadedTweets)
+        {
+            <li>
+                <a href="#" data-id="@tweet.Id">
+                    @tweet.TextToTweet
+                </a>
+            </li>
+        }
+    </ul>
+    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
+    <script src="~/Scripts/HomeIndex.js"></script>
+</body>
+</html>

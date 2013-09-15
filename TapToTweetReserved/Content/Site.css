@@ -1,0 +1,49 @@
+﻿* {
+    font-size: 100%;
+}
+
+body {
+    font-family: 'Century Gothic', futura, 'URW Gothic L', Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #555;
+    overflow: hidden;
+}
+
+h1 {
+    color: #ccc;
+    text-align: center;
+    border-bottom: solid 1px #333;
+    margin: 0;
+    padding: 0.5em;
+    font-size: 120%;
+    background-color: #222;
+}
+
+.loaded-tweets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+    .loaded-tweets li {
+        padding: 0;
+        margin: 0;
+        border-bottom: solid 1px #333;
+        border-top: solid 1px #888;
+        background-color: #444;
+    }
+
+    .loaded-tweets a {
+        font-size: 90%;
+        display: block;
+        height: 5.5em;
+        padding: 0.5em;
+        color: #aaa;
+        text-decoration: none;
+        overflow: hidden;
+    }
+
+        .loaded-tweets a.current {
+            color: #fff;
+        }
