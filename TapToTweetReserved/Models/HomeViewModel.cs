@@ -7,6 +7,6 @@ namespace TapToTweetReserved.Models
 {
     public class HomeViewModel
     {
-        public IEnumerable<LoadedTweet> LoadedTweets { get; set; }
+        public IEnumerable<ReservedTweet> ReservedTweets { get; set; }
     }
 }

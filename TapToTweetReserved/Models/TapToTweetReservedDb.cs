@@ -8,6 +8,6 @@ namespace TapToTweetReserved.Models
 {
     public class TapToTweetReservedDb : DbContext
     {
-        public DbSet<LoadedTweet> LoadedTweets { get; set; }
+        public DbSet<ReservedTweet> ReservedTweets { get; set; }
     }
 }

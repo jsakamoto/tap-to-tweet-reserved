@@ -15,7 +15,7 @@
     <h1>@ViewBag.Title</h1>
 
     <ul class="loaded-tweets">
-        @foreach (var tweet in Model.LoadedTweets)
+        @foreach (var tweet in Model.ReservedTweets)
         {
             <li>
                 <a href="#" data-id="@tweet.Id">

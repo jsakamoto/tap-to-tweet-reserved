@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TapToTweetReserved.Models
 {
-    public class LoadedTweet
+    public class ReservedTweet
     {
         public int Id { get; set; }
 

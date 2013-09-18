@@ -171,7 +171,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\HomeViewModel.cs" />
-    <Compile Include="Models\LoadedTweet.cs" />
+    <Compile Include="Models\ReservedTweet.cs" />
     <Compile Include="Models\TapToTweetReservedDb.cs" />
     <Compile Include="Models\UserExtraData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

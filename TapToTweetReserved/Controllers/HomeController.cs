@@ -23,7 +23,7 @@ namespace TapToTweetReserved.Controllers
         {
             var model = new HomeViewModel
             {
-                LoadedTweets = Db.LoadedTweets
+                ReservedTweets = Db.ReservedTweets
                     .Where(t => t.IsTweeted == false)
                     .OrderBy(t => t.Order).ToArray()
             };
@@ -37,7 +37,7 @@ namespace TapToTweetReserved.Controllers
             var userExtraData = this.User.ExtraData<UserExtraData>();
 
             var userId = userExtraData.UserId;
-            var tweet = Db.LoadedTweets.FirstOrDefault(t => t.Id == id && t.OwnerUserId == userId);
+            var tweet = Db.ReservedTweets.FirstOrDefault(t => t.Id == id && t.OwnerUserId == userId);
             if (tweet == null) throw new ArgumentException("stocked tweet not found find by specified id.", "id");
 
             if (tweet.IsTweeted == false)
