@@ -19,8 +19,10 @@ namespace TapToTweetReserved
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AuthConfig.RegisterAuth();
 
-            Database.SetInitializer(new CreateDatabaseIfNotExists<TapToTweetReservedDb>());
+            //Database.SetInitializer(new CreateDatabaseIfNotExists<TapToTweetReservedDb>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TapToTweetReservedDb>());
         }
     }
 }

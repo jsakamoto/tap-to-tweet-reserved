@@ -9,6 +9,8 @@ namespace TapToTweetReserved.Models
     {
         public int Id { get; set; }
 
+        public string OwnerUserId { get; set; }
+
         public string TextToTweet { get; set; }
 
         public int Order { get; set; }

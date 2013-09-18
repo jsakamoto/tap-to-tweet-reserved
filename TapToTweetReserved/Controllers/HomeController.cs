@@ -8,6 +8,7 @@ using TweetSharp;
 
 namespace TapToTweetReserved.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public TapToTweetReservedDb Db { get; set; }
@@ -33,15 +34,19 @@ namespace TapToTweetReserved.Controllers
         public ActionResult Tweet(int id)
         {
             if (this.Request.IsAjaxRequest() == false) throw new HttpException("does not ajax request.");
+            var userExtraData = this.User.ExtraData<UserExtraData>();
 
-            var tweet = Db.LoadedTweets.Find(id);
+            var userId = userExtraData.UserId;
+            var tweet = Db.LoadedTweets.FirstOrDefault(t => t.Id == id && t.OwnerUserId == userId);
+            if (tweet == null) throw new ArgumentException("stocked tweet not found find by specified id.", "id");
+
             if (tweet.IsTweeted == false)
             {
                 var keys = JsonAppSettings.AsDictionary("Twitter.Keys");
                 if (keys != null)
                 {
                     var service = new TwitterService(keys["consumerKey"], keys["consumerSecret"]);
-                    service.AuthenticateWith(keys["token"], keys["tokenSecret"]);
+                    service.AuthenticateWith(userExtraData.AccessToken, userExtraData.AccessSecret);
                     service.SendTweet(new SendTweetOptions { Status = tweet.TextToTweet });
                     tweet.IsTweeted = true;
                     Db.SaveChanges();
