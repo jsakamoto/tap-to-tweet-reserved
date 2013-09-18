@@ -21,9 +21,12 @@ namespace TapToTweetReserved.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            var userExtraData = this.User.ExtraData<UserExtraData>();
+            var userId = userExtraData.UserId;
             var model = new HomeViewModel
             {
                 ReservedTweets = Db.ReservedTweets
+                    .Where(t => t.OwnerUserId == userId)
                     .Where(t => t.IsTweeted == false)
                     .OrderBy(t => t.Order).ToArray()
             };
