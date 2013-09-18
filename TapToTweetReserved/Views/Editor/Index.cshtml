@@ -1,0 +1,34 @@
+﻿@model TapToTweetReserved.Models.HomeViewModel
+@{
+    ViewBag.Title = "Edit Reserved Tweets";
+}
+@section nav{
+    <div>
+        @Html.ActionLink("Home", "Index", "Home")
+    </div>
+}
+
+
+<ul class="reserved-tweets">
+    @foreach (var tweet in Model.ReservedTweets)
+    {
+        <li>
+            <a href="#" data-id="@tweet.Id">
+                @tweet.TextToTweet
+            </a>
+        </li>
+    }
+</ul>
+
+<footer class="no-selected-tweets">
+    @Html.ActionLink("Add New", "Create")
+    @Html.ActionLink("Up", "Up", null, new { id = "cmd-up", @class = "selected-only" })
+    @Html.ActionLink("Down", "Down", null, new { id = "cmd-down", @class = "selected-only" })
+    @Html.ActionLink("Edit", "Edit", null, new { id = "cmd-edit", @class = "selected-only" })
+    @Html.ActionLink("Delete", "Delete", null, new { id = "cmd-delete", @class = "selected-only" })
+    @Html.ActionLink("Reload", "Reload", null, new { id = "cmd-reload", @class = "selected-only" })
+</footer>
+
+@section Scripts {
+    <script src="~/Scripts/Editor.js"></script>
+}

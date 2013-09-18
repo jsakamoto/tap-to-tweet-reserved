@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Hammock.Attributes.Validation;
 
 namespace TapToTweetReserved.Models
 {
@@ -11,6 +12,7 @@ namespace TapToTweetReserved.Models
 
         public string OwnerUserId { get; set; }
 
+        [Required]
         public string TextToTweet { get; set; }
 
         public int Order { get; set; }

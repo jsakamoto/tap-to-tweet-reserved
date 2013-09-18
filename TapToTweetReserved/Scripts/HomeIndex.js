@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $(document).on('click', '.loaded-tweets a', function (e) {
+    $(document).on('click', '.reserved-tweets a', function (e) {
         e.preventDefault();
         var $this = $(this);
         $this.addClass('current');

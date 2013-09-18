@@ -1,5 +1,8 @@
 ﻿* {
     font-size: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
@@ -20,13 +23,13 @@ h1 {
     background-color: #222;
 }
 
-.loaded-tweets {
+.reserved-tweets {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-    .loaded-tweets li {
+    .reserved-tweets li {
         padding: 0;
         margin: 0;
         border-bottom: solid 1px #333;
@@ -34,16 +37,70 @@ h1 {
         background-color: #444;
     }
 
-    .loaded-tweets a {
+    .reserved-tweets a {
         font-size: 90%;
         display: block;
         height: 5.5em;
-        padding: 0.5em;
+        padding: 8px;
         color: #aaa;
         text-decoration: none;
         overflow: hidden;
     }
 
-        .loaded-tweets a.current {
+        .reserved-tweets a.current {
             color: #fff;
         }
+
+/* form 
+----------------------------------------------------*/
+form fieldset {
+    border: none;
+    margin: 1em;
+    padding: 0;
+}
+
+/* footer editor menu 
+----------------------------------------------------*/
+footer {
+    background-color: #222;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding:0;
+}
+
+    footer a, footer input[type=submit] {
+        color: #aaa;
+        text-decoration: none;
+        padding: 0.5em;
+        display: inline-block;
+        background-color: transparent;
+        border: none;
+    }
+
+        footer a:hover,
+        footer input[type=submit]:hover {
+            color: #fff;
+        }
+    footer.col2 a, footer.col2 input[type=submit] {
+        width:48%;
+    }
+
+
+
+textarea {
+    display: block;
+    width: 100%;
+    height: 10em;
+}
+
+/* editor
+----------------------------------------------------*/
+.reserved-tweets a.selected {
+    border: solid 3px #0674c3;
+    padding: 5px;
+}
+footer.no-selected-tweets a.selected-only {
+    color:#444;
+    cursor:default;
+}
