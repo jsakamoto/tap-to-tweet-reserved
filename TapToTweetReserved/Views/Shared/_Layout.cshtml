@@ -6,12 +6,18 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
 </head>
-<body>
+<body class="@ViewBag.BodyClass">
+
     <header>
         <h1>@ViewBag.Title</h1>
-        <nav>
-            @RenderSection("nav", required: false)
-        </nav>
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <a href="#" class="menu">menu</a>
+            <nav>
+                @RenderSection("nav", required: false)
+                <div>@User.Identity.Name | @Html.ActionLink("Sign Out", "SignOut", "Account", null, new { id = "sign-out" })</div>
+            </nav>
+        }
     </header>
 
     <div>

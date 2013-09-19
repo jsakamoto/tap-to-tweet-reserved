@@ -7,20 +7,55 @@
 
 body {
     font-family: 'Century Gothic', futura, 'URW Gothic L', Verdana, sans-serif;
-    margin: 0;
+    margin: 3em 0 0 0;
     padding: 0;
     background-color: #555;
-    overflow: hidden;
 }
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 3em;
+    display: block;
+    background-color: #222;
+    overflow: hidden;
+    border-bottom: solid 1px #333;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+    header .menu {
+        display: inline-block;
+        position: absolute;
+        top: 1em;
+        right: 0.5em;
+    }
+
+    header.expand-menu {
+        height: 7em;
+    }
+
+    header * {
+        color: #aaa;
+        text-decoration: none;
+    }
+
+    header nav {
+        margin-top: 0.7em;
+    }
+
+        header nav div {
+            text-align: right;
+            margin-right: 1em;
+        }
 
 h1 {
     color: #ccc;
     text-align: center;
-    border-bottom: solid 1px #333;
     margin: 0;
     padding: 0.5em;
     font-size: 120%;
-    background-color: #222;
 }
 
 .reserved-tweets {
@@ -61,18 +96,24 @@ form fieldset {
 
 /* footer editor menu 
 ----------------------------------------------------*/
+body.editor-index {
+    margin-bottom: 4em;
+}
+
 footer {
     background-color: #222;
     position: fixed;
     width: 100%;
     bottom: 0;
-    padding:0;
+    padding: 0;
+    display: block;
+    height: 4em;
 }
 
     footer a, footer input[type=submit] {
         color: #aaa;
         text-decoration: none;
-        padding: 0.5em;
+        padding: 0.3em 0.5em 0.3em 0.5em;
         display: inline-block;
         background-color: transparent;
         border: none;
@@ -82,10 +123,10 @@ footer {
         footer input[type=submit]:hover {
             color: #fff;
         }
-    footer.col2 a, footer.col2 input[type=submit] {
-        width:48%;
-    }
 
+    footer.col2 a, footer.col2 input[type=submit] {
+        width: 48%;
+    }
 
 
 textarea {
@@ -96,11 +137,23 @@ textarea {
 
 /* editor
 ----------------------------------------------------*/
+.editor-index .reserved-tweets a {
+    padding-left: 24px;
+}
+
+.reserved-tweets a.tweeted-is-true {
+    background-image:url(images/tweeted-mark.png);
+    background-repeat:no-repeat;
+    background-position:0px 6px;
+}
+
 .reserved-tweets a.selected {
     border: solid 3px #0674c3;
-    padding: 5px;
+    padding: 5px 5px 5px 21px;
+    background-position:-3px 3px;
 }
+
 footer.no-selected-tweets a.selected-only {
-    color:#444;
-    cursor:default;
+    color: #444;
+    cursor: default;
 }

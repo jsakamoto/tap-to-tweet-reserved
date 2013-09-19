@@ -10,7 +10,8 @@ namespace TapToTweetReserved
         {
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.live.js"
+                        "~/Scripts/jquery.live.js",
+                        "~/Scripts/site.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

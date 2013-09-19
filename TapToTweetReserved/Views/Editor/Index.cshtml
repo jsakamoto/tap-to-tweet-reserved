@@ -1,6 +1,7 @@
 ﻿@model TapToTweetReserved.Models.HomeViewModel
 @{
     ViewBag.Title = "Edit Reserved Tweets";
+    ViewBag.BodyClass = "editor-index";
 }
 @section nav{
     <div>
@@ -13,7 +14,7 @@
     @foreach (var tweet in Model.ReservedTweets)
     {
         <li>
-            <a href="#" data-id="@tweet.Id">
+            <a href="#" data-id="@tweet.Id" class="tweeted-is-@tweet.IsTweeted.ToString().ToLower()">
                 @tweet.TextToTweet
             </a>
         </li>

@@ -191,9 +191,11 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\images\tweeted-mark.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\Site.js" />
     <Content Include="Scripts\Editor.js" />
     <Content Include="Scripts\HomeIndex.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -215,10 +217,8 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Views\Editor\Index.cshtml" />
-    <Content Include="Views\Editor\Details.cshtml" />
     <Content Include="Views\Editor\Create.cshtml" />
     <Content Include="Views\Editor\Edit.cshtml" />
-    <Content Include="Views\Editor\Delete.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
