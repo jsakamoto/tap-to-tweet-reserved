@@ -1,5 +1,5 @@
 ﻿#sign-in {
-    margin: 2em 1em 1em 1em;
+    margin: 1em 1em 1em 1em;
 }
 
     #sign-in a {
@@ -20,16 +20,33 @@
 
 .summary,
 .quick-tour {
-    margin: 1em 1em 1em 1em;
     color: #ccc;
-    font-size: 120%;
+    font-size: 110%;
 }
 
 .summary {
-    margin-top: 4em;
-    padding-bottom:1em;
-    border-bottom:solid 1px #888;
+    margin: 3em 1em 0.5em 1em;
+    padding-bottom: 0.5em;
+    border-bottom: solid 1px #888;
 }
 
-.quick-tour li {
+.quick-tour ol {
+    margin: 0;
+}
+
+.social-buttons {
+    margin: 3em 1em 0.3em 1em;
+    padding-top: 0.5em;
+    line-height: 30px;
+    color: #888;
+    border-top: solid 1px #888;
+}
+
+.powered-by,
+.powered-by * {
+    color: #888;
+}
+
+.powered-by {
+    font-size: 80%;
 }

@@ -20,3 +20,24 @@
 <div id="sign-in">
     <a href="@Url.Action("SignIn", "Account")">Sign In with Twitter</a>
 </div>
+
+<div class="social-buttons">
+    
+    <span id="powered-by-azure" class="powered-by">
+        <img src="//manage.windowsazure.com/favicon.ico" />
+        Hosted by <a href="http://www.windowsazure.com/en-us/services/web-sites/" target="_blank">Windows Azure "Websites"</a></span>
+    |
+    <span id="powered-by-azure" class="powered-by">
+        <img src="//asp.net/favicon.ico" width="16px" height="16px" />
+        Powered by <a href="http://asp.net/" target="_blank">ASP.NET</a>.
+    </span>
+    |
+    <span id="sourcecode-by-github" class="powered-by">
+        <img src="//github.com/favicon.ico" />
+        Source code is <a href="https://github.com/jsakamoto/tap-to-tweet-reserved" target="_blank">GitHub</a></span>
+    |
+    @TwitterGoodies.TweetButton(
+        dataCount: TwitterGoodies.DataCount.Horizontal,
+        tweetText: string.Format("Tweet during your session! - {0} / {1}", ViewBag.Title, this.Request.Url.AbsoluteUri))
+    @*@Facebook.LikeButton(href: "http://taptotweetreserved.azurewebsites.net", buttonLayout: "standard")*@
+</div>
