@@ -195,6 +195,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\charcounter.js" />
     <Content Include="Scripts\Site.js" />
     <Content Include="Scripts\Editor.js" />
     <Content Include="Scripts\HomeIndex.js" />

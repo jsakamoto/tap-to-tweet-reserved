@@ -13,6 +13,7 @@
         <div>
             @Html.TextAreaFor(m => m.TextToTweet, new { autofocus = true })
         </div>
+        <div id="char-counter"></div>
         <div>
             @Html.ValidationMessageFor(model => model.TextToTweet)
         </div>
@@ -25,4 +26,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/charcounter.js"></script>
 }
