@@ -14,7 +14,7 @@
     {
         <li>
             <a href="#" data-id="@tweet.Id">
-                @tweet.TextToTweet
+                @Html.Raw(HttpUtility.HtmlEncode(tweet.TextToTweet).Replace("\n","<br />"))
             </a>
         </li>
     }
