@@ -91,8 +91,21 @@ h1 {
 form fieldset {
     border: none;
     margin: 1em;
-    padding: 0;
+    padding-top: 1em;
 }
+
+.field-validation-error {
+    display: inline-block;
+    color: #ffd800;
+    margin-top: 1em;
+    font-size: 80%;
+}
+
+    .field-validation-error:before {
+        content: "* ";
+    }
+
+
 
 /* footer editor menu 
 ----------------------------------------------------*/
@@ -142,15 +155,15 @@ textarea {
 }
 
 .reserved-tweets a.tweeted-is-true {
-    background-image:url(images/tweeted-mark.png);
-    background-repeat:no-repeat;
-    background-position:0px 6px;
+    background-image: url(images/tweeted-mark.png);
+    background-repeat: no-repeat;
+    background-position: 0px 6px;
 }
 
 .reserved-tweets a.selected {
     border: solid 3px #0674c3;
     padding: 5px 5px 5px 21px;
-    background-position:-3px 3px;
+    background-position: -3px 3px;
 }
 
 footer.no-selected-tweets a.selected-only {

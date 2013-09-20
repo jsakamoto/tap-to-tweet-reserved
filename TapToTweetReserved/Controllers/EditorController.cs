@@ -37,7 +37,7 @@ namespace TapToTweetReserved.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Create(ReservedTweet model, string cmd)
         {
             if (cmd == "OK")
@@ -90,14 +90,17 @@ namespace TapToTweetReserved.Controllers
             return View(reservedTweet);
         }
 
-        [HttpPost]
-        public ActionResult Edit(int id, ReservedTweet model)
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, string cmd, ReservedTweet model)
         {
-            if (ModelState.IsValid == false) return View(model);
+            if (cmd == "OK")
+            {
+                if (ModelState.IsValid == false) return View(model);
 
-            var reservedTweet = GetTargetTweet(id);
-            UpdateModel(reservedTweet, includeProperties: new[] { "TextToTweet" });
-            Db.SaveChanges();
+                var reservedTweet = GetTargetTweet(id);
+                UpdateModel(reservedTweet, includeProperties: new[] { "TextToTweet" });
+                Db.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
