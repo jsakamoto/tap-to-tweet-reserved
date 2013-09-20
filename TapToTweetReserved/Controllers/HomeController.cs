@@ -8,7 +8,6 @@ using TweetSharp;
 
 namespace TapToTweetReserved.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         public TapToTweetReservedDb Db { get; set; }
@@ -21,6 +20,8 @@ namespace TapToTweetReserved.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            if (this.User.Identity.IsAuthenticated == false) return View("Entrance");
+
             var userExtraData = this.User.ExtraData<UserExtraData>();
             var userId = userExtraData.UserId;
             var reservedTweets = Db.ReservedTweets
@@ -37,7 +38,7 @@ namespace TapToTweetReserved.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Tweet(int id)
         {
             if (this.Request.IsAjaxRequest() == false) throw new HttpException("does not ajax request.");

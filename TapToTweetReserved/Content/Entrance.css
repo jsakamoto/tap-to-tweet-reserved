@@ -1,0 +1,35 @@
+﻿#sign-in {
+    margin: 2em 1em 1em 1em;
+}
+
+    #sign-in a {
+        color: #ccc;
+        background-color: #0674c3;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-size: 150%;
+        padding: 0.5em;
+        transition-duration: 0.5s;
+        transition-timing-function: ease-out;
+    }
+
+        #sign-in a:hover {
+            color: #fff;
+        }
+
+.summary,
+.quick-tour {
+    margin: 1em 1em 1em 1em;
+    color: #ccc;
+    font-size: 120%;
+}
+
+.summary {
+    margin-top: 4em;
+    padding-bottom:1em;
+    border-bottom:solid 1px #888;
+}
+
+.quick-tour li {
+}

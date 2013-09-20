@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Tap To Tweet Reserved";
+}
+@section Head{
+    <link href="~/Content/Entrance.css" rel="stylesheet" />
+}
+
+<div class="summary">
+    This application is designed for Tweet the reserved messages during the session at any IT Conference by session speaker oneself.
+</div>
+
+<div class="quick-tour">
+    <ol>
+        <li>Sign in with Twitter.</li>
+        <li>Reserve messages.</li>
+        <li>Tap to tweet the message from reserved at the best timing <strong>during your session/stage!</strong></li>
+    </ol>
+</div>
+
+<div id="sign-in">
+    <a href="@Url.Action("SignIn", "Account")">Sign In with Twitter</a>
+</div>
