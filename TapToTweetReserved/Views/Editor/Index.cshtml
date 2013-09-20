@@ -9,6 +9,14 @@
     </div>
 }
 
+@if (Model.ReservedTweets.Any() == false)
+{
+    <div class="guide">
+        <div class="text">
+            Enter "Add New" to reserve new message to tweet after.
+        </div>
+    </div>
+}
 
 <ul class="reserved-tweets">
     @foreach (var tweet in Model.ReservedTweets)

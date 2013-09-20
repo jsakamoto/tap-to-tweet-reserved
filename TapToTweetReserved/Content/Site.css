@@ -58,6 +58,30 @@ h1 {
     font-size: 120%;
 }
 
+/* guide for beginners ----------------------------------------------------*/
+.guide {
+    margin: 8em 1em 1em 1em;
+    padding: 18px 0 18px 0;
+    color: #fff;
+    background-image: url(images/lead.png);
+    background-repeat: no-repeat;
+    background-position: right 0px;
+}
+
+    .guide .text {
+        padding: 1em;
+        background-color: #0674c3;
+    }
+
+body.editor-index .guide {
+    position: fixed;
+    bottom: 80px;
+    background-position: left bottom;
+}
+
+/* ----------------------------------------------------*/
+
+
 .reserved-tweets {
     margin: 0;
     padding: 0;
@@ -86,8 +110,7 @@ h1 {
             color: #fff;
         }
 
-/* form 
-----------------------------------------------------*/
+/* form ----------------------------------------------------*/
 form fieldset {
     border: none;
     margin: 1em;

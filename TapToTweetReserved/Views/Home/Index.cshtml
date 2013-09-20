@@ -1,11 +1,23 @@
 ﻿@model TapToTweetReserved.Models.HomeViewModel
 @{
     ViewBag.Title = "Tap To Tweet Reserved";
-    ViewBag.BodyClass = "home-index";
+    ViewBag.BodyClass = string.Join(" ", new[]{
+        "home-index",
+        Model.NothingReserved ? "nothing-reserved" : ""
+    }.Where(s => s != ""));
 }
 @section nav{
     <div>
         @Html.ActionLink("edit...", "Index", "Editor")
+    </div>
+}
+
+@if (Model.NothingReserved)
+{
+    <div class="guide">
+        <div class="text">
+            Enter "edit..." to reserve your messages to tweet after.
+        </div>
     </div>
 }
 
@@ -14,7 +26,7 @@
     {
         <li>
             <a href="#" data-id="@tweet.Id">
-                @Html.Raw(HttpUtility.HtmlEncode(tweet.TextToTweet).Replace("\n","<br />"))
+                @Html.Raw(HttpUtility.HtmlEncode(tweet.TextToTweet).Replace("\n", "<br />"))
             </a>
         </li>
     }

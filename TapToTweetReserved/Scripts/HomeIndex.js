@@ -1,5 +1,9 @@
 ﻿$(function () {
-    $(document).on('click', '.reserved-tweets a', function (e) {
+
+    var $body = $(document.body);
+    if ($body.hasClass('nothing-reserved')) $('header .menu').click();
+
+    $('.reserved-tweets a').live('click', function (e) {
         e.preventDefault();
         var $this = $(this);
         $this.addClass('current');
