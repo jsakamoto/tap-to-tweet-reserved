@@ -1,8 +1,19 @@
-﻿<!DOCTYPE html>
+﻿@using TapToTweetReserved
+@{
+    var description = "The app for tweeting during a presentation by speaker oneself! / 1. Sign in with Twitter / 2. Reserve the messages prepare for your presentation. / 3. Tap to tweet the message that was reserved during your presentation!";
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="twitter:card" content="summary">
+    <meta property="og:title" content="@ViewBag.Title" />
+    <meta property="og:description" content="@description" />
+    <meta property="og:url" content="@Url.AppUrl()" />
+    <meta property="og:image" content="@Url.AppUrl()/Content/images/ogpimage.png" />
+    <meta name="keywords" content="Twitter,Tweet,Presentation" />
+    <meta name="description" content="@description" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @RenderSection("Head", required: false)

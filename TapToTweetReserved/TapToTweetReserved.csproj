@@ -184,6 +184,7 @@
     <Compile Include="Code\JsonAppSettings.cs" />
     <Compile Include="Code\LamdaResult.cs" />
     <Compile Include="Code\TwitterClient.cs" />
+    <Compile Include="Code\UrlHelperExtension.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EditorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
