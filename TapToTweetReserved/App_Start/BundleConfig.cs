@@ -11,6 +11,7 @@ namespace TapToTweetReserved
             bundles.Add(new ScriptBundle("~/bundles/site").Include(
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.live.js",
+                        "~/Scripts/jquery.toggleClass.js",
                         "~/Scripts/site.js"
                         ));
 
