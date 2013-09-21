@@ -8,7 +8,11 @@
         $('.reserved-tweets a').removeClass('selected');
         $(this).toggleClass('selected', !isSelected);
 
-        $('footer').toggleClass('no-selected-tweets', ($('.reserved-tweets a.selected').length == 0));
+        var selectedTweets = $('.reserved-tweets a.selected');
+        $('footer').toggleClass({
+            'no-selected-any': selectedTweets.length == 0,
+            'no-selected-tweeted': selectedTweets.filter('.tweeted-is-true').length == 0,
+        });
     });
 
     // Define generic command handler generator.
@@ -48,7 +52,9 @@
     }));
 
     $('#cmd-reload').click(createHandler({
-        beforePost: function () { return confirm('Reload the tweeted tweet.\nSure?'); },
+        beforePost: function () {
+            return this.selectedTweet.hasClass('tweeted-is-true') && confirm('Reload the tweeted tweet.\nSure?');
+        },
         afterPost: function () { this.selectedTweet.removeClass('tweeted-is-true').addClass('tweeted-is-false'); }
     }));
 

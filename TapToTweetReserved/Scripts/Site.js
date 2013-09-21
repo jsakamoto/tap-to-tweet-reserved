@@ -16,4 +16,6 @@
         .done(function (data) { location.href = data.url; })
         .fail(function () { alert('Oops... something wrong.'); });
     });
+
+    $(document.body).addClass('page-loaded')
 });

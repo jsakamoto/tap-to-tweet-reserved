@@ -218,6 +218,7 @@
     <Content Include="App_Code\TwitterGoodies.cshtml" />
     <Content Include="Facebook\Login.cshtml" />
     <Content Include="App_Code\Facebook.cshtml" />
+    <Content Include="Scripts\jquery.toggleClass.js" />
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

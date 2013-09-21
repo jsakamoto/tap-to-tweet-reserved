@@ -66,12 +66,25 @@ h1 {
     background-image: url(images/lead.png);
     background-repeat: no-repeat;
     background-position: right 0px;
+    opacity: 0;
 }
 
-    .guide .text {
-        padding: 1em;
-        background-color: #0674c3;
-    }
+.page-loaded .guide {
+    opacity: 1;
+    -moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
+    -moz-transition-delay: 0.5s;
+    -o-transition-delay: 0.5s;
+    -webkit-transition-delay: 0.5s;
+    transition-delay: 0.5s;
+}
+
+.guide .text {
+    padding: 1em;
+    background-color: #0674c3;
+}
 
 body.editor-index .guide {
     position: fixed;
@@ -187,7 +200,8 @@ textarea {
     background-position: -3px 3px;
 }
 
-footer.no-selected-tweets a.selected-only {
+footer.no-selected-any a.selected-only,
+footer.no-selected-tweeted a.selected-tweeted-only {
     color: #444;
     cursor: default;
 }
