@@ -3,6 +3,7 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    background-repeat: no-repeat;
 }
 
 body {
@@ -28,12 +29,18 @@ header {
     header .menu {
         display: inline-block;
         position: absolute;
-        top: 1em;
+        top: 0.5em;
         right: 0.5em;
+        width: 32px;
+        height: 32px;
+        overflow: hidden;
+        color: transparent;
+        background-image: url(images/menu.png);
+        background-position: center center;
     }
 
     header.expand-menu {
-        height: 7em;
+        height: 9em;
     }
 
     header * {
@@ -50,6 +57,12 @@ header {
             margin-right: 1em;
         }
 
+            header nav div a {
+                height: 2em;
+                line-height: 2em;
+                display: inline-block;
+            }
+
 h1 {
     color: #ccc;
     text-align: center;
@@ -64,9 +77,9 @@ h1 {
     padding: 18px 0 18px 0;
     color: #fff;
     background-image: url(images/lead.png);
-    background-repeat: no-repeat;
     background-position: right 0px;
     opacity: 0;
+    position:relative;
 }
 
 .page-loaded .guide {
@@ -190,7 +203,6 @@ textarea {
 
 .reserved-tweets a.tweeted-is-true {
     background-image: url(images/tweeted-mark.png);
-    background-repeat: no-repeat;
     background-position: 0px 6px;
 }
 
