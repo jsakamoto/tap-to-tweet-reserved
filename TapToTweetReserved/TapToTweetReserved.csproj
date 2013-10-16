@@ -180,6 +180,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Code\UrlHelperExtension.cs" />
     <Compile Include="Code\IdentityExtension.cs" />
     <Compile Include="Code\JsonAppSettings.cs" />
     <Compile Include="Code\LamdaResult.cs" />
@@ -196,11 +197,17 @@
     <Compile Include="Models\TapToTweetReservedDb.cs" />
     <Compile Include="Models\UserExtraData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Localize.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localize.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\images\lead.png" />
+    <Content Include="Content\images\ogpimage.png" />
     <Content Include="Content\images\tweeted-mark.png" />
     <Content Include="Content\Entrance.css" />
     <Content Include="Content\Site.css" />
@@ -214,6 +221,8 @@
     <Content Include="Facebook\Docs\content\Site.css" />
     <Content Include="Facebook\Docs\reference.htm" />
     <Content Include="Facebook\Docs\startHere.htm" />
+    <Content Include="favicon.ico" />
+    <Content Include="favicon.png" />
     <Content Include="Global.asax" />
     <Content Include="App_Code\TwitterGoodies.cshtml" />
     <Content Include="Facebook\Login.cshtml" />
@@ -278,6 +287,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localize.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localize.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
