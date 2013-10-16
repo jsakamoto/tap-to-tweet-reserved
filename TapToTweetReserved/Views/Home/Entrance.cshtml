@@ -38,7 +38,7 @@
     |
     @TwitterGoodies.TweetButton(
         dataCount: TwitterGoodies.DataCount.Horizontal,
-        tweetText: string.Format("Tweet during your session! - {0} / {1}", ViewBag.Title, this.Request.Url.AbsoluteUri))
+        tweetText: string.Format("Tweet during your session! - {0} / ", ViewBag.Title))
     |
     @Facebook.GetInitializationScripts()
     @Facebook.LikeButton(href: "http://taptotweetreserved.azurewebsites.net", 
