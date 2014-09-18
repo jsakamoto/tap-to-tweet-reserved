@@ -8,25 +8,22 @@
         @Html.ActionLink("Home", "Index", "Home")
     </div>
 }
-<div>
-    @if (Model.ReservedTweets.Any() == false)
-    {
-        <div class="guide">
-            <div class="text">
-                Enter "Add New" to reserve new message to tweet after.
-            </div>
+
+<div ng-app="app" ng-controller="editorController">
+
+    <div class="guide" ng-show="tweets.length == 0">
+        <div class="text">
+            Enter "Add New" to reserve new message to tweet after.
         </div>
-    }
+    </div>
 
     <ul class="reserved-tweets">
-        @foreach (var tweet in Model.ReservedTweets)
-        {
-            <li>
-                <a href="#" data-id="@tweet.Id" class="tweeted-is-@tweet.IsTweeted.ToString().ToLower()">
-                    @Html.Raw(HttpUtility.HtmlEncode(tweet.TextToTweet).Replace("\n", "<br />"))
-                </a>
-            </li>
-        }
+        <li ng-repeat="tweet in tweets">
+            <a href="#" data-id="{{tweet.Id}}" class="tweeted-is-{{tweet.IsTweeted}}">
+                <!-- TODO: replace line-break to "br" element. --->
+                {{tweet.TextToTweet}}
+            </a>
+        </li>
     </ul>
 
     <footer class="no-selected-any no-selected-tweeted">
