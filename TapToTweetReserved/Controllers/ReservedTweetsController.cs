@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using TapToTweetReserved.Models;
 
@@ -32,6 +29,15 @@ namespace TapToTweetReserved.Controllers
         {
             var reservedTweet = GetTargetTweet(id);
             Db.ReservedTweets.Remove(reservedTweet);
+            Db.SaveChanges();
+        }
+
+        public void Post(int id, ReservedTweet tweet)
+        {
+            var target = GetTargetTweet(id);
+            target.Order = tweet.Order;
+            target.TextToTweet = tweet.TextToTweet;
+            target.IsTweeted = tweet.IsTweeted;
             Db.SaveChanges();
         }
 

@@ -1,5 +1,4 @@
-﻿@model TapToTweetReserved.Models.HomeViewModel
-@{
+﻿@{
     ViewBag.Title = "Edit Reserved Tweets";
     ViewBag.BodyClass = "editor-index";
 }
@@ -19,23 +18,26 @@
 
     <ul class="reserved-tweets">
         <li ng-repeat="tweet in tweets">
-            <a href="#" data-id="{{tweet.Id}}" class="tweeted-is-{{tweet.IsTweeted}}">
+            <a href="#"
+               data-id="{{tweet.Id}}"
+               ng-click="selectTweet(tweet)"
+               ng-class="{selected:tweet.selected, tweeted:tweet.IsTweeted}">
                 <!-- TODO: replace line-break to "br" element. --->
                 {{tweet.TextToTweet}}
+                ({{tweet.Order}})
             </a>
         </li>
     </ul>
 
-    <footer class="no-selected-any no-selected-tweeted">
+    <footer ng-class="{'no-selected-any':!selectedAny, 'no-selected-tweeted':!selectedAnyTweeted}">
         @Html.ActionLink("Add New", "Create")
-        @Html.ActionLink("Up", "Up", null, new { id = "cmd-up", @class = "selected-only" })
-        @Html.ActionLink("Down", "Down", null, new { id = "cmd-down", @class = "selected-only" })
-        @Html.ActionLink("Edit", "Edit", null, new { id = "cmd-edit", @class = "selected-only" })
-        @Html.ActionLink("Delete", "Delete", null, new { id = "cmd-delete", @class = "selected-only" })
-        @Html.ActionLink("Reload", "Reload", null, new { id = "cmd-reload", @class = "selected-tweeted-only" })
+        <a ng-click="moveUpTweet()" class="selected-only">Up</a>
+        <a ng-click="moveDownTweet()" class="selected-only">Down</a>
+        <a ng-click="editTweet()" class="selected-only">Edit</a>
+        <a ng-click="deleteTweet()" class="selected-only">Delete</a>
+        <a ng-click="reloadTweet()" class="selected-tweeted-only">Reload</a>
     </footer>
 </div>
 @section Scripts {
-    @*<script src="~/Scripts/Editor.js"></script>*@
     <script src="~/Views/Editor/Editor.js"></script>
 }

@@ -201,7 +201,7 @@ textarea {
     padding-left: 24px;
 }
 
-.reserved-tweets a.tweeted-is-true {
+.reserved-tweets a.tweeted {
     background-image: url(images/tweeted-mark.png);
     background-position: 0px 6px;
 }
