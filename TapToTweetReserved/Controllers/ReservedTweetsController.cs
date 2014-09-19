@@ -25,10 +25,29 @@ namespace TapToTweetReserved.Controllers
                 .ToArray();
         }
 
+        public ReservedTweet Get(int id)
+        {
+            return GetTargetTweet(id);
+        }
+
         public void Delete(int id)
         {
             var reservedTweet = GetTargetTweet(id);
             Db.ReservedTweets.Remove(reservedTweet);
+            Db.SaveChanges();
+        }
+
+        public void Post(ReservedTweet tweet)
+        {
+            var userExtraData = this.User.ExtraData<UserExtraData>();
+            var userId = userExtraData.UserId;
+            var newTweet = new ReservedTweet
+            {
+                OwnerUserId = userId,
+                TextToTweet = tweet.TextToTweet,
+                Order = Db.ReservedTweets.Select(t => t.Order).DefaultIfEmpty().Max() + 1
+            };
+            Db.ReservedTweets.Add(newTweet);
             Db.SaveChanges();
         }
 

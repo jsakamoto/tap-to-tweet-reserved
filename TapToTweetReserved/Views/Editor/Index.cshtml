@@ -8,36 +8,12 @@
     </div>
 }
 
-<div ng-app="app" ng-controller="editorController">
-
-    <div class="guide" ng-show="tweets.length == 0">
-        <div class="text">
-            Enter "Add New" to reserve new message to tweet after.
-        </div>
+<div ng-app="app">
+    <div ng-view>
+        <!-- view -->
     </div>
-
-    <ul class="reserved-tweets">
-        <li ng-repeat="tweet in tweets">
-            <a href="#"
-               data-id="{{tweet.Id}}"
-               ng-click="selectTweet(tweet)"
-               ng-class="{selected:tweet.selected, tweeted:tweet.IsTweeted}">
-                <!-- TODO: replace line-break to "br" element. --->
-                {{tweet.TextToTweet}}
-                ({{tweet.Order}})
-            </a>
-        </li>
-    </ul>
-
-    <footer ng-class="{'no-selected-any':!selectedAny, 'no-selected-tweeted':!selectedAnyTweeted}">
-        @Html.ActionLink("Add New", "Create")
-        <a ng-click="moveUpTweet()" class="selected-only">Up</a>
-        <a ng-click="moveDownTweet()" class="selected-only">Down</a>
-        <a ng-click="editTweet()" class="selected-only">Edit</a>
-        <a ng-click="deleteTweet()" class="selected-only">Delete</a>
-        <a ng-click="reloadTweet()" class="selected-tweeted-only">Reload</a>
-    </footer>
 </div>
+
 @section Scripts {
     <script src="~/Views/Editor/Editor.js"></script>
 }

@@ -14,6 +14,7 @@ namespace TapToTweetReserved
                         "~/Scripts/jquery.toggleClass.js",
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-resource.js",
+                        "~/Scripts/angular-route.js",
                         "~/Scripts/site.js"
                         ));
 

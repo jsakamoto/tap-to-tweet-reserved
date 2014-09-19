@@ -1,0 +1,25 @@
+﻿<form>
+
+    <fieldset>
+        <!--
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+        -->
+
+        <div>
+            <textarea autofocus
+                      required
+                      ng-model="tweet.TextToTweet"></textarea>
+        </div>
+
+        <div id="char-counter" ng-class="{overflow:overflow}">
+            {{charCount}}
+        </div>
+    </fieldset>
+
+    <footer class="col2">
+        <input type="submit" value="OK" ng-click="ctrl.ok()"/>
+        <input type="submit" value="Cancel" class="cancel" ng-click="ctrl.goBack()" />
+    </footer>
+
+</form>
