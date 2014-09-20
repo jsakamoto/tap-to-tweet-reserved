@@ -37,7 +37,7 @@ namespace TapToTweetReserved.Controllers
             Db.SaveChanges();
         }
 
-        public void Post(ReservedTweet tweet)
+        public ReservedTweet Post(ReservedTweet tweet)
         {
             var userExtraData = this.User.ExtraData<UserExtraData>();
             var userId = userExtraData.UserId;
@@ -49,6 +49,8 @@ namespace TapToTweetReserved.Controllers
             };
             Db.ReservedTweets.Add(newTweet);
             Db.SaveChanges();
+
+            return newTweet;
         }
 
         public void Post(int id, ReservedTweet tweet)

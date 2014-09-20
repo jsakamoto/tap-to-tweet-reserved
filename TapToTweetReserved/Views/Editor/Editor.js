@@ -37,7 +37,12 @@ app.run(function ($rootScope) {
 });
 
 app.service('reservedTweets', function ($resource) {
-    return $resource('/api/ReservedTweets/:id', { id: '@Id' });
+    var resclass = $resource('/api/ReservedTweets/:id', { id: '@Id' });
+    var resarray = resclass.query();
+    resarray.createNew = function (data) {
+        return new resclass(data);
+    };
+    return resarray;
 });
 
 app.filter('htmlLineBreak', function ($injector) {
@@ -54,18 +59,18 @@ app.filter('htmlLineBreak', function ($injector) {
 
 var EditorHomeController = (function () {
     function EditorHomeController($scope, reservedTweets, $location) {
+        var _this = this;
         this.$scope = $scope;
         this.$location = $location;
         this.$scope.loaded = false;
 
-        $scope.tweets = reservedTweets.query();
+        $scope.tweets = reservedTweets;
         $scope.tweets.$promise.then(function () {
             $scope.loaded = true;
+            _this.updateState();
         });
     }
-    // Select
-    EditorHomeController.prototype.selectTweet = function (tweet) {
-        tweet.selected = !(tweet.selected || false);
+    EditorHomeController.prototype.updateState = function () {
         var selecteds = this.$scope.tweets.filter(function (t) {
             return t.selected == true;
         });
@@ -73,6 +78,12 @@ var EditorHomeController = (function () {
         this.$scope.selectedAnyTweeted = selecteds.some(function (t) {
             return t.IsTweeted == true;
         });
+    };
+
+    // Select
+    EditorHomeController.prototype.selectTweet = function (tweet) {
+        tweet.selected = !(tweet.selected || false);
+        this.updateState();
     };
 
     // AddNew
@@ -92,16 +103,18 @@ var EditorHomeController = (function () {
 
     // Delete
     EditorHomeController.prototype.deleteTweet = function () {
+        var _this = this;
         if (confirm('Delete reserved tweet.\nSure?') == false)
             return;
-        this.$scope.tweets.filter(function (t) {
+        var selecteds = this.$scope.tweets.filter(function (t) {
             return t.selected == true;
-        }).forEach(function (t) {
-            return t.$remove();
         });
-        this.$scope.tweets = this.$scope.tweets.filter(function (t) {
-            return (t.selected || false) == false;
+        selecteds.forEach(function (t) {
+            t.$remove();
+            var index = _this.$scope.tweets.indexOf(t);
+            _this.$scope.tweets.splice(index, 1);
         });
+        this.updateState();
     };
 
     // Reload
@@ -117,7 +130,7 @@ var EditorHomeController = (function () {
             t.IsTweeted = false;
             t.$save();
         });
-        this.$scope.selectedAnyTweeted = false;
+        this.updateState();
     };
 
     // Move Up
@@ -179,7 +192,9 @@ var EditorEditController = (function (_super) {
     __extends(EditorEditController, _super);
     function EditorEditController($scope, $location, reservedTweets, $routeParams) {
         _super.call(this, $scope, $location);
-        this.$scope.tweet = reservedTweets.get({ id: $routeParams.id });
+        this.$scope.tweet = reservedTweets.filter(function (t) {
+            return t.Id == $routeParams.id;
+        })[0];
         this.watchCharCount();
     }
     EditorEditController.prototype.ok = function () {
@@ -196,13 +211,14 @@ var EditorAddNewController = (function (_super) {
     function EditorAddNewController($scope, $location, reservedTweets) {
         _super.call(this, $scope, $location);
         this.reservedTweets = reservedTweets;
-        this.$scope.tweet = { TextToTweet: '' };
+        this.$scope.tweet = reservedTweets.createNew({ TextToTweet: '' });
         this.watchCharCount();
     }
     EditorAddNewController.prototype.ok = function () {
         var _this = this;
-        this.reservedTweets.save(this.$scope.tweet, function () {
-            return _this.goBack();
+        this.$scope.tweet.$save().then(function () {
+            _this.reservedTweets.push(_this.$scope.tweet);
+            _this.goBack();
         });
     };
     return EditorAddNewController;

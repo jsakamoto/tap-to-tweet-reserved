@@ -45,10 +45,15 @@ app.run($rootScope => {
     });
 });
 
-interface IReservedTweets extends ngres.IResourceClass<Tweet> { }
+interface IReservedTweets extends ngres.IResourceArray<Tweet> {
+    createNew(data: Object): Tweet;
+}
 
 app.service('reservedTweets', ($resource: ngres.IResourceService) => {
-    return $resource<Tweet>('/api/ReservedTweets/:id', { id: '@Id' });
+    var resclass = $resource<Tweet>('/api/ReservedTweets/:id', { id: '@Id' });
+    var resarray: any = resclass.query();
+    resarray.createNew = data => new resclass(data);
+    return resarray;
 });
 
 app.filter('htmlLineBreak', ($injector) => {
@@ -82,16 +87,23 @@ class EditorHomeController {
         this.$location = $location;
         this.$scope.loaded = false;
 
-        $scope.tweets = reservedTweets.query();
-        $scope.tweets.$promise.then(() => { $scope.loaded = true; });
+        $scope.tweets = reservedTweets;
+        $scope.tweets.$promise.then(() => {
+            $scope.loaded = true;
+            this.updateState();
+        });
+    }
+
+    private updateState() {
+        var selecteds = this.$scope.tweets.filter(t => t.selected == true);
+        this.$scope.selectedAny = selecteds.length > 0;
+        this.$scope.selectedAnyTweeted = selecteds.some(t => t.IsTweeted == true);
     }
 
     // Select
     public selectTweet(tweet: Tweet) {
         tweet.selected = !(tweet.selected || false);
-        var selecteds = this.$scope.tweets.filter(t => t.selected == true);
-        this.$scope.selectedAny = selecteds.length > 0;
-        this.$scope.selectedAnyTweeted = selecteds.some(t => t.IsTweeted == true);
+        this.updateState();
     }
 
     // AddNew
@@ -109,10 +121,13 @@ class EditorHomeController {
     // Delete
     public deleteTweet() {
         if (confirm('Delete reserved tweet.\nSure?') == false) return;
-        this.$scope.tweets
-            .filter(t => t.selected == true)
-            .forEach(t => t.$remove());
-        this.$scope.tweets = this.$scope.tweets.filter(t => (t.selected || false) == false);
+        var selecteds = this.$scope.tweets.filter(t => t.selected == true);
+        selecteds.forEach(t => {
+            t.$remove();
+            var index = this.$scope.tweets.indexOf(t);
+            this.$scope.tweets.splice(index, 1);
+        });
+        this.updateState();
     }
 
     // Reload
@@ -124,7 +139,7 @@ class EditorHomeController {
                 t.IsTweeted = false;
                 t.$save();
             });
-        this.$scope.selectedAnyTweeted = false;
+        this.updateState();
     }
 
     // Move Up
@@ -183,7 +198,7 @@ class EditorEditControllerBase {
 class EditorEditController extends EditorEditControllerBase {
     constructor($scope: IEditScope, $location: ng.ILocationService, reservedTweets: IReservedTweets, $routeParams: any) {
         super($scope, $location);
-        this.$scope.tweet = reservedTweets.get({ id: $routeParams.id });
+        this.$scope.tweet = reservedTweets.filter(t => t.Id == $routeParams.id)[0];
         this.watchCharCount();
     }
 
@@ -199,12 +214,15 @@ class EditorAddNewController extends EditorEditControllerBase {
     constructor($scope: IEditScope, $location: ng.ILocationService, reservedTweets: IReservedTweets) {
         super($scope, $location);
         this.reservedTweets = reservedTweets;
-        this.$scope.tweet = <Tweet>{ TextToTweet: '' };
+        this.$scope.tweet = reservedTweets.createNew({ TextToTweet: '' });
         this.watchCharCount();
     }
 
     public ok() {
-        this.reservedTweets.save(this.$scope.tweet, () => this.goBack());
+        this.$scope.tweet.$save().then(() => {
+            this.reservedTweets.push(this.$scope.tweet);
+            this.goBack();
+        });
     }
 }
 
