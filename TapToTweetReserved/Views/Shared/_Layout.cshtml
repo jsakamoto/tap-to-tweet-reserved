@@ -1,6 +1,6 @@
 ﻿@using TapToTweetReserved
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,14 +13,14 @@
     <meta name="description" content="@Localize.Description" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="~/favicon.png" rel="icon" type="image/png" />
-    <title>@ViewBag.Title</title>
+    <title ng-bind="title">@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @RenderSection("Head", required: false)
 </head>
 <body class="@ViewBag.BodyClass">
 
     <header>
-        <h1>@ViewBag.Title</h1>
+        <h1 ng-bind="title">@ViewBag.Title</h1>
         @if (this.User.Identity.IsAuthenticated)
         {
             <a href="#" class="menu">menu</a>

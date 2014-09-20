@@ -1,5 +1,4 @@
-﻿@model TapToTweetReserved.Models.HomeViewModel
-@{
+﻿@{
     ViewBag.Title = "Edit Reserved Tweets";
     ViewBag.BodyClass = "editor-index";
 }
@@ -9,35 +8,11 @@
     </div>
 }
 
-@if (Model.ReservedTweets.Any() == false)
-{
-    <div class="guide">
-        <div class="text">
-            Enter "Add New" to reserve new message to tweet after.
-        </div>
-    </div>
-}
-
-<ul class="reserved-tweets">
-    @foreach (var tweet in Model.ReservedTweets)
-    {
-        <li>
-            <a href="#" data-id="@tweet.Id" class="tweeted-is-@tweet.IsTweeted.ToString().ToLower()">
-                @Html.Raw(HttpUtility.HtmlEncode(tweet.TextToTweet).Replace("\n","<br />"))
-            </a>
-        </li>
-    }
-</ul>
-
-<footer class="no-selected-any no-selected-tweeted">
-    @Html.ActionLink("Add New", "Create")
-    @Html.ActionLink("Up", "Up", null, new { id = "cmd-up", @class = "selected-only" })
-    @Html.ActionLink("Down", "Down", null, new { id = "cmd-down", @class = "selected-only" })
-    @Html.ActionLink("Edit", "Edit", null, new { id = "cmd-edit", @class = "selected-only" })
-    @Html.ActionLink("Delete", "Delete", null, new { id = "cmd-delete", @class = "selected-only" })
-    @Html.ActionLink("Reload", "Reload", null, new { id = "cmd-reload", @class = "selected-tweeted-only" })
-</footer>
+<div ng-view>
+    <!-- view -->
+</div>
 
 @section Scripts {
-    <script src="~/Scripts/Editor.js"></script>
+    @Scripts.Render("~/bundles/angularjs")
+    <script src="~/Views/Editor/Editor.js"></script>
 }
