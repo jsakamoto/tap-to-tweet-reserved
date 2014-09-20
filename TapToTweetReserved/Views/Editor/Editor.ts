@@ -21,10 +21,28 @@ app.config(($httpProvider: ng.IHttpProvider, $routeProvider: ng.route.IRouteProv
 
     // Setup routes.
     $routeProvider
-        .when('/', { controller: 'editorHomeController', controllerAs: 'ctrl', templateUrl: '/views/editor/homeView.html' })
-        .when('/addnew', { controller: 'editorAddNewController', controllerAs: 'ctrl', templateUrl: '/views/editor/editView.html' })
-        .when('/edit/:id', { controller: 'editorEditController', controllerAs: 'ctrl', templateUrl: '/views/editor/editView.html' })
+        .when('/', {
+            title: 'Edit Reserved Tweet',
+            controller: 'editorHomeController', controllerAs: 'ctrl',
+            templateUrl: '/views/editor/homeView.html'
+        })
+        .when('/addnew', {
+            title: 'Add New Tweet',
+            controller: 'editorAddNewController', controllerAs: 'ctrl',
+            templateUrl: '/views/editor/editView.html'
+        })
+        .when('/edit/:id', {
+            title: 'Edit the Tweet',
+            controller: 'editorEditController', controllerAs: 'ctrl',
+            templateUrl: '/views/editor/editView.html'
+        })
     ;
+});
+
+app.run($rootScope => {
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        $rootScope.title = current.$$route.title;
+    });
 });
 
 interface IReservedTweets extends ngres.IResourceClass<Tweet> { }
@@ -42,8 +60,8 @@ app.filter('htmlLineBreak', ($injector) => {
         domElem = domElem || $(window.document.createElement('div'));
         return sce.trustAsHtml(
             domElem.text(input).html()
-            .replace(/(\n)|(\r\n)|(\r)/ig, '<br/>')
-            .replace(/ /ig, '&nbsp;'));
+                .replace(/(\n)|(\r\n)|(\r)/ig, '<br/>')
+                .replace(/ /ig, '&nbsp;'));
     };
 });
 

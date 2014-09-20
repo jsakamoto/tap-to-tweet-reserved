@@ -12,10 +12,13 @@ namespace TapToTweetReserved
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/jquery.live.js",
                         "~/Scripts/jquery.toggleClass.js",
+                        "~/Scripts/site.js"
+                        ));
+            
+            bundles.Add(new ScriptBundle("~/bundles/angularjs").Include(
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-resource.js",
-                        "~/Scripts/angular-route.js",
-                        "~/Scripts/site.js"
+                        "~/Scripts/angular-route.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

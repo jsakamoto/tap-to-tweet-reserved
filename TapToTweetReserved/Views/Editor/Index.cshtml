@@ -8,12 +8,11 @@
     </div>
 }
 
-<div ng-app="app">
-    <div ng-view>
-        <!-- view -->
-    </div>
+<div ng-view>
+    <!-- view -->
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/angularjs")
     <script src="~/Views/Editor/Editor.js"></script>
 }

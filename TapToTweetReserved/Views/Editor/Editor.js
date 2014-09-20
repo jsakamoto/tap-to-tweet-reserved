@@ -15,7 +15,25 @@ app.config(function ($httpProvider, $routeProvider) {
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 
     // Setup routes.
-    $routeProvider.when('/', { controller: 'editorHomeController', controllerAs: 'ctrl', templateUrl: '/views/editor/homeView.html' }).when('/addnew', { controller: 'editorAddNewController', controllerAs: 'ctrl', templateUrl: '/views/editor/editView.html' }).when('/edit/:id', { controller: 'editorEditController', controllerAs: 'ctrl', templateUrl: '/views/editor/editView.html' });
+    $routeProvider.when('/', {
+        title: 'Edit Reserved Tweet',
+        controller: 'editorHomeController', controllerAs: 'ctrl',
+        templateUrl: '/views/editor/homeView.html'
+    }).when('/addnew', {
+        title: 'Add New Tweet',
+        controller: 'editorAddNewController', controllerAs: 'ctrl',
+        templateUrl: '/views/editor/editView.html'
+    }).when('/edit/:id', {
+        title: 'Edit the Tweet',
+        controller: 'editorEditController', controllerAs: 'ctrl',
+        templateUrl: '/views/editor/editView.html'
+    });
+});
+
+app.run(function ($rootScope) {
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        $rootScope.title = current.$$route.title;
+    });
 });
 
 app.service('reservedTweets', function ($resource) {
