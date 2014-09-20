@@ -108,6 +108,7 @@ class EditorHomeController {
 
     // Delete
     public deleteTweet() {
+        if (confirm('Delete reserved tweet.\nSure?') == false) return;
         this.$scope.tweets
             .filter(t => t.selected == true)
             .forEach(t => t.$remove());
@@ -116,6 +117,7 @@ class EditorHomeController {
 
     // Reload
     public reloadTweet() {
+        if (confirm('Reload the tweeted tweet.\nSure?') == false) return;
         var selecteds = this.$scope.tweets.filter(t => t.selected == true);
         selecteds.filter(t => t.IsTweeted == true)
             .forEach(t => {

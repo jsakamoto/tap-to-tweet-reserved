@@ -92,6 +92,8 @@ var EditorHomeController = (function () {
 
     // Delete
     EditorHomeController.prototype.deleteTweet = function () {
+        if (confirm('Delete reserved tweet.\nSure?') == false)
+            return;
         this.$scope.tweets.filter(function (t) {
             return t.selected == true;
         }).forEach(function (t) {
@@ -104,6 +106,8 @@ var EditorHomeController = (function () {
 
     // Reload
     EditorHomeController.prototype.reloadTweet = function () {
+        if (confirm('Reload the tweeted tweet.\nSure?') == false)
+            return;
         var selecteds = this.$scope.tweets.filter(function (t) {
             return t.selected == true;
         });
