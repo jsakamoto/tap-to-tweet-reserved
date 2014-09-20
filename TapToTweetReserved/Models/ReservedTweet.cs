@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace TapToTweetReserved.Models
 {
@@ -11,6 +9,7 @@ namespace TapToTweetReserved.Models
     {
         public int Id { get; set; }
 
+        [JsonIgnore]
         public string OwnerUserId { get; set; }
 
         [Required, AllowHtml]
