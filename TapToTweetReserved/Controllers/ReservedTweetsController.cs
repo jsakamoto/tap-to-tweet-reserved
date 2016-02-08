@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Http;
 using TapToTweetReserved.Models;
+using WebApi.OutputCache.V2;
 
 namespace TapToTweetReserved.Controllers
 {
@@ -15,6 +16,7 @@ namespace TapToTweetReserved.Controllers
             this.Db = new TapToTweetReservedDb();
         }
 
+        [CacheOutput(NoCache = true)]
         public ReservedTweet[] Get()
         {
             var userExtraData = this.User.ExtraData<UserExtraData>();
@@ -25,6 +27,7 @@ namespace TapToTweetReserved.Controllers
                 .ToArray();
         }
 
+        [CacheOutput(NoCache = true)]
         public ReservedTweet Get(int id)
         {
             return GetTargetTweet(id);
