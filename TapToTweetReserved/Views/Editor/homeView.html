@@ -8,14 +8,14 @@
 <ul class="reserved-tweets">
     <li ng-repeat="tweet in tweets">
         <a ng-click="ctrl.selectTweet(tweet)"
-           ng-class="{selected:tweet.selected, tweeted:tweet.IsTweeted}"
-           ng-bind-html="tweet.TextToTweet | htmlLineBreak">
+            ng-class="{selected:tweet.selected, tweeted:tweet.IsTweeted}"
+            ng-bind-html="tweet.TextToTweet | htmlLineBreak">
         </a>
     </li>
 </ul>
 
 <footer ng-class="{'no-selected-any':!selectedAny, 'no-selected-tweeted':!selectedAnyTweeted}">
-    <a ng-click='ctrl.addNewTweet()'>Add New</a>
+    <a ng-click='ctrl.addNewTweet()'>Add</a>
     <a ng-click="ctrl.moveUpTweet()" class="selected-only">Up</a>
     <a ng-click="ctrl.moveDownTweet()" class="selected-only">Down</a>
     <a ng-click="ctrl.editTweet()" class="selected-only">Edit</a>

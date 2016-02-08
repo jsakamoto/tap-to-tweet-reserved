@@ -244,7 +244,12 @@
     <Content Include="Content\images\ogpimage.png" />
     <Content Include="Content\images\tweeted-mark.png" />
     <Content Include="Content\Entrance.css" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\Site.css">
+      <DependentUpon>Site.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="Facebook\Docs\content\images\FBCoreSettings.png" />
     <Content Include="Facebook\Docs\content\images\FBCreateApplication.png" />
     <Content Include="Facebook\Docs\content\images\webx-bkg.png" />
@@ -307,6 +312,11 @@
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Site.scss" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Scripts\jquery-2.0.3.intellisense.js">
       <DependentUpon>jquery-2.0.3.js</DependentUpon>
     </None>
