@@ -22,10 +22,6 @@ interface Tweet extends ngres.IResource<Tweet> {
 
 
 app.config(($httpProvider: ng.IHttpProvider, $routeProvider: ng.route.IRouteProvider) => {
-    // Anti IE cache
-    if (!$httpProvider.defaults.headers.get) $httpProvider.defaults.headers.get = {};
-    $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
-
     // Setup routes.
     $routeProvider
         .when('/', {
@@ -43,7 +39,7 @@ app.config(($httpProvider: ng.IHttpProvider, $routeProvider: ng.route.IRouteProv
             controller: 'editorEditController', controllerAs: 'ctrl',
             templateUrl: '/views/editor/editView.html'
         })
-    ;
+        ;
 });
 
 app.run($rootScope => {

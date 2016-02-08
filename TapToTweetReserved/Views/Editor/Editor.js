@@ -5,9 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var app = angular.module('app', ['ngResource', 'ngRoute']);
 app.config(function ($httpProvider, $routeProvider) {
-    if (!$httpProvider.defaults.headers.get)
-        $httpProvider.defaults.headers.get = {};
-    $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
     $routeProvider
         .when('/', {
         title: 'Edit Reserved Tweet',
