@@ -17,7 +17,6 @@ namespace TapToTweetReserved
         {
             AreaRegistration.RegisterAllAreas();
 
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             AuthConfig.RegisterAuth();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
