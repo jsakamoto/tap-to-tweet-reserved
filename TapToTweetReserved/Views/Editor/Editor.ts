@@ -1,10 +1,7 @@
-﻿/// <reference path="../../scripts/typings/angularjs/angular.d.ts" />
-/// <reference path="../../scripts/typings/angularjs/angular-resource.d.ts" />
-
-import ngres = ng.resource;
+﻿import ngres = ng.resource;
 var app = angular.module('app', ['ngResource', 'ngRoute']);
 
-namespace ng {
+namespace angular {
     export namespace route {
         export interface IRoute {
             title: string;
