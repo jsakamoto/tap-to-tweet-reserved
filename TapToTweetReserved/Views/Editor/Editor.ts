@@ -4,6 +4,13 @@
 import ngres = ng.resource;
 var app = angular.module('app', ['ngResource', 'ngRoute']);
 
+namespace ng {
+    export namespace route {
+        export interface IRoute {
+            title: string;
+        }
+    }
+}
 
 interface Tweet extends ngres.IResource<Tweet> {
     Id: number;
