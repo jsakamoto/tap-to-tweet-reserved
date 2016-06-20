@@ -16,4 +16,4 @@ This is a Web application designed for smart phone, to **tweet during prsentatio
 
 ## License
 
-[GNU General Public Lisence V2](LICENSE)
+[GNU General Public License V2](LICENSE)
