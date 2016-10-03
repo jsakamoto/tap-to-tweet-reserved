@@ -122,7 +122,7 @@ var EditorHomeController = (function () {
         });
     };
     return EditorHomeController;
-})();
+}());
 var EditorEditControllerBase = (function () {
     function EditorEditControllerBase($scope, $location) {
         this.$scope = $scope;
@@ -140,7 +140,7 @@ var EditorEditControllerBase = (function () {
         this.$location.url('/');
     };
     return EditorEditControllerBase;
-})();
+}());
 var EditorEditController = (function (_super) {
     __extends(EditorEditController, _super);
     function EditorEditController($scope, $location, reservedTweets, $routeParams) {
@@ -154,7 +154,7 @@ var EditorEditController = (function (_super) {
             .then(function () { return _this.goBack(); });
     };
     return EditorEditController;
-})(EditorEditControllerBase);
+}(EditorEditControllerBase));
 var EditorAddNewController = (function (_super) {
     __extends(EditorAddNewController, _super);
     function EditorAddNewController($scope, $location, reservedTweets) {
@@ -171,7 +171,7 @@ var EditorAddNewController = (function (_super) {
         });
     };
     return EditorAddNewController;
-})(EditorEditControllerBase);
+}(EditorEditControllerBase));
 app.controller('editorHomeController', EditorHomeController)
     .controller('editorAddNewController', EditorAddNewController)
     .controller('editorEditController', EditorEditController);
