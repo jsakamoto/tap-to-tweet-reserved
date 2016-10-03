@@ -323,6 +323,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="Content\Entrance.scss" />
+    <None Include="custom.appSettings.config" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js">
       <DependentUpon>jquery-2.0.3.js</DependentUpon>
     </None>
@@ -464,6 +465,15 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>if exist "$(ProjectDir)custom.appSettings.config" goto SKIP
+echo ^&lt;?xml version="1.0" encoding="utf-8" ?^&gt; &gt; "$(ProjectDir)custom.appSettings.config"
+echo ^&lt;appSettings^&gt; &gt;&gt; "$(ProjectDir)custom.appSettings.config"
+echo   ^&lt;add key="Twitter.Keys" value="{consumerKey:'****', consumerSecret:'****'}"/^&gt; &gt;&gt; "$(ProjectDir)custom.appSettings.config"
+echo   ^&lt;add key="Facebook.Keys" value="{appId:'', appSecret:''}"/^&gt; &gt;&gt; "$(ProjectDir)custom.appSettings.config"
+echo ^&lt;/appSettings^&gt; &gt;&gt; "$(ProjectDir)custom.appSettings.config"
+:SKIP</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
