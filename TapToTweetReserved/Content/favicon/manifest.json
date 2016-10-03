@@ -1,0 +1,7 @@
+{
+	"name": "Tap to Tweet",
+	"icons": [
+	],
+	"theme_color": "#ffffff",
+	"display": "standalone"
+}

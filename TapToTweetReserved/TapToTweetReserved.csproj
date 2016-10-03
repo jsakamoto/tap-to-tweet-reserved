@@ -245,6 +245,13 @@
     <Content Include="Content\Entrance.min.css">
       <DependentUpon>Entrance.css</DependentUpon>
     </Content>
+    <Content Include="Content\favicon\apple-touch-icon.png" />
+    <Content Include="Content\favicon\browserconfig.xml" />
+    <Content Include="Content\favicon\favicon-16x16.png" />
+    <Content Include="Content\favicon\favicon-32x32.png" />
+    <Content Include="Content\favicon\favicon.ico" />
+    <Content Include="Content\favicon\mstile-150x150.png" />
+    <Content Include="Content\favicon\safari-pinned-tab.svg" />
     <Content Include="Content\images\lead.png" />
     <Content Include="Content\images\menu.png" />
     <Content Include="Content\images\ogpimage.png" />
@@ -323,6 +330,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="Content\Entrance.scss" />
+    <Content Include="Content\favicon\manifest.json" />
     <None Include="custom.appSettings.config" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js">
       <DependentUpon>jquery-2.0.3.js</DependentUpon>
