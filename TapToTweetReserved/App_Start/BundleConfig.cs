@@ -25,6 +25,17 @@ namespace TapToTweetReserved
                         "~/Scripts/jquery.unobtrusive*",
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundle.js").Include(
+                        "~/Client/app.js",
+                        "~/Client/models/*.js",
+                        "~/Client/services/*.js",
+                        "~/Client/filters/*.js",
+                        "~/Client/controllers/editorEditControllerBase.js",
+                        "~/Client/controllers/editorEditController.js",
+                        "~/Client/controllers/editorAddNewController.js",
+                        "~/Client/controllers/editorHomeController.js"
+                        ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/site.css"));
         }

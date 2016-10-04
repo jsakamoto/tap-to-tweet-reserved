@@ -239,6 +239,60 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Client\app.js">
+      <DependentUpon>app.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\app.js.map">
+      <DependentUpon>app.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorAddNewController.js">
+      <DependentUpon>editorAddNewController.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorAddNewController.js.map">
+      <DependentUpon>editorAddNewController.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorEditController.js">
+      <DependentUpon>editorEditController.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorEditController.js.map">
+      <DependentUpon>editorEditController.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorEditControllerBase.js">
+      <DependentUpon>editorEditControllerBase.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorEditControllerBase.js.map">
+      <DependentUpon>editorEditControllerBase.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorHomeController.js">
+      <DependentUpon>editorHomeController.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\controllers\editorHomeController.js.map">
+      <DependentUpon>editorHomeController.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\filters\htmlLineBreak.js">
+      <DependentUpon>htmlLineBreak.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\filters\htmlLineBreak.js.map">
+      <DependentUpon>htmlLineBreak.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\models\reservedTweets.js">
+      <DependentUpon>reservedTweets.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\models\reservedTweets.js.map">
+      <DependentUpon>reservedTweets.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\models\tweet.js">
+      <DependentUpon>tweet.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\models\tweet.js.map">
+      <DependentUpon>tweet.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\services\reservedTweets.js">
+      <DependentUpon>reservedTweets.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\services\reservedTweets.js.map">
+      <DependentUpon>reservedTweets.ts</DependentUpon>
+    </Content>
     <Content Include="Content\Entrance.css">
       <DependentUpon>Entrance.scss</DependentUpon>
     </Content>
@@ -312,12 +366,6 @@
     </Content>
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js">
       <DependentUpon>jquery.validate.unobtrusive.js</DependentUpon>
-    </Content>
-    <Content Include="Views\Editor\Editor.js">
-      <DependentUpon>Editor.ts</DependentUpon>
-    </Content>
-    <Content Include="Views\Editor\Editor.js.map">
-      <DependentUpon>Editor.ts</DependentUpon>
     </Content>
     <Content Include="Views\Editor\editView.html" />
     <Content Include="Views\Editor\homeView.html" />
@@ -396,6 +444,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Client\app.ts" />
+    <TypeScriptCompile Include="Client\controllers\editorAddNewController.ts" />
+    <TypeScriptCompile Include="Client\controllers\editorEditController.ts" />
+    <TypeScriptCompile Include="Client\controllers\editorEditControllerBase.ts" />
+    <TypeScriptCompile Include="Client\controllers\editorHomeController.ts" />
+    <TypeScriptCompile Include="Client\filters\htmlLineBreak.ts" />
+    <TypeScriptCompile Include="Client\models\reservedTweets.ts" />
+    <TypeScriptCompile Include="Client\models\tweet.ts" />
+    <TypeScriptCompile Include="Client\services\reservedTweets.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -403,8 +460,8 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\extension\extension.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Views\Editor\Editor.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
