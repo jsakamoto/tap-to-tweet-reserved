@@ -6,11 +6,15 @@ var __extends = (this && this.__extends) || function (d, b) {
 var EditorEditController = (function (_super) {
     __extends(EditorEditController, _super);
     function EditorEditController($scope, $location, reservedTweets, $routeParams) {
-        _super.call(this, $scope, $location, reservedTweets.filter(function (t) { return t.Id == $routeParams.id; })[0]);
+        _super.call(this, $scope, $location, angular.copy(reservedTweets.filter(function (t) { return t.Id == $routeParams.id; })[0]));
+        this.reservedTweets = reservedTweets;
+        this.$routeParams = $routeParams;
     }
     EditorEditController.prototype.ok = function () {
         var _this = this;
-        this.tweet.$save()
+        var editTarget = this.reservedTweets.filter(function (t) { return t.Id == _this.$routeParams.id; })[0];
+        angular.copy(this.tweet, editTarget);
+        editTarget.$save()
             .then(function () { return _this.goBack(); });
     };
     return EditorEditController;

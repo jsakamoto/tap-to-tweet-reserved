@@ -2,14 +2,16 @@
     constructor(
         $scope: ng.IScope,
         $location: ng.ILocationService,
-        reservedTweets: IReservedTweets,
-        $routeParams: any
+        private reservedTweets: IReservedTweets,
+        private $routeParams: any
     ) {
-        super($scope, $location, reservedTweets.filter(t => t.Id == $routeParams.id)[0]);
+        super($scope, $location, angular.copy(reservedTweets.filter(t => t.Id == $routeParams.id)[0]));
     }
 
     public ok() {
-        this.tweet.$save()
+        let editTarget = this.reservedTweets.filter(t => t.Id == this.$routeParams.id)[0];
+        angular.copy(this.tweet, editTarget);
+        editTarget.$save()
             .then(() => this.goBack());
     }
 }
