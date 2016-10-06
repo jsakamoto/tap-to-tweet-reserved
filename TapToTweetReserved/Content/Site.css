@@ -180,8 +180,14 @@ footer {
     color: #444;
     cursor: default; }
 
-footer.col2 a, footer.col2 input[type=submit] {
-  width: 48%; }
+footer.col2 {
+  white-space: nowrap;
+  font-size: 0; }
+  footer.col2 a, footer.col2 input[type=submit] {
+    width: 50%;
+    border-right: solid 1px #666;
+    height: 100%;
+    font-size: 1rem; }
 
 textarea {
   display: block;
