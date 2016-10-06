@@ -6,15 +6,13 @@ var __extends = (this && this.__extends) || function (d, b) {
 var EditorAddNewController = (function (_super) {
     __extends(EditorAddNewController, _super);
     function EditorAddNewController($scope, $location, reservedTweets) {
-        _super.call(this, $scope, $location);
+        _super.call(this, $scope, $location, reservedTweets.createNew({ TextToTweet: '' }));
         this.reservedTweets = reservedTweets;
-        this.$scope.tweet = reservedTweets.createNew({ TextToTweet: '' });
-        this.watchCharCount();
     }
     EditorAddNewController.prototype.ok = function () {
         var _this = this;
-        this.$scope.tweet.$save().then(function () {
-            _this.reservedTweets.push(_this.$scope.tweet);
+        this.tweet.$save().then(function () {
+            _this.reservedTweets.push(_this.tweet);
             _this.goBack();
         });
     };

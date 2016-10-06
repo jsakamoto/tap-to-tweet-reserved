@@ -1,16 +1,16 @@
 ﻿class EditorAddNewController extends EditorEditControllerBase {
-    reservedTweets: IReservedTweets;
 
-    constructor($scope: IEditScope, $location: ng.ILocationService, reservedTweets: IReservedTweets) {
-        super($scope, $location);
-        this.reservedTweets = reservedTweets;
-        this.$scope.tweet = reservedTweets.createNew({ TextToTweet: '' });
-        this.watchCharCount();
+    constructor(
+        $scope: ng.IScope,
+        $location: ng.ILocationService,
+        private reservedTweets: IReservedTweets
+    ) {
+        super($scope, $location, reservedTweets.createNew({ TextToTweet: '' }));
     }
 
     public ok() {
-        this.$scope.tweet.$save().then(() => {
-            this.reservedTweets.push(this.$scope.tweet);
+        this.tweet.$save().then(() => {
+            this.reservedTweets.push(this.tweet);
             this.goBack();
         });
     }

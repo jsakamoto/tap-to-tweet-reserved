@@ -1,19 +1,14 @@
 ﻿<form>
 
     <fieldset>
-        <!--
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true)
-        -->
-
         <div>
             <textarea autofocus
                       required
-                      ng-model="tweet.TextToTweet"></textarea>
+                      ng-model="ctrl.tweet.TextToTweet"></textarea>
         </div>
 
-        <div id="char-counter" ng-class="{overflow:overflow}">
-            {{charCount}}
+        <div id="char-counter" ng-class="{overflow:ctrl.overflow}">
+            {{ctrl.charCount}}
         </div>
     </fieldset>
 

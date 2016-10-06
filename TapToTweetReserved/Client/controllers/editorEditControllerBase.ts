@@ -1,22 +1,26 @@
-﻿interface IEditScope extends ng.IScope {
-    tweet: Tweet;
-    charCount: number;
-    overflow: boolean;
-}
-
+﻿
 class EditorEditControllerBase {
-    $scope: IEditScope;
-    $location: ng.ILocationService;
-    constructor($scope: IEditScope, $location: ng.ILocationService) {
-        this.$scope = $scope;
-        this.$location = $location;
+
+    public tweet: Tweet;
+
+    public charCount: number;
+
+    public overflow: boolean;
+
+    constructor(
+        private $scope: ng.IScope,
+        private $location: ng.ILocationService,
+        tweet: Tweet
+    ) {
+        this.tweet = tweet;
+        this.watchCharCount();
     }
 
-    public watchCharCount() {
-        this.$scope.$watch('tweet.TextToTweet', () => {
+    private watchCharCount() {
+        this.$scope.$watch(() => this.tweet.TextToTweet, () => {
             const MAXCHARS = 140;
-            this.$scope.charCount = charCounter(this.$scope.tweet.TextToTweet || '', MAXCHARS);
-            this.$scope.overflow = this.$scope.charCount <= 0;
+            this.charCount = charCounter(this.tweet.TextToTweet || '', MAXCHARS);
+            this.overflow = this.charCount <= 0;
         });
     }
 

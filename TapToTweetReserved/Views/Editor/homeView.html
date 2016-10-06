@@ -1,12 +1,12 @@
 ﻿
-<div class="guide" ng-show="loaded && tweets.length == 0">
+<div class="guide" ng-show="loaded && ctrl.tweets.length == 0">
     <div class="text">
         Enter "Add New" to reserve new message to tweet after.
     </div>
 </div>
 
 <ul class="reserved-tweets">
-    <li ng-repeat="tweet in tweets">
+    <li ng-repeat="tweet in ctrl.tweets">
         <a ng-click="ctrl.selectTweet(tweet)"
             ng-class="{selected:tweet.selected, tweeted:tweet.IsTweeted}"
             ng-bind-html="tweet.TextToTweet | htmlLineBreak">
@@ -14,7 +14,7 @@
     </li>
 </ul>
 
-<footer ng-class="{'no-selected-any':!selectedAny, 'no-selected-tweeted':!selectedAnyTweeted}">
+<footer ng-class="{'no-selected-any':!ctrl.selectedAny, 'no-selected-tweeted':!ctrl.selectedAnyTweeted}">
     <a ng-click='ctrl.addNewTweet()'>Add</a>
     <a ng-click="ctrl.moveUpTweet()" class="selected-only">Up</a>
     <a ng-click="ctrl.moveDownTweet()" class="selected-only">Down</a>
