@@ -17,5 +17,5 @@ var EditorEditController = (function (_super) {
     };
     return EditorEditController;
 }(EditorEditControllerBase));
-app.controller('editorEditController', ['$scope', '$location', 'reservedTweets', EditorEditController]);
+app.controller('editorEditController', ['$scope', '$location', 'reservedTweets', '$routeParams', EditorEditController]);
 //# sourceMappingURL=editorEditController.js.map

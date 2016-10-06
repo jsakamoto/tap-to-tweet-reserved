@@ -11,4 +11,4 @@
     }
 }
 
-app.controller('editorEditController', ['$scope', '$location', 'reservedTweets', EditorEditController]);
+app.controller('editorEditController', ['$scope', '$location', 'reservedTweets', '$routeParams', EditorEditController]);
