@@ -269,6 +269,12 @@
     <Content Include="Client\controllers\editorHomeController.js.map">
       <DependentUpon>editorHomeController.ts</DependentUpon>
     </Content>
+    <Content Include="Client\filters\charCounter.js">
+      <DependentUpon>charCounter.ts</DependentUpon>
+    </Content>
+    <Content Include="Client\filters\charCounter.js.map">
+      <DependentUpon>charCounter.ts</DependentUpon>
+    </Content>
     <Content Include="Client\filters\htmlLineBreak.js">
       <DependentUpon>htmlLineBreak.ts</DependentUpon>
     </Content>
@@ -449,6 +455,7 @@
     <TypeScriptCompile Include="Client\controllers\editorEditController.ts" />
     <TypeScriptCompile Include="Client\controllers\editorEditControllerBase.ts" />
     <TypeScriptCompile Include="Client\controllers\editorHomeController.ts" />
+    <TypeScriptCompile Include="Client\filters\charCounter.ts" />
     <TypeScriptCompile Include="Client\filters\htmlLineBreak.ts" />
     <TypeScriptCompile Include="Client\models\reservedTweets.ts" />
     <TypeScriptCompile Include="Client\models\tweet.ts" />

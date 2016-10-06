@@ -4,6 +4,7 @@
 /// <reference path="../client/controllers/editoreditcontroller.js" />
 /// <reference path="../client/controllers/editoreditcontrollerbase.js" />
 /// <reference path="../client/controllers/editorhomecontroller.js" />
+/// <reference path="../client/filters/charcounter.js" />
 /// <reference path="../client/filters/htmllinebreak.js" />
 /// <reference path="../client/models/reservedtweets.js" />
 /// <reference path="../client/models/tweet.js" />
