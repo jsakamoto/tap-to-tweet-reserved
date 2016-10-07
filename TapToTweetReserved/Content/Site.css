@@ -130,7 +130,8 @@ body.editor-index .guide {
     padding: 8px;
     color: #aaa;
     text-decoration: none;
-    overflow: hidden; }
+    overflow: hidden;
+    overflow-wrap: break-word; }
     .reserved-tweets a.current {
       color: #fff; }
 
