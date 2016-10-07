@@ -1,4 +1,4 @@
-﻿<form>
+﻿﻿<form>
 
     <fieldset>
         <div>
@@ -13,8 +13,8 @@
     </fieldset>
 
     <footer class="col2">
-        <input type="submit" value="OK" ng-click="ctrl.ok()"/>
-        <input type="submit" value="Cancel" class="cancel" ng-click="ctrl.goBack()" />
+        <button ng-click="ctrl.ok()" ng-disabled="editForm.$invalid || ctrl.overflow">OK</button>
+        <button class="cancel" ng-click="ctrl.goBack()">Cancel</button>
     </footer>
 
 </form>

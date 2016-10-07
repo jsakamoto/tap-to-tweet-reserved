@@ -20,7 +20,7 @@ class EditorEditControllerBase {
         this.$scope.$watch(() => this.tweet.TextToTweet, () => {
             const MAXCHARS = 140;
             this.charCount = charCounter(this.tweet.TextToTweet || '', MAXCHARS);
-            this.overflow = this.charCount <= 0;
+            this.overflow = this.charCount < 0;
         });
     }
 

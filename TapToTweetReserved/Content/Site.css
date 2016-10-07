@@ -160,7 +160,8 @@ footer {
   display: block;
   height: 4rem; }
   footer a,
-  footer input[type=submit] {
+  footer input[type=submit],
+  footer button {
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
@@ -173,8 +174,14 @@ footer {
     border: none;
     cursor: pointer; }
     footer a:hover,
-    footer input[type=submit]:hover {
+    footer input[type=submit]:hover,
+    footer button:hover {
       color: #fff; }
+    footer a[disabled],
+    footer input[type=submit][disabled],
+    footer button[disabled] {
+      color: #666;
+      cursor: default; }
   footer.no-selected-any a.selected-only,
   footer.no-selected-tweeted a.selected-tweeted-only {
     color: #444;
@@ -183,7 +190,7 @@ footer {
 footer.col2 {
   white-space: nowrap;
   font-size: 0; }
-  footer.col2 a, footer.col2 input[type=submit] {
+  footer.col2 a, footer.col2 input[type=submit], footer.col2 button {
     width: 50%;
     border-right: solid 1px #666;
     height: 100%;

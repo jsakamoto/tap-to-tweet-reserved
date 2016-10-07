@@ -10,7 +10,7 @@ var EditorEditControllerBase = (function () {
         this.$scope.$watch(function () { return _this.tweet.TextToTweet; }, function () {
             var MAXCHARS = 140;
             _this.charCount = charCounter(_this.tweet.TextToTweet || '', MAXCHARS);
-            _this.overflow = _this.charCount <= 0;
+            _this.overflow = _this.charCount < 0;
         });
     };
     EditorEditControllerBase.prototype.goBack = function () {
