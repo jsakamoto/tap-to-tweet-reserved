@@ -19,7 +19,21 @@ namespace TapToTweetReserved
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            app.Use(EnforceHttps);
             app.UseWebApi(config);
+        }
+
+        private static async Task EnforceHttps(IOwinContext ctx, Func<Task> next)
+        {
+            var url = ctx.Request.Uri;
+            if (url.Scheme == "http" && url.Host != "localhost")
+            {
+                ctx.Response.Redirect($"https://{url.Host}/");
+            }
+            else
+            {
+                await next();
+            }
         }
     }
 }
