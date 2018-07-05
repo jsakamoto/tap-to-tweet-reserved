@@ -20,6 +20,7 @@ namespace TapToTweetReserved.Code
         /// </summary>
         public static readonly ServiceProviderDescription TwitterServiceDescription = new ServiceProviderDescription
         {
+            ProtocolVersion = ProtocolVersion.V10,
             RequestTokenEndpoint =
                 new MessageReceivingEndpoint(
                     "https://api.twitter.com/oauth/request_token",
@@ -36,7 +37,9 @@ namespace TapToTweetReserved.Code
         };
 
         public TwitterClient(string consumerKey, string consumerSecret) :
-            base("twitter", TwitterServiceDescription, consumerKey, consumerSecret) { }
+            base("twitter", TwitterServiceDescription, consumerKey, consumerSecret)
+        { }
+
         protected override AuthenticationResult VerifyAuthenticationCore(AuthorizedTokenResponse response)
         {
             string accessToken = response.AccessToken;
