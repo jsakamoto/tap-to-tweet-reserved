@@ -1,0 +1,112 @@
+﻿@page "/list-of-editmode"
+@attribute [Authorize]
+@inject HttpClient HttpClient
+
+@if (this.ReservedTweets != null)
+{
+    <div class="edit-mode">
+
+        @if (!this.ReservedTweets.Any())
+        {
+            <div class="guide">
+                <div class="text">
+                    Enter "Add New" to reserve new message to tweet after.
+                </div>
+            </div>
+        }
+
+        <ul class="reserved-tweets">
+            @foreach (var tweet in this.ReservedTweets)
+            {
+                <li>
+                    <a @onclick="@(() => SelectTweet(tweet))" class="@GetTweetCssClass(tweet)">
+                        @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <footer class="@GetFooterCssClass()">
+            <a @onclick="AddNewTweet">Add</a>
+            <a @onclick="MoveUpTweet" class="selected-only">Up</a>
+            <a @onclick="MoveDownTweet" class="selected-only">Down</a>
+            <a @onclick="EditTweet" class="selected-only">Edit</a>
+            <a @onclick="DeleteTweet" class="selected-only">Delete</a>
+            <a @onclick="ReloadTweet" class="selected-tweeted-only">Reload</a>
+        </footer>
+
+    </div>
+}
+
+@code
+{
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
+    private SelectableReservedTweet[] ReservedTweets = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.UIContext.SetMenuItem(new MenuItem { Caption = "Home", Url = "/" });
+
+        this.ReservedTweets = await this.HttpClient.GetJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
+    }
+
+    private void SelectTweet(SelectableReservedTweet tweet)
+    {
+        tweet.Selected = !tweet.Selected;
+    }
+
+    private string GetTweetCssClass(SelectableReservedTweet tweet)
+    {
+        var cssClasses = new List<string>();
+        if (tweet.Selected) cssClasses.Add("selected");
+        if (tweet.IsTweeted) cssClasses.Add("tweeted");
+        return string.Join(' ', cssClasses);
+    }
+
+    private string GetFooterCssClass()
+    {
+        var cssClasses = new List<string>();
+        if (!this.ReservedTweets.Any(t => t.Selected)) cssClasses.Add("no-selected-any");
+        if (!this.ReservedTweets.Where(t => t.IsTweeted).Any(t => t.Selected)) cssClasses.Add("no-selected-tweeted");
+        return string.Join(' ', cssClasses);
+    }
+
+    private void AddNewTweet()
+    {
+
+        throw new NotImplementedException();
+    }
+
+    private void MoveUpTweet()
+    {
+
+        throw new NotImplementedException();
+    }
+
+    private void MoveDownTweet()
+    {
+
+        throw new NotImplementedException();
+    }
+
+    private void EditTweet()
+    {
+
+        throw new NotImplementedException();
+    }
+
+    private void DeleteTweet()
+    {
+
+        throw new NotImplementedException();
+    }
+
+    private void ReloadTweet()
+    {
+
+        throw new NotImplementedException();
+    }
+}
+
