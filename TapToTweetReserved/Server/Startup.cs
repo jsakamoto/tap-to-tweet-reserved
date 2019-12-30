@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using TapToTweetReserved.Server.Services;
 
 namespace TapToTweetReserved.Server
 {
@@ -38,19 +40,30 @@ namespace TapToTweetReserved.Server
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ResponseCacheAttribute { NoStore = true });
+            });
+
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
 
+            ConfigureAuthentication(services, twitterConfig);
+
+            services.AddSingleton<IReservedTweetsRepository, LocalFileReservedTweetsRepository>();
+        }
+
+        private static void ConfigureAuthentication(IServiceCollection services, TwitterConfiguration twitterConfig)
+        {
             services.AddAuthentication(options =>
-                {
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
+            {
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
                 .AddTwitter(options =>
                 {
                     options.ConsumerKey = twitterConfig.ConsumerAPIKey;
@@ -58,7 +71,6 @@ namespace TapToTweetReserved.Server
                     options.Events.OnCreatingTicket = context =>
                     {
                         var identity = context.Principal.Identity as ClaimsIdentity;
-
                         identity.AddClaim(new Claim(TwitterClaimTypes.AccessToken, context.AccessToken));
                         identity.AddClaim(new Claim(TwitterClaimTypes.AccessTokenSecret, context.AccessTokenSecret));
                         return Task.CompletedTask;
