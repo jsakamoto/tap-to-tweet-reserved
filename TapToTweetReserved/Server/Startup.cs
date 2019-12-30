@@ -8,7 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace TapToTweetReserved.Server
 {
@@ -25,6 +27,10 @@ namespace TapToTweetReserved.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var twitterConfig = new TwitterConfiguration();
+            Configuration.Bind("Authentication:Twitter", twitterConfig);
+            services.AddSingleton(twitterConfig);
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -47,8 +53,16 @@ namespace TapToTweetReserved.Server
                 })
                 .AddTwitter(options =>
                 {
-                    options.ConsumerKey = Configuration["Authentication:Twitter:ConsumerAPIKey"];
-                    options.ConsumerSecret = Configuration["Authentication:Twitter:ConsumerSecret"];
+                    options.ConsumerKey = twitterConfig.ConsumerAPIKey;
+                    options.ConsumerSecret = twitterConfig.ConsumerSecret;
+                    options.Events.OnCreatingTicket = context =>
+                    {
+                        var identity = context.Principal.Identity as ClaimsIdentity;
+
+                        identity.AddClaim(new Claim(TwitterClaimTypes.AccessToken, context.AccessToken));
+                        identity.AddClaim(new Claim(TwitterClaimTypes.AccessTokenSecret, context.AccessTokenSecret));
+                        return Task.CompletedTask;
+                    };
                 })
                 .AddCookie(options =>
                 {
