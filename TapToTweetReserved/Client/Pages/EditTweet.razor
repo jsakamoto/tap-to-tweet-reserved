@@ -1,0 +1,27 @@
+﻿@page "/edit/{Id:guid}"
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+@if (EditTarget != null)
+{
+    <EditTweetForm TextToTweet="@EditTarget.TextToTweet" OnOK="OnOK"></EditTweetForm>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private ReservedTweet EditTarget;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.EditTarget = await this.HttpClient.GetJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");
+    }
+
+    private async Task OnOK(string textToTweet)
+    {
+        this.EditTarget.TextToTweet = textToTweet;
+        await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{this.Id}", this.EditTarget);
+        this.NavigationManager.NavigateTo("/list-of-editmode");
+    }
+}

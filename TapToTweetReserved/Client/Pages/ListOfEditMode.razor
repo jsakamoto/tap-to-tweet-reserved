@@ -1,6 +1,7 @@
 ﻿@page "/list-of-editmode"
 @attribute [Authorize]
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 @if (this.ReservedTweets != null)
 {
@@ -18,7 +19,7 @@
         <ul class="reserved-tweets">
             @foreach (var tweet in this.ReservedTweets)
             {
-                <li>
+                <li @key="tweet.Id">
                     <a @onclick="@(() => SelectTweet(tweet))" class="@GetTweetCssClass(tweet)">
                         @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
                     </a>
@@ -43,13 +44,14 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
-    private SelectableReservedTweet[] ReservedTweets = null;
+    private List<SelectableReservedTweet>
+    ReservedTweets = null;
 
     protected override async Task OnInitializedAsync()
     {
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Home", Url = "/" });
 
-        this.ReservedTweets = await this.HttpClient.GetJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
+        this.ReservedTweets = await this.HttpClient.GetJsonAsync<List<SelectableReservedTweet>>("/api/reservedtweets");
     }
 
     private void SelectTweet(SelectableReservedTweet tweet)
@@ -73,34 +75,68 @@
         return string.Join(' ', cssClasses);
     }
 
-    private void MoveUpTweet()
-    {
+    private Task MoveUpTweet() => MoveUpOrDownTweetAsync(direction: -1);
 
-        throw new NotImplementedException();
+    private Task MoveDownTweet() => MoveUpOrDownTweetAsync(direction: +1);
+
+    private class ReservedTweetComparere : IComparer<ReservedTweet>
+    {
+        private int Direction;
+        public ReservedTweetComparere(int direction) { Direction = direction; }
+        public int Compare(ReservedTweet a, ReservedTweet b) => -1 * Direction * (a.Order - b.Order);
     }
 
-    private void MoveDownTweet()
+    private async Task MoveUpOrDownTweetAsync(int direction)
     {
-
-        throw new NotImplementedException();
+        var limit = (this.ReservedTweets.Count - 1) * ((1 + direction) / 2);
+        var comparer = new ReservedTweetComparere(direction);
+        var selectedTweets = this.ReservedTweets
+            .Where(t => t.Selected)
+            .OrderBy(t => t, comparer)
+            .ToList();
+        foreach (var tweet in selectedTweets)
+        {
+            var index = this.ReservedTweets.IndexOf(tweet);
+            if (index == limit) break;
+            this.ReservedTweets.RemoveAt(index);
+            this.ReservedTweets.Insert(index + direction, tweet);
+        }
+        for (var n = 0; n < this.ReservedTweets.Count; n++)
+        {
+            var tweet = this.ReservedTweets[n];
+            if (tweet.Order != n + 1)
+            {
+                tweet.Order = n + 1;
+                await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            }
+        }
     }
 
     private void EditTweet()
     {
-
-        throw new NotImplementedException();
+        var editTarget = this.ReservedTweets.FirstOrDefault(t => t.Selected);
+        if (editTarget != null)
+        {
+            this.NavigationManager.NavigateTo($"/edit/{editTarget.Id}");
+        }
     }
 
-    private void DeleteTweet()
+    private async Task DeleteTweet()
     {
-
-        throw new NotImplementedException();
+        foreach (var tweet in this.ReservedTweets.Where(t => t.Selected))
+        {
+            await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
+        }
+        this.ReservedTweets = this.ReservedTweets.Where(t => !t.Selected).ToList();
     }
 
-    private void ReloadTweet()
+    private async Task ReloadTweet()
     {
-
-        throw new NotImplementedException();
+        foreach (var tweet in this.ReservedTweets.Where(t => t.Selected && t.IsTweeted))
+        {
+            tweet.IsTweeted = false;
+            await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+        }
     }
 }
 
