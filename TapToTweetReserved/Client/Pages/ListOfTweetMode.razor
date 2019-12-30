@@ -1,5 +1,5 @@
-﻿@inject HttpClient HttpClient
-@attribute [Authorize]
+﻿@attribute [Authorize]
+@inject HttpClient HttpClient
 
 <ul class="reserved-tweets">
     @foreach (var tweet in this.ReservedTweets)
@@ -14,10 +14,15 @@
 
 @code
 {
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
     private ReservedTweet[] ReservedTweets = new ReservedTweet[0];
 
     protected override async Task OnInitializedAsync()
     {
+        this.UIContext.SetMenuItem(new MenuItem { Caption = "Edit...", Url = "/list-of-editmode" });
+
         this.ReservedTweets = await this.HttpClient.GetJsonAsync<ReservedTweet[]>("/api/reservedtweets");
     }
 }

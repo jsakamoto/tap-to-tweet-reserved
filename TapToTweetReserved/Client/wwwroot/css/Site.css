@@ -101,7 +101,7 @@ h1 {
   padding: 1em;
   background-color: #0674c3; }
 
-body.editor-index .guide {
+.editor-index .guide {
   position: fixed;
   bottom: 80px;
   background-position: left bottom; }
