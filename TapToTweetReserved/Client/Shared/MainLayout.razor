@@ -1,0 +1,16 @@
+﻿@inherits LayoutComponentBase
+<header>
+    <h1>Tap To Tweet Reserved</h1>
+    @*@if (this.User.Identity.IsAuthenticated)
+        {
+            <a href="#" class="menu">menu</a>
+            <nav>
+                @RenderSection("nav", required: false)
+                <div>@User.Identity.Name | @Html.ActionLink("Sign Out", "SignOut", "Account", null, new { id = "sign-out" })</div>
+            </nav>
+        }*@
+</header>
+
+<div class="body-wrapper">
+    @Body
+</div>

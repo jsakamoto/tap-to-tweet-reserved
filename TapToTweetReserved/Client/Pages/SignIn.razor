@@ -1,0 +1,43 @@
+﻿<div class="summary">
+    This application is designed for tweeting during a presentation by speaker oneself.
+</div>
+
+<div class="quick-tour">
+    <ol>
+        <li>Sign in with Twitter.</li>
+        <li>Reserve messages.</li>
+        <li>Tap to tweet the message that was reserved <strong>during your presentation!</strong></li>
+    </ol>
+</div>
+
+<div id="sign-in">
+    <a href="auth/signin" target="_top">Sign In with Twitter</a>
+</div>
+
+<div class="social-buttons">
+
+    <span id="powered-by-azure" class="powered-by">
+        <img src="https://portal.azure.com/favicon.ico" />
+        Hosted by <a href="https://azure.microsoft.com/services/app-service/web/" target="_blank">Microsoft Azure Web Apps</a>
+    </span>
+    |
+    <span id="powered-by-aspnet" class="powered-by">
+        <img src="https://dotnet.microsoft.com/favicon.ico" width="16" height="16" />
+        Powered by <a href="http://asp.net/" target="_blank">ASP.NET Core</a>.
+    </span>
+    |
+    <span id="sourcecode-by-github" class="powered-by">
+        <img src="https://github.com/favicon.ico" width="16" height="16" />
+        Source code is <a href="https://github.com/jsakamoto/tap-to-tweet-reserved" target="_blank">GitHub</a>
+    </span>
+    @*|
+        @TwitterGoodies.TweetButton(
+            dataCount: TwitterGoodies.DataCount.Horizontal,
+            tweetText: string.Format("Tweet during your session! - {0} / ", ViewBag.Title))
+        |
+        @Facebook.GetInitializationScripts()
+        @Facebook.LikeButton(href: "http://taptotweetreserved.azurewebsites.net",
+            showFaces: false,
+            colorScheme: "dark",
+            buttonLayout: "button_count")*@
+</div>
