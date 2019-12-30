@@ -1,0 +1,57 @@
+﻿@inject NavigationManager NavigationManager
+
+<form>
+
+    <fieldset>
+        <div>
+            <textarea autofocus
+                      required
+                      @bind="TextToTweet" @bind:event="oninput"></textarea>
+        </div>
+
+        <div id="char-counter" class="@GetCharCounterCssClass()">
+            @CharCount
+        </div>
+    </fieldset>
+
+    <footer class="col2">
+        <button type="button" @onclick="OnClickOK" disabled="@IsInvalidForm()">OK</button>
+        <button type="button" class="cancel" @onclick="GoBack">Cancel</button>
+    </footer>
+
+</form>
+
+@code
+{
+    private int CharCount => this.TextToTweet.Length;
+
+    private const int MaxTweetChar = 140;
+
+    [Parameter]
+    public string TextToTweet { get; set; } = "";
+
+    [Parameter]
+    public Func<string, Task> OnOK { get; set; }
+
+    private bool IsOverflowTweetChars => this.CharCount > MaxTweetChar;
+
+    public string GetCharCounterCssClass()
+    {
+        return this.IsOverflowTweetChars ? "overflow" : "";
+    }
+
+    private bool IsInvalidForm()
+    {
+        return string.IsNullOrEmpty(this.TextToTweet) || this.IsOverflowTweetChars;
+    }
+
+    private async Task OnClickOK()
+    {
+        await this.OnOK?.Invoke(this.TextToTweet);
+    }
+
+    private void GoBack()
+    {
+        this.NavigationManager.NavigateTo("/list-of-editmode");
+    }
+}

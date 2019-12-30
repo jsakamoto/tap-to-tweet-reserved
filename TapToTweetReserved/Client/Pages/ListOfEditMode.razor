@@ -4,7 +4,7 @@
 
 @if (this.ReservedTweets != null)
 {
-    <div class="edit-mode">
+    <div class="editor-index">
 
         @if (!this.ReservedTweets.Any())
         {
@@ -27,7 +27,7 @@
         </ul>
 
         <footer class="@GetFooterCssClass()">
-            <a @onclick="AddNewTweet">Add</a>
+            <a href="/addnew">Add</a>
             <a @onclick="MoveUpTweet" class="selected-only">Up</a>
             <a @onclick="MoveDownTweet" class="selected-only">Down</a>
             <a @onclick="EditTweet" class="selected-only">Edit</a>
@@ -71,12 +71,6 @@
         if (!this.ReservedTweets.Any(t => t.Selected)) cssClasses.Add("no-selected-any");
         if (!this.ReservedTweets.Where(t => t.IsTweeted).Any(t => t.Selected)) cssClasses.Add("no-selected-tweeted");
         return string.Join(' ', cssClasses);
-    }
-
-    private void AddNewTweet()
-    {
-
-        throw new NotImplementedException();
     }
 
     private void MoveUpTweet()

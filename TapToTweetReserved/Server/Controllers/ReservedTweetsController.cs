@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TapToTweetReserved.Server.Services;
 using TapToTweetReserved.Shared;
+using System.Linq;
 
 namespace TapToTweetReserved.Server.Controllers
 {
@@ -30,7 +31,7 @@ namespace TapToTweetReserved.Server.Controllers
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             var reservedTweets = await this.ReservedTweetsRepository.GetAllAsync(twitterUserId);
-            return reservedTweets;
+            return reservedTweets.OrderBy(t => t.Order).ToArray();
         }
 
         [HttpGet("/api/reservedtweets/{id}")]
