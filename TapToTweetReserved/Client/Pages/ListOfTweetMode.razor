@@ -1,0 +1,24 @@
+﻿@inject HttpClient HttpClient
+@attribute [Authorize]
+
+<ul class="reserved-tweets">
+    @foreach (var tweet in this.ReservedTweets)
+    {
+        <li>
+            <a>
+                @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
+            </a>
+        </li>
+    }
+</ul>
+
+@code
+{
+    private ReservedTweet[] ReservedTweets = new ReservedTweet[0];
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.ReservedTweets = await this.HttpClient.GetJsonAsync<ReservedTweet[]>("/api/reservedtweets");
+    }
+}
+
