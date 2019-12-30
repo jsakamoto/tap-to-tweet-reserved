@@ -6,6 +6,11 @@ namespace TapToTweetReserved.Server
 {
     public static class TwitterClaimsExtension
     {
+        public static string GetTwitterUserId(this IEnumerable<Claim> claims)
+        {
+            return claims.First(c => c.Type == TwitterClaimTypes.UserId).Value;
+        }
+
         public static string GetTwitterAccessToken(this IEnumerable<Claim> claims)
         {
             return claims.First(c => c.Type == TwitterClaimTypes.AccessToken).Value;
