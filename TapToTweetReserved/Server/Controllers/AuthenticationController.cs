@@ -30,8 +30,7 @@ namespace TapToTweetReserved.Server.Controllers
         {
             return SignOut(
                 new AuthenticationProperties { RedirectUri = "/" },
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                TwitterDefaults.AuthenticationScheme);
+                CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         [HttpGet("/api/auth/currentuser")]

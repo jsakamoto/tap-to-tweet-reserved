@@ -1,16 +1,62 @@
-﻿@inherits LayoutComponentBase
-<header>
-    <h1>Tap To Tweet Reserved</h1>
-    @*@if (this.User.Identity.IsAuthenticated)
-        {
-            <a href="#" class="menu">menu</a>
-            <nav>
-                @RenderSection("nav", required: false)
-                <div>@User.Identity.Name | @Html.ActionLink("Sign Out", "SignOut", "Account", null, new { id = "sign-out" })</div>
-            </nav>
-        }*@
-</header>
+﻿@using  System.Security.Principal
+@inherits LayoutComponentBase
+@inject HttpClient HttpClient
+@inject AuthenticationStateProvider AuthStateProvider
 
-<div class="body-wrapper">
-    @Body
+<div @onclick="CloseMenu">
+
+    <header class="@HeaderCssClass">
+        <h1>Tap To Tweet Reserved</h1>
+        @if (this.User?.IsAuthenticated == true)
+        {
+            <a class="menu" @onclick="ToggleMenuExapnding" @onclick:stopPropagation="true">menu</a>
+            <nav>
+                @*@RenderSection("nav", required: false)*@
+                <div>@User.Name | <a id="sign-out" @onclick="OnClickSignOut">Sign Out</a> @*@Html.ActionLink("Sign Out", "SignOut", "Account", null, new { id = "sign-out" })*@</div>
+            </nav>
+        }
+    </header>
+
+    <div class="body-wrapper">
+        @Body
+    </div>
 </div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private IIdentity User;
+
+    private bool MenuIsExpanded;
+
+    private string HeaderCssClass => MenuIsExpanded ? "expand-menu" : "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshAuthenticationStateAsync();
+    }
+
+    private async Task RefreshAuthenticationStateAsync()
+    {
+        var authenticationState = await this.authenticationStateTask;
+        this.User = authenticationState?.User?.Identity;
+    }
+
+    private void ToggleMenuExapnding()
+    {
+        this.MenuIsExpanded = !this.MenuIsExpanded;
+    }
+
+    private void CloseMenu()
+    {
+        this.MenuIsExpanded = false;
+    }
+
+    private async Task OnClickSignOut()
+    {
+        await this.HttpClient.PostJsonAsync("/Auth/SignOut", null);
+        await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
+        await RefreshAuthenticationStateAsync();
+    }
+}
