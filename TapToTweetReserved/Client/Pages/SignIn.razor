@@ -23,21 +23,15 @@
     |
     <span id="powered-by-aspnet" class="powered-by">
         <img src="https://dotnet.microsoft.com/favicon.ico" width="16" height="16" />
-        Powered by <a href="http://asp.net/" target="_blank">ASP.NET Core</a>.
+        Powered by <a href="https://asp.net/" target="_blank">ASP.NET Core</a> and
+        <img src="/css/images/blazor.png" style="width:20px; height:20px;" />
+        Powered by <a href="https://blazor.net/" target="_blank">Blazor WebAssembly App</a>.
     </span>
     |
     <span id="sourcecode-by-github" class="powered-by">
         <img src="https://github.com/favicon.ico" width="16" height="16" />
         Source code is <a href="https://github.com/jsakamoto/tap-to-tweet-reserved" target="_blank">GitHub</a>
     </span>
-    @*|
-        @TwitterGoodies.TweetButton(
-            dataCount: TwitterGoodies.DataCount.Horizontal,
-            tweetText: string.Format("Tweet during your session! - {0} / ", ViewBag.Title))
-        |
-        @Facebook.GetInitializationScripts()
-        @Facebook.LikeButton(href: "http://taptotweetreserved.azurewebsites.net",
-            showFaces: false,
-            colorScheme: "dark",
-            buttonLayout: "button_count")*@
+    |
+    <TwitterShareButton Text="Tweet during your session! - Tap To Tweet Reserved" />
 </div>
