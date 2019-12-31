@@ -24,7 +24,7 @@ body {
     font-family: 'Century Gothic', futura, 'URW Gothic L', Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #555;
+    background-color: #222;
     position: relative;
     height: 100%;
 }
@@ -37,17 +37,18 @@ header {
     display: block;
     background-color: #222;
     color: #aaa;
-    overflow: hidden;
     border-bottom: solid 1px #333;
-    -moz-transition-duration: 0.2s;
-    -o-transition-duration: 0.2s;
-    -webkit-transition-duration: 0.2s;
-    transition-duration: 0.2s;
-    -moz-transition-timing-function: ease-out;
-    -o-transition-timing-function: ease-out;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
     z-index: 10;
+
+    .menu-holder {
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        max-width: 800px;
+    }
 
     .menu {
         display: inline-block;
@@ -59,15 +60,21 @@ header {
         overflow: hidden;
     }
 
-    &.expand-menu {
-        height: 9rem;
-    }
-
     nav {
-        margin-top: 0.7em;
+        position: absolute;
+        /* border: solid 1px red; */
+        /* z-index: 10; */
+        background-color: #222;
+        top: 48px;
+        margin: 0;
+        right: 0;
+        box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.4);
+        height: 0;
+        overflow: hidden;
 
         div {
             text-align: right;
+            margin-left: 1em;
             margin-right: 1em;
 
             a {
@@ -78,6 +85,10 @@ header {
                 text-decoration: none;
             }
         }
+    }
+
+    &.expand-menu nav {
+        height: auto;
     }
 }
 
@@ -93,7 +104,11 @@ h1 {
     position: absolute;
     top: 3rem;
     bottom: 0;
-    width: 100%;
+    max-width: 800px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: #222;
 }
 
 /* guide for beginners ----------------------------------------------------*/
