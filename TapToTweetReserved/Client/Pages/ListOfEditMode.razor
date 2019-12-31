@@ -27,13 +27,31 @@
             }
         </ul>
 
-        <footer class="@GetFooterCssClass()">
-            <a href="/addnew">Add</a>
-            <a @onclick="MoveUpTweet" class="selected-only">Up</a>
-            <a @onclick="MoveDownTweet" class="selected-only">Down</a>
-            <a @onclick="EditTweet" class="selected-only">Edit</a>
-            <a @onclick="DeleteTweet" class="selected-only">Delete</a>
-            <a @onclick="ReloadTweet" class="selected-tweeted-only">Reload</a>
+        <footer class="col6 @GetFooterCssClass()">
+            <a href="/addnew">
+                <span class="material-icons">add</span>
+                <span class="help-text">Add</span>
+            </a>
+            <a @onclick="MoveUpTweet" class="selected-only">
+                <span class="material-icons">arrow_upward</span>
+                <span class="help-text">Up</span>
+            </a>
+            <a @onclick="MoveDownTweet" class="selected-only">
+                <span class="material-icons">arrow_downward</span>
+                <span class="help-text">Down</span>
+            </a>
+            <a @onclick="EditTweet" class="selected-only">
+                <span class="material-icons">edit</span>
+                <span class="help-text">Edit</span>
+            </a>
+            <a @onclick="DeleteTweet" class="selected-only">
+                <span class="material-icons">delete</span>
+                <span class="help-text">Delete</span>
+            </a>
+            <a @onclick="ReloadTweet" class="selected-tweeted-only">
+                <span class="material-icons">replay</span>
+                <span class="help-text">Reload</span>
+            </a>
         </footer>
 
     </div>

@@ -9,7 +9,11 @@ html {
   height: 100%; }
 
 a {
-  color: inherit; }
+  color: inherit;
+  cursor: default;
+  transition: color linear 0.2s; }
+  a:hover {
+    color: #fff; }
 
 body {
   font-family: 'Century Gothic', futura, 'URW Gothic L', Verdana, sans-serif;
@@ -45,10 +49,7 @@ header {
     right: 0.5em;
     width: 32px;
     height: 32px;
-    overflow: hidden;
-    color: transparent;
-    background-image: url(images/menu.png);
-    background-position: center center; }
+    overflow: hidden; }
   header.expand-menu {
     height: 9rem; }
   header nav {
@@ -173,7 +174,7 @@ footer {
     display: inline-block;
     background-color: transparent;
     border: none;
-    cursor: pointer; }
+    transition: color linear 0.2s; }
     footer a:hover,
     footer input[type=submit]:hover,
     footer button:hover {
@@ -187,6 +188,18 @@ footer {
   footer.no-selected-tweeted a.selected-tweeted-only {
     color: #444;
     cursor: default; }
+
+footer.col6 {
+  display: flex;
+  justify-content: space-between; }
+  footer.col6 a {
+    padding-top: 10px;
+    width: 100%;
+    text-align: center; }
+    footer.col6 a .material-icons {
+      display: block; }
+    footer.col6 a .help-text {
+      display: block; }
 
 footer.col2 {
   white-space: nowrap;
@@ -290,3 +303,25 @@ textarea {
     opacity: 1.0; }
   .tweet-dialog.visible .action button.hidden {
     visibility: hidden; }
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga'; }

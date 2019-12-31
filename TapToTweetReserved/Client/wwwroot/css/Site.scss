@@ -12,8 +12,13 @@ html {
 
 a {
     color: inherit;
-}
+    cursor: default;
+    transition: color linear 0.2s;
 
+    &:hover {
+        color: #fff;
+    }
+}
 
 body {
     font-family: 'Century Gothic', futura, 'URW Gothic L', Verdana, sans-serif;
@@ -52,9 +57,6 @@ header {
         width: 32px;
         height: 32px;
         overflow: hidden;
-        color: transparent;
-        background-image: url(images/menu.png);
-        background-position: center center;
     }
 
     &.expand-menu {
@@ -208,7 +210,7 @@ footer {
         display: inline-block;
         background-color: transparent;
         border: none;
-        cursor: pointer;
+        transition: color linear 0.2s;
 
         &:hover {
             color: #fff;
@@ -224,6 +226,25 @@ footer {
     &.no-selected-tweeted a.selected-tweeted-only {
         color: #444;
         cursor: default;
+    }
+}
+
+footer.col6 {
+    display: flex;
+    justify-content: space-between;
+
+    a {
+        padding-top: 10px;
+        width: 100%;
+        text-align: center;
+
+        .material-icons {
+            display: block;
+        }
+
+        .help-text {
+            display: block;
+        }
     }
 }
 
@@ -285,3 +306,4 @@ textarea {
 }
 
 @import 'TweetDialog.scss';
+@import 'material-icons.scss';

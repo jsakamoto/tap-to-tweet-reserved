@@ -7,10 +7,12 @@
 <div @onclick="CloseMenu">
 
     <header class="@HeaderCssClass">
+
         <h1>Tap To Tweet Reserved</h1>
+
         @if (this.User?.IsAuthenticated == true)
         {
-            <a class="menu" @onclick="ToggleMenuExapnding" @onclick:stopPropagation="true">menu</a>
+            <a class="menu material-icons" @onclick="ToggleMenuExapnding" @onclick:stopPropagation="true">menu</a>
             <nav>
                 @foreach (var menuItem in this.UIContext.MenuItems)
                 {
