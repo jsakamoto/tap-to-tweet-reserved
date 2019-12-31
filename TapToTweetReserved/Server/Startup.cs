@@ -1,5 +1,11 @@
+using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,11 +13,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using TapToTweetReserved.Server.Services;
 using TapToTweetReserved.Server.Services.AzureTable;
 using TapToTweetReserved.Server.Services.LocalFile;
@@ -43,6 +44,7 @@ namespace TapToTweetReserved.Server
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddRazorPages();
             services.AddMvc(options =>
             {
                 options.Filters.Add(new ResponseCacheAttribute { NoStore = true });
@@ -54,6 +56,7 @@ namespace TapToTweetReserved.Server
                     new[] { "application/octet-stream" });
             });
 
+            services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
             ConfigureAuthentication(services, twitterConfig);
 
             var repositoryType = this.Configuration.GetValue("ReservedTweetRepository:Type", "AzureTable");
@@ -72,11 +75,11 @@ namespace TapToTweetReserved.Server
         private static void ConfigureAuthentication(IServiceCollection services, TwitterConfiguration twitterConfig)
         {
             services.AddAuthentication(options =>
-            {
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
+                {
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
                 .AddTwitter(options =>
                 {
                     options.ConsumerKey = twitterConfig.ConsumerAPIKey;
@@ -131,7 +134,7 @@ namespace TapToTweetReserved.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

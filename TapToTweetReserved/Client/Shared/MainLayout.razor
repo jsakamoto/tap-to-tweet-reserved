@@ -1,7 +1,7 @@
-﻿@using  System.Security.Principal
+﻿@using Microsoft.Extensions.DependencyInjection
+@using System.Security.Principal
 @inherits LayoutComponentBase
-@inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
+@inject IServiceProvider Services
 @inject AuthenticationStateProvider AuthStateProvider
 
 <div @onclick="CloseMenu">
@@ -32,9 +32,7 @@
 
 @code {
     [CascadingParameter]
-    private Task<AuthenticationState>
-    authenticationStateTask
-    { get; set; }
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
     private IIdentity User;
 
@@ -44,16 +42,13 @@
 
     private UIContext UIContext = new UIContext();
 
+    private HttpClient HttpClient;
+
     protected override async Task OnInitializedAsync()
     {
-        this.NavigationManager.LocationChanged += NavigationManager_LocationChanged;
+        this.HttpClient = this.Services.GetService<HttpClient>();
         this.UIContext.StateHasChanged += UIContext_StateHasChanged;
         await RefreshAuthenticationStateAsync();
-    }
-
-    private void NavigationManager_LocationChanged(object sender, EventArgs args)
-    {
-        //this.UIContext.Reset();
     }
 
     private void UIContext_StateHasChanged(object sender, EventArgs args)
@@ -79,8 +74,11 @@
 
     private async Task OnClickSignOut()
     {
-        await this.HttpClient.PostJsonAsync("/Auth/SignOut", null);
-        await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
-        await RefreshAuthenticationStateAsync();
+        if (this.HttpClient != null)
+        {
+            await this.HttpClient.PostJsonAsync("/Auth/SignOut", null);
+            await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
+            await RefreshAuthenticationStateAsync();
+        }
     }
 }
