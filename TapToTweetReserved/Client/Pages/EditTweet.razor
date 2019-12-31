@@ -7,7 +7,11 @@
     <EditTweetForm TextToTweet="@EditTarget.TextToTweet" OnOK="OnOK"></EditTweetForm>
 }
 
-@code {
+@code
+{
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
     [Parameter]
     public Guid Id { get; set; }
 
@@ -15,6 +19,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
+
         this.EditTarget = await this.HttpClient.GetJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");
     }
 

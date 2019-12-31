@@ -4,7 +4,15 @@
 
 <EditTweetForm OnOK="OnOK"></EditTweetForm>
 
-@code {
+@code
+{
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
+    }
 
     private async Task OnOK(string textToTweet)
     {
