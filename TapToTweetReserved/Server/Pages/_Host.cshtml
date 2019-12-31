@@ -2,12 +2,23 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <!DOCTYPE html>
 <html>
-
+@{
+    var appUrl = new Uri($"{Request.Scheme}://{Request.Host}").ToString();
+}
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Tap To Tweet Reserved</title>
     <base href="/" />
+
+    <meta name="twitter:card" content="summary">
+    <meta property="og:title" content="Tap to tweet reserved" />
+    <meta property="og:description" content="Let's tweet durig your presentation by using this web app on your smart phone!" />
+    <meta property="og:url" content="@appUrl" />
+    <meta property="og:image" content="@(appUrl)css/images/ogpimage.png" />
+    <meta name="keywords" content="twitter,tweet,conference,session,presentation" />
+    <meta name="description" content="Let's tweet durig your presentation by using this web app on your smart phone!" />
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" sizes="120x120" href="css/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="css/favicon/favicon-32x32.png" sizes="32x32">
