@@ -1,4 +1,6 @@
-﻿@inject NavigationManager NavigationManager
+﻿@using System.Globalization
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
 
 <form>
 
@@ -10,7 +12,7 @@
         </div>
 
         <div id="char-counter" class="@GetCharCounterCssClass()">
-            @CharCount
+            @(MaxTweetChar - CharCount)
         </div>
     </fieldset>
 
@@ -23,9 +25,7 @@
 
 @code
 {
-    private int CharCount => this.TextToTweet.Length;
-
-    private const int MaxTweetChar = 140;
+    private const int MaxTweetChar = 280;
 
     [Parameter]
     public string TextToTweet { get; set; } = "";
@@ -34,6 +34,32 @@
     public Func<string, Task> OnOK { get; set; }
 
     private bool IsOverflowTweetChars => this.CharCount > MaxTweetChar;
+
+    private IJSInProcessRuntime JSInProcess;
+
+    private int CharCount
+    {
+        get
+        {
+            // Regex class of .NET running on mono.wasm is very slow,
+            // therefore, use the power of the JavaScript via JSInterop.
+            var translated = this.JSInProcess.Invoke<string>("sanitizeUrl", TextToTweet);
+
+            var n = 0;
+            var enumerator = StringInfo.GetTextElementEnumerator(translated);
+            while (enumerator.MoveNext())
+            {
+                var text = enumerator.GetTextElement();
+                n += (text.Length == 1 && ((int)text[0]) < 256) ? 1 : 2;
+            }
+            return n;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        this.JSInProcess = this.JS as IJSInProcessRuntime;
+    }
 
     public string GetCharCounterCssClass()
     {
