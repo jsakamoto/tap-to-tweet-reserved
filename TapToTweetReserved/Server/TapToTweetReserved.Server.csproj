@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreTweet" Version="1.0.0.483" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.1.0-preview4.19579.2" />
+    <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\TapToTweetReserved.Client.csproj" />
+    <ProjectReference Include="..\Shared\TapToTweetReserved.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="appSettings.Development.json" />
+    <Content Remove="App_Data\ReservedTweets.json" />
+    <None Include="appSettings.Development.json" />
+    <None Include="App_Data\ReservedTweets.json" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+﻿@page "/addnew"
+@attribute [Authorize]
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+
+<EditTweetForm OnOK="OnOK"></EditTweetForm>
+
+@code
+{
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
+    }
+
+    private async Task OnOK(string textToTweet)
+    {
+        await this.HttpClient.PostJsonAsync("/api/reservedtweets", new ReservedTweet { TextToTweet = textToTweet });
+        this.NavigationManager.NavigateTo("/list-of-editmode");
+    }
+}

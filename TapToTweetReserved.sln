@@ -1,21 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{1D41D545-87BC-4012-9726-0EB94AAB542B}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapToTweetReserved.Server", "TapToTweetReserved\Server\TapToTweetReserved.Server.csproj", "{B5309D6A-D2F3-4FD3-8DC0-B7195C98BCA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapToTweetReserved", "TapToTweetReserved\TapToTweetReserved.csproj", "{6660625C-5238-4304-9084-7F33C33BE906}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapToTweetReserved.Client", "TapToTweetReserved\Client\TapToTweetReserved.Client.csproj", "{FBF69B9D-A798-48BD-B100-8FF17CD38602}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6577EBA-EDF3-4A7B-80C1-CFAE3DF69EA2}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TapToTweetReserved.Shared", "TapToTweetReserved\Shared\TapToTweetReserved.Shared.csproj", "{0B0B2DA7-5647-4C6F-941D-913E2AF0EBC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6660625C-5238-4304-9084-7F33C33BE906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6660625C-5238-4304-9084-7F33C33BE906}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6660625C-5238-4304-9084-7F33C33BE906}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6660625C-5238-4304-9084-7F33C33BE906}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5309D6A-D2F3-4FD3-8DC0-B7195C98BCA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5309D6A-D2F3-4FD3-8DC0-B7195C98BCA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5309D6A-D2F3-4FD3-8DC0-B7195C98BCA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5309D6A-D2F3-4FD3-8DC0-B7195C98BCA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBF69B9D-A798-48BD-B100-8FF17CD38602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBF69B9D-A798-48BD-B100-8FF17CD38602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBF69B9D-A798-48BD-B100-8FF17CD38602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBF69B9D-A798-48BD-B100-8FF17CD38602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B0B2DA7-5647-4C6F-941D-913E2AF0EBC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0B2DA7-5647-4C6F-941D-913E2AF0EBC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0B2DA7-5647-4C6F-941D-913E2AF0EBC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0B2DA7-5647-4C6F-941D-913E2AF0EBC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B899F6C-754B-4C36-BD43-3BE64A21BC58}
 	EndGlobalSection
 EndGlobal

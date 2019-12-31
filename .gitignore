@@ -1,10 +1,9 @@
 *.user
 *.suo
 .vs/
-/packages
-bin
-obj
-/TweetMagazine/App_Data/TweetMagazineDb.mdf
-/TweetMagazine/App_Data/TweetMagazineDb_log.ldf
-custom.appSettings.config
-App_Data
+.config/
+bin/
+obj/
+App_Data/
+appSettings.Development.json
+PublishProfiles/

@@ -1,0 +1,138 @@
+﻿@implements IDisposable
+@inject HttpClient HttpClient
+
+<div class="tweet-dialog @(IsOpened ? "visible" : "")">
+    <div class="screen-mask"></div>
+
+    <div class="dialog">
+        <div class="caption">
+            @GetDialogCaption()
+        </div>
+        <div class="body">
+            @(new MarkupString(this.Tweet?.TextToTweet.Replace("\n", "<br />")))
+        </div>
+        <div class="action">
+            <button type="button" @onclick="Close" class="@(GetButtonCaption() == "" ? "hidden" : "")">
+                @GetButtonCaption()
+            </button>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    private ReservedTweet Tweet;
+
+    private TaskCompletionSource<bool> CurrentTaskSrc;
+
+    private bool IsOpened = false;
+
+    private System.Timers.Timer Timer = new System.Timers.Timer { Interval = 1000, AutoReset = true };
+
+    private enum ProgressStates
+    {
+        Step0_Error,
+        Step1_Before3Sec,
+        Step2_Before2Sec,
+        Step3_Before1Sec,
+        Step4_Posting,
+        Step5_Complete
+    }
+
+    private ProgressStates ProgressState;
+
+    public TweetDialog()
+    {
+        this.Timer.Elapsed += Timer_Elapsed;
+    }
+
+    public Task<bool> OpenAndPost(ReservedTweet tweet)
+    {
+        this.Tweet = tweet;
+
+        this.CurrentTaskSrc = new System.Threading.Tasks.TaskCompletionSource<bool>();
+
+        ProgressState = ProgressStates.Step1_Before3Sec;
+        this.IsOpened = true;
+        this.Timer.Start();
+
+        this.StateHasChanged();
+
+        return this.CurrentTaskSrc.Task;
+    }
+
+    private string GetDialogCaption()
+    {
+        switch (this.ProgressState)
+        {
+            case ProgressStates.Step0_Error: return "Oops, something wrong...";
+            case ProgressStates.Step1_Before3Sec: return "Tweet after 3sec....";
+            case ProgressStates.Step2_Before2Sec: return "Tweet after 2sec...";
+            case ProgressStates.Step3_Before1Sec: return "Tweet after 1sec..";
+            case ProgressStates.Step4_Posting: return "Posting the tweet...";
+            case ProgressStates.Step5_Complete: return "Tweeted!";
+            default: return "";
+        }
+    }
+
+    private string GetButtonCaption()
+    {
+        switch (this.ProgressState)
+        {
+            case ProgressStates.Step0_Error:
+                return "CLOSE";
+            case ProgressStates.Step4_Posting:
+            case ProgressStates.Step5_Complete:
+                return "";
+            default:
+                return "CANCEL";
+        }
+    }
+
+    private async void Timer_Elapsed(object sender, EventArgs args)
+    {
+        if (this.ProgressState == ProgressStates.Step5_Complete)
+        {
+            this.Close();
+            return;
+        }
+
+        this.ProgressState++;
+        this.StateHasChanged();
+
+        if (this.ProgressState == ProgressStates.Step4_Posting)
+        {
+            Timer.Stop();
+            try
+            {
+                await this.HttpClient.PostJsonAsync($"/api/reservedtweets/{this.Tweet.Id}/tweet", null);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                this.ProgressState = ProgressStates.Step0_Error;
+                this.StateHasChanged();
+                return;
+            }
+
+            this.ProgressState = ProgressStates.Step5_Complete;
+            this.StateHasChanged();
+
+            Timer.Start();
+        }
+    }
+
+    private void Close()
+    {
+        this.Timer.Stop();
+        this.IsOpened = false;
+        this.CurrentTaskSrc.SetResult(this.ProgressState >= ProgressStates.Step4_Posting);
+        this.StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        this.Timer.Elapsed -= Timer_Elapsed;
+        this.Timer.Dispose();
+    }
+}

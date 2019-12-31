@@ -1,0 +1,160 @@
+﻿@page "/list-of-editmode"
+@attribute [Authorize]
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+@if (this.ReservedTweets != null)
+{
+    <div class="editor-index">
+
+        @if (!this.ReservedTweets.Any())
+        {
+            <div class="guide">
+                <div class="text">
+                    Enter "Add New" to reserve new message to tweet after.
+                </div>
+            </div>
+        }
+
+        <ul class="reserved-tweets">
+            @foreach (var tweet in this.ReservedTweets)
+            {
+                <li @key="tweet.Id">
+                    <a @onclick="@(() => SelectTweet(tweet))" class="@GetTweetCssClass(tweet)">
+                        @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <footer class="col6 @GetFooterCssClass()">
+            <a href="/addnew">
+                <span class="material-icons">add</span>
+                <span class="help-text">Add</span>
+            </a>
+            <a @onclick="MoveUpTweet" class="selected-only">
+                <span class="material-icons">arrow_upward</span>
+                <span class="help-text">Up</span>
+            </a>
+            <a @onclick="MoveDownTweet" class="selected-only">
+                <span class="material-icons">arrow_downward</span>
+                <span class="help-text">Down</span>
+            </a>
+            <a @onclick="EditTweet" class="selected-only">
+                <span class="material-icons">edit</span>
+                <span class="help-text">Edit</span>
+            </a>
+            <a @onclick="DeleteTweet" class="selected-only">
+                <span class="material-icons">delete</span>
+                <span class="help-text">Delete</span>
+            </a>
+            <a @onclick="ReloadTweet" class="selected-tweeted-only">
+                <span class="material-icons">replay</span>
+                <span class="help-text">Reload</span>
+            </a>
+        </footer>
+
+    </div>
+}
+
+@code
+{
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
+    private List<SelectableReservedTweet>
+    ReservedTweets = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.UIContext.SetMenuItem(new MenuItem { Caption = "Home", Url = "/" });
+
+        this.ReservedTweets = await this.HttpClient.GetJsonAsync<List<SelectableReservedTweet>>("/api/reservedtweets");
+    }
+
+    private void SelectTweet(SelectableReservedTweet tweet)
+    {
+        tweet.Selected = !tweet.Selected;
+    }
+
+    private string GetTweetCssClass(SelectableReservedTweet tweet)
+    {
+        var cssClasses = new List<string>();
+        if (tweet.Selected) cssClasses.Add("selected");
+        if (tweet.IsTweeted) cssClasses.Add("tweeted");
+        return string.Join(' ', cssClasses);
+    }
+
+    private string GetFooterCssClass()
+    {
+        var cssClasses = new List<string>();
+        if (!this.ReservedTweets.Any(t => t.Selected)) cssClasses.Add("no-selected-any");
+        if (!this.ReservedTweets.Where(t => t.IsTweeted).Any(t => t.Selected)) cssClasses.Add("no-selected-tweeted");
+        return string.Join(' ', cssClasses);
+    }
+
+    private Task MoveUpTweet() => MoveUpOrDownTweetAsync(direction: -1);
+
+    private Task MoveDownTweet() => MoveUpOrDownTweetAsync(direction: +1);
+
+    private class ReservedTweetComparere : IComparer<ReservedTweet>
+    {
+        private int Direction;
+        public ReservedTweetComparere(int direction) { Direction = direction; }
+        public int Compare(ReservedTweet a, ReservedTweet b) => -1 * Direction * (a.Order - b.Order);
+    }
+
+    private async Task MoveUpOrDownTweetAsync(int direction)
+    {
+        var limit = (this.ReservedTweets.Count - 1) * ((1 + direction) / 2);
+        var comparer = new ReservedTweetComparere(direction);
+        var selectedTweets = this.ReservedTweets
+            .Where(t => t.Selected)
+            .OrderBy(t => t, comparer)
+            .ToList();
+        foreach (var tweet in selectedTweets)
+        {
+            var index = this.ReservedTweets.IndexOf(tweet);
+            if (index == limit) break;
+            this.ReservedTweets.RemoveAt(index);
+            this.ReservedTweets.Insert(index + direction, tweet);
+        }
+        for (var n = 0; n < this.ReservedTweets.Count; n++)
+        {
+            var tweet = this.ReservedTweets[n];
+            if (tweet.Order != n + 1)
+            {
+                tweet.Order = n + 1;
+                await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            }
+        }
+    }
+
+    private void EditTweet()
+    {
+        var editTarget = this.ReservedTweets.FirstOrDefault(t => t.Selected);
+        if (editTarget != null)
+        {
+            this.NavigationManager.NavigateTo($"/edit/{editTarget.Id}");
+        }
+    }
+
+    private async Task DeleteTweet()
+    {
+        foreach (var tweet in this.ReservedTweets.Where(t => t.Selected))
+        {
+            await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
+        }
+        this.ReservedTweets = this.ReservedTweets.Where(t => !t.Selected).ToList();
+    }
+
+    private async Task ReloadTweet()
+    {
+        foreach (var tweet in this.ReservedTweets.Where(t => t.Selected && t.IsTweeted))
+        {
+            tweet.IsTweeted = false;
+            await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+        }
+    }
+}
+

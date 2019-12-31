@@ -1,0 +1,87 @@
+﻿@using Microsoft.Extensions.DependencyInjection
+@using System.Security.Principal
+@inherits LayoutComponentBase
+@inject IServiceProvider Services
+@inject AuthenticationStateProvider AuthStateProvider
+
+<div @onclick="CloseMenu">
+
+    <header class="@HeaderCssClass">
+
+        <h1>Tap To Tweet Reserved</h1>
+
+        @if (this.User?.IsAuthenticated == true)
+        {
+        <div class="menu-holder">
+            <a class="menu material-icons" @onclick="ToggleMenuExapnding" @onclick:stopPropagation="true">menu</a>
+            <nav>
+                @foreach (var menuItem in this.UIContext.MenuItems)
+                {
+                <div><a href="@menuItem.Url">@menuItem.Caption</a></div>
+                }
+                <div>@User.Name | <a id="sign-out" @onclick="OnClickSignOut">Sign Out</a></div>
+            </nav>
+        </div>
+        }
+    </header>
+
+    <div class="body-wrapper">
+        <CascadingValue Value="UIContext">
+            @Body
+        </CascadingValue>
+    </div>
+
+</div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private IIdentity User;
+
+    private bool MenuIsExpanded;
+
+    private string HeaderCssClass => MenuIsExpanded ? "expand-menu" : "";
+
+    private UIContext UIContext = new UIContext();
+
+    private HttpClient HttpClient;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.HttpClient = this.Services.GetService<HttpClient>();
+        this.UIContext.StateHasChanged += UIContext_StateHasChanged;
+        await RefreshAuthenticationStateAsync();
+    }
+
+    private void UIContext_StateHasChanged(object sender, EventArgs args)
+    {
+        this.StateHasChanged();
+    }
+
+    private async Task RefreshAuthenticationStateAsync()
+    {
+        var authenticationState = await this.authenticationStateTask;
+        this.User = authenticationState?.User?.Identity;
+    }
+
+    private void ToggleMenuExapnding()
+    {
+        this.MenuIsExpanded = !this.MenuIsExpanded;
+    }
+
+    private void CloseMenu()
+    {
+        this.MenuIsExpanded = false;
+    }
+
+    private async Task OnClickSignOut()
+    {
+        if (this.HttpClient != null)
+        {
+            await this.HttpClient.PostJsonAsync("/Auth/SignOut", null);
+            await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
+            await RefreshAuthenticationStateAsync();
+        }
+    }
+}
