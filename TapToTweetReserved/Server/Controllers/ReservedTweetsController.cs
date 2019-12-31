@@ -11,10 +11,15 @@ namespace TapToTweetReserved.Server.Controllers
     [Authorize]
     public class ReservedTweetsController : Controller
     {
+        private TwitterConfiguration TwitterConfiguration { get; }
+
         private IReservedTweetsRepository ReservedTweetsRepository { get; }
 
-        public ReservedTweetsController(IReservedTweetsRepository reservedTweetsRepository)
+        public ReservedTweetsController(
+            TwitterConfiguration twitterConfiguration,
+            IReservedTweetsRepository reservedTweetsRepository)
         {
+            TwitterConfiguration = twitterConfiguration;
             ReservedTweetsRepository = reservedTweetsRepository;
         }
 
@@ -58,6 +63,23 @@ namespace TapToTweetReserved.Server.Controllers
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             await this.ReservedTweetsRepository.DeleteAsync(twitterUserId, id);
+            return Ok();
+        }
+
+        [HttpPost("/api/reservedtweets/{id}/tweet")]
+        public async Task<IActionResult> PostTweetAsync(Guid id)
+        {
+            var twitterUserId = this.User.Claims.GetTwitterUserId();
+            var reservedTweet = await this.ReservedTweetsRepository.GetAsync(twitterUserId, id);
+            if (reservedTweet == null) return NotFound();
+
+            var token = CoreTweet.Tokens.Create(
+                TwitterConfiguration.ConsumerAPIKey,
+                TwitterConfiguration.ConsumerSecret,
+                this.User.Claims.GetTwitterAccessToken(),
+                this.User.Claims.GetTwitterAccessTokenSecret());
+            await token.Statuses.UpdateAsync(reservedTweet.TextToTweet);
+
             return Ok();
         }
     }

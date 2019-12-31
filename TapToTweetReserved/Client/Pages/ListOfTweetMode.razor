@@ -1,11 +1,13 @@
 ﻿@attribute [Authorize]
 @inject HttpClient HttpClient
 
+<TweetDialog @ref="TweetDialog" />
+
 <ul class="reserved-tweets">
-    @foreach (var tweet in this.ReservedTweets)
+    @foreach (var tweet in this.ReservedTweets.Where(t => !t.IsTweeted))
     {
-        <li>
-            <a>
+        <li @key="tweet">
+            <a @onclick="@(() => OnClickTweet(tweet))">
                 @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
             </a>
         </li>
@@ -19,11 +21,25 @@
 
     private ReservedTweet[] ReservedTweets = new ReservedTweet[0];
 
+    private TweetDialog TweetDialog;
+
     protected override async Task OnInitializedAsync()
     {
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Edit...", Url = "/list-of-editmode" });
 
         this.ReservedTweets = await this.HttpClient.GetJsonAsync<ReservedTweet[]>("/api/reservedtweets");
+    }
+
+    private async Task OnClickTweet(ReservedTweet tweet)
+    {
+        Console.WriteLine("OnClickTweet");
+        var posted = await this.TweetDialog.OpenAndPost(tweet);
+        Console.WriteLine($"posted? => {posted}");
+        if (posted)
+        {
+            tweet.IsTweeted = true;
+            await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+        }
     }
 }
 
