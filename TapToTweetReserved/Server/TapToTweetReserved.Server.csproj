@@ -17,4 +17,11 @@
     <ProjectReference Include="..\Shared\TapToTweetReserved.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="appSettings.Development.json" />
+    <Content Remove="App_Data\ReservedTweets.json" />
+    <None Include="appSettings.Development.json" />
+    <None Include="App_Data\ReservedTweets.json" />
+  </ItemGroup>
+
 </Project>

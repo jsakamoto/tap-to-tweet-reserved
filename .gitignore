@@ -1,7 +1,9 @@
 *.user
 *.suo
 .vs/
+.config/
 bin/
 obj/
 App_Data/
 appSettings.Development.json
+PublishProfiles/
