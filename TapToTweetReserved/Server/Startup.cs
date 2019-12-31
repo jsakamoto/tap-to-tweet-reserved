@@ -13,6 +13,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using TapToTweetReserved.Server.Services;
+using TapToTweetReserved.Server.Services.AzureTable;
+using TapToTweetReserved.Server.Services.LocalFile;
 
 namespace TapToTweetReserved.Server
 {
@@ -32,6 +34,7 @@ namespace TapToTweetReserved.Server
             var twitterConfig = new TwitterConfiguration();
             Configuration.Bind("Authentication:Twitter", twitterConfig);
             services.AddSingleton(twitterConfig);
+            services.Configure<AzureStorageAccount>(Configuration.GetSection("AzureStorageAccount"));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -53,7 +56,17 @@ namespace TapToTweetReserved.Server
 
             ConfigureAuthentication(services, twitterConfig);
 
-            services.AddSingleton<IReservedTweetsRepository, LocalFileReservedTweetsRepository>();
+            var repositoryType = this.Configuration.GetValue("ReservedTweetRepository:Type", "AzureTable");
+            switch (repositoryType)
+            {
+                case "AzureTable":
+                    services.AddScoped<IReservedTweetsRepository, AzureTableReservedTweetsRepository>();
+                    break;
+                case "LocalFile":
+                    services.AddSingleton<IReservedTweetsRepository, LocalFileReservedTweetsRepository>();
+                    break;
+                default: throw new Exception($"Unknown repository type: \"{repositoryType}\"");
+            }
         }
 
         private static void ConfigureAuthentication(IServiceCollection services, TwitterConfiguration twitterConfig)

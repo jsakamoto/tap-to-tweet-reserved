@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using TapToTweetReserved.Shared;
 
-namespace TapToTweetReserved.Server.Services
+namespace TapToTweetReserved.Server.Services.LocalFile
 {
     public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
     {
