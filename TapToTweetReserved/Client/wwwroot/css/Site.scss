@@ -113,36 +113,58 @@ h1 {
 
 /* guide for beginners ----------------------------------------------------*/
 .guide {
-    margin: 8em 1em 1em 1em;
-    padding: 18px 0 18px 0;
+    margin: 10px;
+    padding: 0;
     color: #fff;
-    background-image: url(images/lead.png);
-    background-position: right 0;
+    position: absolute;
+    z-index: 1;
     opacity: 0;
-    position: relative;
+    transition: opacity linear 0.5s;
+    max-width: 80%;
+
+    .text {
+        padding: 1em;
+        background-color: #0674c3;
+    }
+
+    .tweets-loaded & {
+        opacity: 1;
+    }
+
+    .tweets-exists & {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    &:after {
+        content: ' ';
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        background-color: #0674c3;
+        z-index: -1;
+        transform: rotate(90deg) skewX(45deg);
+    }
 }
 
-.page-loaded .guide {
-    opacity: 1;
-    -moz-transition-duration: 1s;
-    -o-transition-duration: 1s;
-    -webkit-transition-duration: 1s;
-    transition-duration: 1s;
-    -moz-transition-delay: 0.5s;
-    -o-transition-delay: 0.5s;
-    -webkit-transition-delay: 0.5s;
-    transition-delay: 0.5s;
-}
+.tweet-index .guide {
+    right: 0;
+    top: 26px;
 
-.guide .text {
-    padding: 1em;
-    background-color: #0674c3;
+    &:after {
+        top: -9px;
+        right: 24px;
+    }
 }
 
 .editor-index .guide {
-    position: fixed;
-    bottom: 80px;
-    background-position: left bottom;
+    left: 0;
+    bottom: 92px;
+
+    &:after {
+        bottom: -9px;
+        left: 57px;
+    }
 }
 
 /* ----------------------------------------------------*/

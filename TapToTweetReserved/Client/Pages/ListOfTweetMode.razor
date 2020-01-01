@@ -3,16 +3,26 @@
 
 <TweetDialog @ref="TweetDialog" />
 
-<ul class="reserved-tweets">
-    @foreach (var tweet in this.ReservedTweets.Where(t => !t.IsTweeted))
-    {
-        <li @key="tweet">
-            <a @onclick="@(() => OnClickTweet(tweet))">
-                @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
-            </a>
-        </li>
-    }
-</ul>
+<div class="tweet-index @GetIndexCssClass()">
+
+    <div class="guide">
+        <div class="text">
+            Open menu and click "Edit..." to reserve messages to tweet after.
+        </div>
+    </div>
+
+    <ul class="reserved-tweets">
+        @foreach (var tweet in this.ReservedTweets.Where(t => !t.IsTweeted))
+        {
+            <li @key="tweet">
+                <a @onclick="@(() => OnClickTweet(tweet))">
+                    @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
+                </a>
+            </li>
+        }
+    </ul>
+
+</div>
 
 @code
 {
@@ -21,6 +31,8 @@
 
     private ReservedTweet[] ReservedTweets = new ReservedTweet[0];
 
+    private bool ReservedTweetsLoaded = false;
+
     private TweetDialog TweetDialog;
 
     protected override async Task OnInitializedAsync()
@@ -28,6 +40,15 @@
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Edit...", Url = "/list-of-editmode" });
 
         this.ReservedTweets = await this.HttpClient.GetJsonAsync<ReservedTweet[]>("/api/reservedtweets");
+        this.ReservedTweetsLoaded = true;
+    }
+
+    private string GetIndexCssClass()
+    {
+        var cssClass = new List<string>();
+        if (this.ReservedTweetsLoaded) cssClass.Add("tweets-loaded");
+        if (this.ReservedTweets.Any()) cssClass.Add("tweets-exists");
+        return string.Join(" ", cssClass);
     }
 
     private async Task OnClickTweet(ReservedTweet tweet)

@@ -5,19 +5,16 @@
 
 <MessageBox @ref="MessageBox" />
 
-@if (this.ReservedTweets != null)
-{
-    <div class="editor-index">
+<div class="editor-index @GetIndexCssClass()">
 
-        @if (!this.ReservedTweets.Any())
-        {
-            <div class="guide">
-                <div class="text">
-                    Enter "Add New" to reserve new message to tweet after.
-                </div>
-            </div>
-        }
+    <div class="guide">
+        <div class="text">
+            Click "Add" to reserve a new message to tweet after.
+        </div>
+    </div>
 
+    @if (this.ReservedTweets != null)
+    {
         <ul class="reserved-tweets">
             @foreach (var tweet in this.ReservedTweets)
             {
@@ -28,43 +25,44 @@
                 </li>
             }
         </ul>
+    }
 
-        <footer class="col6 @GetFooterCssClass()">
-            <a href="/addnew">
-                <span class="material-icons">add</span>
-                <span class="help-text">Add</span>
-            </a>
-            <a @onclick="MoveUpTweet" class="selected-only">
-                <span class="material-icons">arrow_upward</span>
-                <span class="help-text">Up</span>
-            </a>
-            <a @onclick="MoveDownTweet" class="selected-only">
-                <span class="material-icons">arrow_downward</span>
-                <span class="help-text">Down</span>
-            </a>
-            <a @onclick="EditTweet" class="selected-only">
-                <span class="material-icons">edit</span>
-                <span class="help-text">Edit</span>
-            </a>
-            <a @onclick="DeleteTweet" class="selected-only">
-                <span class="material-icons">delete</span>
-                <span class="help-text">Delete</span>
-            </a>
-            <a @onclick="ReloadTweet" class="selected-tweeted-only">
-                <span class="material-icons">replay</span>
-                <span class="help-text">Reload</span>
-            </a>
-        </footer>
+    <footer class="col6 @GetFooterCssClass()">
+        <a href="/addnew">
+            <span class="material-icons">add</span>
+            <span class="help-text">Add</span>
+        </a>
+        <a @onclick="MoveUpTweet" class="selected-only">
+            <span class="material-icons">arrow_upward</span>
+            <span class="help-text">Up</span>
+        </a>
+        <a @onclick="MoveDownTweet" class="selected-only">
+            <span class="material-icons">arrow_downward</span>
+            <span class="help-text">Down</span>
+        </a>
+        <a @onclick="EditTweet" class="selected-only">
+            <span class="material-icons">edit</span>
+            <span class="help-text">Edit</span>
+        </a>
+        <a @onclick="DeleteTweet" class="selected-only">
+            <span class="material-icons">delete</span>
+            <span class="help-text">Delete</span>
+        </a>
+        <a @onclick="ReloadTweet" class="selected-tweeted-only">
+            <span class="material-icons">replay</span>
+            <span class="help-text">Reload</span>
+        </a>
+    </footer>
 
-    </div>
-}
+</div>
 
 @code
 {
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
-    private List<SelectableReservedTweet> ReservedTweets = null;
+    private List<SelectableReservedTweet>
+    ReservedTweets = null;
 
     private MessageBox MessageBox;
 
@@ -73,6 +71,14 @@
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Home", Url = "/" });
 
         this.ReservedTweets = await this.HttpClient.GetJsonAsync<List<SelectableReservedTweet>>("/api/reservedtweets");
+    }
+
+    private string GetIndexCssClass()
+    {
+        var cssClass = new List<string>();
+        if (this.ReservedTweets != null) cssClass.Add("tweets-loaded");
+        if (this.ReservedTweets?.Any() == true) cssClass.Add("tweets-exists");
+        return string.Join(" ", cssClass);
     }
 
     private void SelectTweet(SelectableReservedTweet tweet)
@@ -91,8 +97,8 @@
     private string GetFooterCssClass()
     {
         var cssClasses = new List<string>();
-        if (!this.ReservedTweets.Any(t => t.Selected)) cssClasses.Add("no-selected-any");
-        if (!this.ReservedTweets.Where(t => t.IsTweeted).Any(t => t.Selected)) cssClasses.Add("no-selected-tweeted");
+        if (this.ReservedTweets?.Any(t => t.Selected) != true) cssClasses.Add("no-selected-any");
+        if (this.ReservedTweets?.Where(t => t.IsTweeted).Any(t => t.Selected) != true) cssClasses.Add("no-selected-tweeted");
         return string.Join(' ', cssClasses);
     }
 
