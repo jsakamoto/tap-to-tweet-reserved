@@ -188,8 +188,10 @@ h1 {
     background-color: #333;
 
     li {
+        box-sizing: border-box;
         padding: 0;
         margin: 0;
+        height: 5rem;
         border-bottom: solid 1px #333;
         border-top: solid 1px #888;
         background-color: #444;
@@ -200,12 +202,14 @@ h1 {
     a {
         font-size: 90%;
         display: block;
-        height: 5.5em;
-        padding: 8px;
         color: #aaa;
         text-decoration: none;
         overflow: hidden;
-        overflow-wrap: break-word;
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        bottom: 8px;
+        right: 8px;
 
         &.current {
             color: #fff;
@@ -322,13 +326,7 @@ textarea {
     .reserved-tweets {
         bottom: 4rem;
 
-        a {
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -webkit-user-select: none;
-            user-select: none;
-            padding-left: 24px;
-            cursor: default;
+        li {
 
             &.tweeted:after {
                 content: 'Tweeted';
@@ -343,13 +341,26 @@ textarea {
                 position: absolute;
                 transform: rotate(-46deg);
                 top: 40px;
+                pointer-events: none;
             }
 
-            &.selected {
+            &.selected:before {
+                content: ' ';
+                display: block;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
                 border: solid 3px #0674c3;
-                padding: 5px 5px 5px 21px;
-                background-position: -3px 3px;
+                pointer-events: none;
             }
+        }
+
+        a {
+            user-select: none;
+            cursor: default;
         }
     }
 }

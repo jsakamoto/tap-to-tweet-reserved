@@ -16,7 +16,7 @@
         {
             <li @key="tweet">
                 <a @onclick="@(() => OnClickTweet(tweet))">
-                    @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
+                    <span style="white-space:pre-line;">@tweet.TextToTweet</span>
                 </a>
             </li>
         }
@@ -53,9 +53,7 @@
 
     private async Task OnClickTweet(ReservedTweet tweet)
     {
-        Console.WriteLine("OnClickTweet");
         var posted = await this.TweetDialog.OpenAndPost(tweet);
-        Console.WriteLine($"posted? => {posted}");
         if (posted)
         {
             tweet.IsTweeted = true;

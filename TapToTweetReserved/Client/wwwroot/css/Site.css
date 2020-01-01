@@ -146,8 +146,10 @@ h1 {
   overflow-y: auto;
   background-color: #333; }
   .reserved-tweets li {
+    box-sizing: border-box;
     padding: 0;
     margin: 0;
+    height: 5rem;
     border-bottom: solid 1px #333;
     border-top: solid 1px #888;
     background-color: #444;
@@ -156,12 +158,14 @@ h1 {
   .reserved-tweets a {
     font-size: 90%;
     display: block;
-    height: 5.5em;
-    padding: 8px;
     color: #aaa;
     text-decoration: none;
     overflow: hidden;
-    overflow-wrap: break-word; }
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    bottom: 8px;
+    right: 8px; }
     .reserved-tweets a.current {
       color: #fff; }
 
@@ -251,30 +255,34 @@ textarea {
 ----------------------------------------------------*/
 .editor-index .reserved-tweets {
   bottom: 4rem; }
+  .editor-index .reserved-tweets li.tweeted:after {
+    content: 'Tweeted';
+    display: block;
+    background-color: #0674c3;
+    color: #ccc;
+    text-align: center;
+    height: 22px;
+    line-height: 22px;
+    width: 145px;
+    right: -44px;
+    position: absolute;
+    transform: rotate(-46deg);
+    top: 40px;
+    pointer-events: none; }
+  .editor-index .reserved-tweets li.selected:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: solid 3px #0674c3;
+    pointer-events: none; }
   .editor-index .reserved-tweets a {
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
     user-select: none;
-    padding-left: 24px;
     cursor: default; }
-    .editor-index .reserved-tweets a.tweeted:after {
-      content: 'Tweeted';
-      display: block;
-      background-color: #0674c3;
-      color: #ccc;
-      text-align: center;
-      height: 22px;
-      line-height: 22px;
-      width: 145px;
-      right: -44px;
-      position: absolute;
-      transform: rotate(-46deg);
-      top: 40px; }
-    .editor-index .reserved-tweets a.selected {
-      border: solid 3px #0674c3;
-      padding: 5px 5px 5px 21px;
-      background-position: -3px 3px; }
 
 textarea {
   background-color: #555;

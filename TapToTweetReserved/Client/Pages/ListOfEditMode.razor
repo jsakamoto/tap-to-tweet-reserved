@@ -18,9 +18,9 @@
         <ul class="reserved-tweets">
             @foreach (var tweet in this.ReservedTweets)
             {
-                <li @key="tweet.Id">
-                    <a @onclick="@(() => SelectTweet(tweet))" class="@GetTweetCssClass(tweet)">
-                        @(new MarkupString(tweet.TextToTweet.Replace("\n", "<br />")))
+                <li @key="tweet.Id" class="@GetTweetCssClass(tweet)">
+                    <a @onclick="@(() => SelectTweet(tweet))">
+                        <span style="white-space:pre-line;">@tweet.TextToTweet</span>
                     </a>
                 </li>
             }
