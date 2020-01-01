@@ -193,6 +193,8 @@ h1 {
         border-bottom: solid 1px #333;
         border-top: solid 1px #888;
         background-color: #444;
+        position: relative;
+        overflow: hidden;
     }
 
     a {
@@ -328,9 +330,19 @@ textarea {
             padding-left: 24px;
             cursor: default;
 
-            &.tweeted {
-                background-image: url(images/tweeted-mark.png);
-                background-position: 0 6px;
+            &.tweeted:after {
+                content: 'Tweeted';
+                display: block;
+                background-color: #0674c3;
+                color: #ccc;
+                text-align: center;
+                height: 22px;
+                line-height: 22px;
+                width: 145px;
+                right: -44px;
+                position: absolute;
+                transform: rotate(-46deg);
+                top: 40px;
             }
 
             &.selected {
