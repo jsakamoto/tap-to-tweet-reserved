@@ -5,7 +5,7 @@
 
 <MessageBox @ref="MessageBox" />
 
-<ReservedTweetsList CssClass="editor-index" OnClickTweet="SelectTweet" @ref="ReservedTweetsList">
+<ReservedTweetsList CssClass="editor-index" OnClickTweet="SelectTweet" OnDblClickTweet="EditTweet" @ref="ReservedTweetsList">
 
     <BeforeList>
         <div class="guide">
@@ -56,6 +56,7 @@
 
     protected override void OnInitialized()
     {
+        this.UIContext.PageTitle = "EDIT MODE";
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Home", Url = "/" });
     }
 
@@ -125,6 +126,12 @@
         {
             this.NavigationManager.NavigateTo($"/edit/{editTarget.Id}");
         }
+    }
+
+    private Task EditTweet(SelectableReservedTweet tweet)
+    {
+        this.NavigationManager.NavigateTo($"/edit/{tweet.Id}");
+        return Task.CompletedTask;
     }
 
     private async Task DeleteTweet()

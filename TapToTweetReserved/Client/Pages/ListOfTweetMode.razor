@@ -22,6 +22,7 @@
 
     protected override void OnInitialized()
     {
+        this.UIContext.PageTitle = AppInfo.AppTitle;
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Edit...", Url = "/list-of-editmode" });
     }
 

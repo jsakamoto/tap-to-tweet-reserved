@@ -21,6 +21,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        this.UIContext.PageTitle = "EDIT MODE - Edit";
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
 
         this.EditTarget = await this.HttpClient.GetJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");

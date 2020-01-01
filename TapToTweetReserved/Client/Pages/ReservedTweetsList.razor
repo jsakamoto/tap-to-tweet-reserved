@@ -10,7 +10,7 @@
             @foreach (var tweet in this.ReservedTweets)
             {
                 <li @key="tweet.Id" class="@GetTweetCssClass(tweet)" style="@GetTweetStyle(tweet)">
-                    <a @onclick="@(() => _OnClickTweet(tweet))">
+                    <a @onclick="@(() => _OnClickTweet(tweet))" @ondblclick="@(() => _OnDblClickTweet(tweet))">
                         <span style="white-space:pre-line;">@tweet.TextToTweet</span>
                     </a>
                 </li>
@@ -37,6 +37,9 @@
 
     [Parameter]
     public Func<SelectableReservedTweet, Task> OnClickTweet { get; set; }
+
+    [Parameter]
+    public Func<SelectableReservedTweet, Task> OnDblClickTweet { get; set; }
 
     public SelectableReservedTweet[] ReservedTweets { get; private set; } = null;
 
@@ -90,6 +93,11 @@
     private async Task _OnClickTweet(SelectableReservedTweet tweet)
     {
         await OnClickTweet?.Invoke(tweet);
+    }
+
+    private async Task _OnDblClickTweet(SelectableReservedTweet tweet)
+    {
+        await OnDblClickTweet?.Invoke(tweet);
     }
 
     public void RemoveTweetFromList(SelectableReservedTweet tweet)

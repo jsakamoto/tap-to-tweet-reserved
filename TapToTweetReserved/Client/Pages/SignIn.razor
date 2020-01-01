@@ -35,3 +35,14 @@
     |
     <TwitterShareButton Text="Tweet during your session! - Tap To Tweet Reserved" />
 </div>
+
+@code
+{
+    [CascadingParameter]
+    private UIContext UIContext { get; set; }
+
+    protected override void OnInitialized()
+    {
+        this.UIContext.PageTitle = AppInfo.AppTitle;
+    }
+}
