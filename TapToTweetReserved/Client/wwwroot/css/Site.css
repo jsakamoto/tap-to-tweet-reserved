@@ -146,15 +146,18 @@ h1 {
   overflow-y: auto;
   background-color: #333; }
   .reserved-tweets li {
-    box-sizing: border-box;
+    position: absolute;
+    height: 5rem;
+    left: 0;
+    right: 0;
     padding: 0;
     margin: 0;
-    height: 5rem;
+    box-sizing: border-box;
     border-bottom: solid 1px #333;
     border-top: solid 1px #888;
     background-color: #444;
-    position: relative;
-    overflow: hidden; }
+    overflow: hidden;
+    transition: top linear 0.2s; }
   .reserved-tweets a {
     font-size: 90%;
     display: block;
@@ -255,7 +258,7 @@ textarea {
 ----------------------------------------------------*/
 .editor-index .reserved-tweets {
   bottom: 4rem; }
-  .editor-index .reserved-tweets li.tweeted:after {
+  .editor-index .reserved-tweets li:after {
     content: 'Tweeted';
     display: block;
     background-color: #0674c3;
@@ -268,8 +271,10 @@ textarea {
     position: absolute;
     transform: rotate(-46deg);
     top: 40px;
-    pointer-events: none; }
-  .editor-index .reserved-tweets li.selected:before {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity linear 0.2s; }
+  .editor-index .reserved-tweets li:before {
     content: ' ';
     display: block;
     position: absolute;
@@ -279,7 +284,13 @@ textarea {
     bottom: 0;
     right: 0;
     border: solid 3px #0674c3;
-    pointer-events: none; }
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity linear 0.2s; }
+  .editor-index .reserved-tweets li.tweeted:after {
+    opacity: 1; }
+  .editor-index .reserved-tweets li.selected:before {
+    opacity: 1; }
   .editor-index .reserved-tweets a {
     user-select: none;
     cursor: default; }

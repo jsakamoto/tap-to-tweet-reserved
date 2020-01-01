@@ -188,15 +188,18 @@ h1 {
     background-color: #333;
 
     li {
-        box-sizing: border-box;
+        position: absolute;
+        height: 5rem;
+        left: 0;
+        right: 0;
         padding: 0;
         margin: 0;
-        height: 5rem;
+        box-sizing: border-box;
         border-bottom: solid 1px #333;
         border-top: solid 1px #888;
         background-color: #444;
-        position: relative;
         overflow: hidden;
+        transition: top linear 0.2s;
     }
 
     a {
@@ -328,7 +331,7 @@ textarea {
 
         li {
 
-            &.tweeted:after {
+            &:after {
                 content: 'Tweeted';
                 display: block;
                 background-color: #0674c3;
@@ -342,9 +345,11 @@ textarea {
                 transform: rotate(-46deg);
                 top: 40px;
                 pointer-events: none;
+                opacity: 0;
+                transition: opacity linear 0.2s;
             }
 
-            &.selected:before {
+            &:before {
                 content: ' ';
                 display: block;
                 position: absolute;
@@ -355,6 +360,16 @@ textarea {
                 right: 0;
                 border: solid 3px #0674c3;
                 pointer-events: none;
+                opacity: 0;
+                transition: opacity linear 0.2s;
+            }
+
+            &.tweeted:after {
+                opacity: 1;
+            }
+
+            &.selected:before {
+                opacity: 1;
             }
         }
 

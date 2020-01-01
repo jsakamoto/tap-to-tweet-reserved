@@ -3,52 +3,26 @@
 
 <TweetDialog @ref="TweetDialog" />
 
-<div class="tweet-index @GetIndexCssClass()">
-
-    <div class="guide">
-        <div class="text">
-            Open menu and click "Edit..." to reserve messages to tweet after.
+<ReservedTweetsList CssClass="tweet-index" Filter="@((SelectableReservedTweet t) => !t.IsTweeted)" OnClickTweet="OnClickTweet">
+    <BeforeList>
+        <div class="guide">
+            <div class="text">
+                Open menu and click "Edit..." to reserve messages to tweet after.
+            </div>
         </div>
-    </div>
-
-    <ul class="reserved-tweets">
-        @foreach (var tweet in this.ReservedTweets.Where(t => !t.IsTweeted))
-        {
-            <li @key="tweet">
-                <a @onclick="@(() => OnClickTweet(tweet))">
-                    <span style="white-space:pre-line;">@tweet.TextToTweet</span>
-                </a>
-            </li>
-        }
-    </ul>
-
-</div>
+    </BeforeList>
+</ReservedTweetsList>
 
 @code
 {
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
-    private ReservedTweet[] ReservedTweets = new ReservedTweet[0];
-
-    private bool ReservedTweetsLoaded = false;
-
     private TweetDialog TweetDialog;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         this.UIContext.SetMenuItem(new MenuItem { Caption = "Edit...", Url = "/list-of-editmode" });
-
-        this.ReservedTweets = await this.HttpClient.GetJsonAsync<ReservedTweet[]>("/api/reservedtweets");
-        this.ReservedTweetsLoaded = true;
-    }
-
-    private string GetIndexCssClass()
-    {
-        var cssClass = new List<string>();
-        if (this.ReservedTweetsLoaded) cssClass.Add("tweets-loaded");
-        if (this.ReservedTweets.Any()) cssClass.Add("tweets-exists");
-        return string.Join(" ", cssClass);
     }
 
     private async Task OnClickTweet(ReservedTweet tweet)
@@ -58,6 +32,7 @@
         {
             tweet.IsTweeted = true;
             await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            this.StateHasChanged();
         }
     }
 }

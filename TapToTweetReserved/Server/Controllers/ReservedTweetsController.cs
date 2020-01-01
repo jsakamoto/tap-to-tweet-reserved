@@ -36,7 +36,7 @@ namespace TapToTweetReserved.Server.Controllers
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             var reservedTweets = await this.ReservedTweetsRepository.GetAllAsync(twitterUserId);
-            return reservedTweets.OrderBy(t => t.Order).ToArray();
+            return reservedTweets.OrderBy(t => t.Id).ToArray();
         }
 
         [HttpGet("/api/reservedtweets/{id}")]

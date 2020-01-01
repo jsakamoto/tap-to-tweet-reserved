@@ -1,0 +1,100 @@
+﻿@inject HttpClient HttpClient
+
+<div class="@CssClass @GetIndexCssClass()">
+
+    @BeforeList
+
+    @if (this.ReservedTweets != null)
+    {
+        <ul class="reserved-tweets">
+            @foreach (var tweet in this.ReservedTweets)
+            {
+                <li @key="tweet.Id" class="@GetTweetCssClass(tweet)" style="@GetTweetStyle(tweet)">
+                    <a @onclick="@(() => _OnClickTweet(tweet))">
+                        <span style="white-space:pre-line;">@tweet.TextToTweet</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+
+    @AfterList
+
+</div>
+@code
+{
+    [Parameter]
+    public string CssClass { get; set; }
+
+    [Parameter]
+    public RenderFragment BeforeList { get; set; }
+
+    [Parameter]
+    public RenderFragment AfterList { get; set; }
+
+    [Parameter]
+    public Func<SelectableReservedTweet, bool> Filter { get; set; }
+
+    [Parameter]
+    public Func<SelectableReservedTweet, Task> OnClickTweet { get; set; }
+
+    public SelectableReservedTweet[] ReservedTweets { get; private set; } = null;
+
+    private SelectableReservedTweet[] OrderdReservedTweets = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.ReservedTweets = await this.HttpClient.GetJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
+        this.RefreshOrderdReservedTweets();
+    }
+
+    protected override void OnParametersSet()
+    {
+        this.RefreshOrderdReservedTweets();
+    }
+
+    public void RefreshOrderdReservedTweets()
+    {
+        if (this.ReservedTweets != null)
+        {
+            if (this.Filter != null)
+            {
+                this.ReservedTweets = this.ReservedTweets.Where(Filter).ToArray();
+            }
+            this.OrderdReservedTweets = this.ReservedTweets.OrderBy(t => t.Order).ToArray();
+        }
+    }
+
+    private string GetIndexCssClass()
+    {
+        var cssClass = new List<string>();
+        if (this.ReservedTweets != null) cssClass.Add("tweets-loaded");
+        if (this.ReservedTweets?.Any() == true) cssClass.Add("tweets-exists");
+        return string.Join(" ", cssClass);
+    }
+
+    private string GetTweetCssClass(SelectableReservedTweet tweet)
+    {
+        var cssClasses = new List<string>();
+        if (tweet.Selected) cssClasses.Add("selected");
+        if (tweet.IsTweeted) cssClasses.Add("tweeted");
+        return string.Join(' ', cssClasses);
+    }
+
+    private string GetTweetStyle(SelectableReservedTweet tweet)
+    {
+        var orderdIndex = Array.IndexOf(this.OrderdReservedTweets, tweet);
+        return $"top: {5 * orderdIndex}rem;";
+    }
+
+    private async Task _OnClickTweet(SelectableReservedTweet tweet)
+    {
+        await OnClickTweet?.Invoke(tweet);
+    }
+
+    public void RemoveTweetFromList(SelectableReservedTweet tweet)
+    {
+        this.ReservedTweets = this.ReservedTweets.Where(t => t != tweet).ToArray();
+        this.RefreshOrderdReservedTweets();
+    }
+}
