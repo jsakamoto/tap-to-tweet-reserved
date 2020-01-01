@@ -1,31 +1,25 @@
 ﻿@implements IDisposable
 @inject HttpClient HttpClient
 
-<div class="tweet-dialog @(IsOpened ? "visible" : "")">
-    <div class="screen-mask"></div>
-
-    <div class="dialog">
-        <div class="caption">
-            @GetDialogCaption()
-        </div>
-        <div class="body">
-            @(new MarkupString(this.Tweet?.TextToTweet.Replace("\n", "<br />")))
-        </div>
-        <div class="action">
-            <button type="button" @onclick="Close" class="@(GetButtonCaption() == "" ? "hidden" : "")">
-                @GetButtonCaption()
-            </button>
-        </div>
-    </div>
-</div>
+<Dialog @ref="Dialog">
+    <Caption>
+        @GetDialogCaption()
+    </Caption>
+    <Body>
+        <span style="white-space:pre-line;">@(this.Tweet?.TextToTweet)</span>
+    </Body>
+    <Action>
+        <button type="button" @onclick="Close" class="@(GetButtonCaption() == "" ? "hidden" : "")">
+            @GetButtonCaption()
+        </button>
+    </Action>
+</Dialog>
 
 @code
 {
+    private Dialog Dialog;
+
     private ReservedTweet Tweet;
-
-    private TaskCompletionSource<bool> CurrentTaskSrc;
-
-    private bool IsOpened = false;
 
     private System.Timers.Timer Timer = new System.Timers.Timer { Interval = 1000, AutoReset = true };
 
@@ -46,19 +40,16 @@
         this.Timer.Elapsed += Timer_Elapsed;
     }
 
-    public Task<bool> OpenAndPost(ReservedTweet tweet)
+    public async Task<bool> OpenAndPost(ReservedTweet tweet)
     {
         this.Tweet = tweet;
-
-        this.CurrentTaskSrc = new System.Threading.Tasks.TaskCompletionSource<bool>();
-
         ProgressState = ProgressStates.Step1_Before3Sec;
-        this.IsOpened = true;
         this.Timer.Start();
-
         this.StateHasChanged();
 
-        return this.CurrentTaskSrc.Task;
+        var result = await this.Dialog.Show();
+
+        return (bool)result;
     }
 
     private string GetDialogCaption()
@@ -125,9 +116,8 @@
     private void Close()
     {
         this.Timer.Stop();
-        this.IsOpened = false;
-        this.CurrentTaskSrc.SetResult(this.ProgressState >= ProgressStates.Step4_Posting);
         this.StateHasChanged();
+        this.Dialog.Close(this.ProgressState >= ProgressStates.Step4_Posting);
     }
 
     public void Dispose()

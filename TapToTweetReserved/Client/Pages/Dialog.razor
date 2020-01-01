@@ -1,0 +1,46 @@
+﻿<div class="dialog-holder @(IsOpened ? "visible" : "")">
+    <div class="screen-mask"></div>
+
+    <div class="dialog">
+        <div class="caption">
+            @Caption
+        </div>
+        <div class="body">
+            @Body
+        </div>
+        <div class="action">
+            @Action
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public RenderFragment Caption { get; set; }
+
+    [Parameter]
+    public RenderFragment Body { get; set; }
+
+    [Parameter]
+    public RenderFragment Action { get; set; }
+
+    private TaskCompletionSource<object> CurrentTaskSrc;
+
+    public bool IsOpened { get; private set; } = false;
+
+    public Task<object> Show()
+    {
+        this.CurrentTaskSrc = new System.Threading.Tasks.TaskCompletionSource<object>();
+        this.IsOpened = true;
+        this.StateHasChanged();
+        return this.CurrentTaskSrc.Task;
+    }
+
+    public void Close(object result)
+    {
+        this.IsOpened = false;
+        this.CurrentTaskSrc.SetResult(result);
+        this.StateHasChanged();
+    }
+}

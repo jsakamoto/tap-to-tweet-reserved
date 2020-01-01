@@ -3,6 +3,8 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
+<MessageBox @ref="MessageBox" />
+
 @if (this.ReservedTweets != null)
 {
     <div class="editor-index">
@@ -62,8 +64,9 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
-    private List<SelectableReservedTweet>
-    ReservedTweets = null;
+    private List<SelectableReservedTweet> ReservedTweets = null;
+
+    private MessageBox MessageBox;
 
     protected override async Task OnInitializedAsync()
     {
@@ -141,11 +144,17 @@
 
     private async Task DeleteTweet()
     {
-        foreach (var tweet in this.ReservedTweets.Where(t => t.Selected))
-        {
-            await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
-        }
-        this.ReservedTweets = this.ReservedTweets.Where(t => !t.Selected).ToList();
+        var res = await this.MessageBox.Show(
+            caption: "Delete",
+            message: "Delete selected tweets.\nAre you sure?",
+            buttons: new[] { "OK", "Cancel" });
+        Console.WriteLine(res);
+
+        //foreach (var tweet in this.ReservedTweets.Where(t => t.Selected))
+        //{
+        //    await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
+        //}
+        //this.ReservedTweets = this.ReservedTweets.Where(t => !t.Selected).ToList();
     }
 
     private async Task ReloadTweet()

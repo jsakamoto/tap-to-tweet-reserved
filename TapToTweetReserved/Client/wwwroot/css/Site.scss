@@ -269,9 +269,12 @@ footer.col2 {
 
     a, input[type=submit], button {
         width: 50%;
-        border-right: solid 1px #666;
         height: 100%;
         font-size: 1rem;
+
+        &:first-child {
+            border-right: solid 1px #666;
+        }
     }
 }
 
@@ -309,6 +312,11 @@ textarea {
     }
 }
 
+textarea {
+    background-color: #555;
+    color: #ccc;
+}
+
 #char-counter {
     margin-top: 0.3em;
     text-align: right;
@@ -320,5 +328,5 @@ textarea {
     color: #ffd800;
 }
 
-@import 'TweetDialog.scss';
+@import 'dialog.scss';
 @import 'material-icons.scss';

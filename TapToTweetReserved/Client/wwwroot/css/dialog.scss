@@ -1,4 +1,4 @@
-﻿.tweet-dialog {
+﻿.dialog-holder {
     z-index: -1;
     position: fixed;
     top: 0;
@@ -48,20 +48,33 @@
             overflow: hidden;
         }
 
-        .action button {
-            width: 100%;
-            height: 52px;
-            color: #aaa;
-            background-color: #222;
-            border: none;
-            border-top: solid 1px #666;
-            border-radius: 0 0 10px 10px;
-            margin-top: 20px;
+        .action {
+            display: flex;
+
+            button {
+                width: 100%;
+                height: 52px;
+                color: #aaa;
+                background-color: #222;
+                border: none;
+                border-top: solid 1px #666;
+                border-left: solid 1px #666;
+                margin-top: 20px;
+
+                &:first-child {
+                    border-radius: 0 0 0 10px;
+                    border-left: none;
+                }
+
+                &:last-child {
+                    border-radius: 0 0 10px 0;
+                }
+            }
         }
     }
 }
 
-.tweet-dialog.visible {
+.dialog-holder.visible {
     z-index: 100;
 
     .screen-mask {
