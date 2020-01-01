@@ -148,13 +148,15 @@
             caption: "Delete",
             message: "Delete selected tweets.\nAre you sure?",
             buttons: new[] { "OK", "Cancel" });
-        Console.WriteLine(res);
 
-        //foreach (var tweet in this.ReservedTweets.Where(t => t.Selected))
-        //{
-        //    await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
-        //}
-        //this.ReservedTweets = this.ReservedTweets.Where(t => !t.Selected).ToList();
+        if (res == "OK")
+        {
+            foreach (var tweet in this.ReservedTweets.Where(t => t.Selected))
+            {
+                await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
+            }
+            this.ReservedTweets = this.ReservedTweets.Where(t => !t.Selected).ToList();
+        }
     }
 
     private async Task ReloadTweet()
