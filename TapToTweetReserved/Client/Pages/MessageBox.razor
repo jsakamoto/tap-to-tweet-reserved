@@ -1,4 +1,4 @@
-﻿<Dialog @ref="Dialog">
+﻿<Dialog @ref="Dialog" OnClickScreenMask="OnClickScreenMask">
     <Caption>
         @Caption
     </Caption>
@@ -34,7 +34,6 @@
 
         var result = await this.Dialog.Show() as string;
 
-        this.Buttons = new string[0];
         this.StateHasChanged();
 
         return result;
@@ -43,5 +42,11 @@
     private void OnClickButton(string button)
     {
         this.Dialog.Close(button);
+    }
+
+    public Task OnClickScreenMask()
+    {
+        this.Dialog.Close(this.Buttons.Last());
+        return Task.CompletedTask;
     }
 }

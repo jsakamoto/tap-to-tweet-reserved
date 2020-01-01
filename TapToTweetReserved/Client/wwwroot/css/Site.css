@@ -309,7 +309,7 @@ textarea {
   color: #ffd800; }
 
 .dialog-holder {
-  z-index: -1;
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -318,7 +318,7 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  display: flex; }
+  pointer-events: none; }
   .dialog-holder .screen-mask {
     z-index: 110;
     position: fixed;
@@ -362,19 +362,24 @@ textarea {
         border-left: solid 1px #666;
         margin-top: 20px; }
         .dialog-holder .dialog .action button:first-child {
-          border-radius: 0 0 0 10px;
+          border-bottom-left-radius: 10px;
           border-left: none; }
         .dialog-holder .dialog .action button:last-child {
-          border-radius: 0 0 10px 0; }
+          border-bottom-right-radius: 10px; }
 
 .dialog-holder.visible {
-  z-index: 100; }
+  pointer-events: all; }
   .dialog-holder.visible .screen-mask {
     opacity: 0.2; }
   .dialog-holder.visible .dialog {
     opacity: 1.0; }
   .dialog-holder.visible .action button.hidden {
     visibility: hidden; }
+
+.about-box .dialog {
+  width: auto; }
+  .about-box .dialog .body {
+    padding-right: 44px; }
 
 .material-icons {
   font-family: 'Material Icons';

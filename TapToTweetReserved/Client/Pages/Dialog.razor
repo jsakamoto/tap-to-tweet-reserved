@@ -1,5 +1,5 @@
-﻿<div class="dialog-holder @(IsOpened ? "visible" : "")">
-    <div class="screen-mask"></div>
+﻿<div class="dialog-holder @(IsOpened ? "visible" : "") @CssClass">
+    <div class="screen-mask" @onclick="_OnClickScreenMask"></div>
 
     <div class="dialog">
         <div class="caption">
@@ -17,6 +17,9 @@
 @code
 {
     [Parameter]
+    public string CssClass { get; set; } = "";
+
+    [Parameter]
     public RenderFragment Caption { get; set; }
 
     [Parameter]
@@ -24,6 +27,9 @@
 
     [Parameter]
     public RenderFragment Action { get; set; }
+
+    [Parameter]
+    public Func<Task> OnClickScreenMask { get; set; }
 
     private TaskCompletionSource<object> CurrentTaskSrc;
 
@@ -42,5 +48,10 @@
         this.IsOpened = false;
         this.CurrentTaskSrc.SetResult(result);
         this.StateHasChanged();
+    }
+
+    public void _OnClickScreenMask()
+    {
+        this.OnClickScreenMask?.Invoke();
     }
 }

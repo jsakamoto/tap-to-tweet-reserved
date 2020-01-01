@@ -1,0 +1,45 @@
+﻿<Dialog @ref="Dialog" CssClass="about-box" OnClickScreenMask="OnClickClose">
+    <Caption>About this app</Caption>
+    <Body>
+        <ul>
+            <li class="powered-by">
+                <img src="https://portal.azure.com/favicon.ico" />
+                Hosted by <a href="https://azure.microsoft.com/services/app-service/web/" target="_blank">Microsoft Azure Web Apps</a>
+            </li>
+            <li class="powered-by">
+                <img src="https://dotnet.microsoft.com/favicon.ico" width="16" height="16" />
+                Powered by <a href="https://asp.net/" target="_blank">ASP.NET Core</a>, and
+            </li>
+            <li class="powered-by">
+                <img src="/css/images/blazor.png" />
+                Powered by <a href="https://blazor.net/" target="_blank">Blazor WebAssembly App</a>.
+            </li>
+            <li class="powered-by">
+                <img src="https://github.com/favicon.ico" width="16" height="16" />
+                Source code is <a href="https://github.com/jsakamoto/tap-to-tweet-reserved" target="_blank">GitHub</a>
+            </li>
+        </ul>
+        <div style="text-align:right;">
+            <TwitterShareButton Text="Tweet during your session! - Tap To Tweet Reserved" />
+        </div>
+    </Body>
+    <Action>
+        <button type="button" @onclick="OnClickClose">Close</button>
+    </Action>
+</Dialog>
+
+@code
+{
+    private Dialog Dialog;
+
+    public Task Show()
+    {
+        return this.Dialog.Show();
+    }
+
+    private Task OnClickClose()
+    {
+        this.Dialog.Close(null);
+        return Task.CompletedTask;
+    }
+}

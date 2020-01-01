@@ -1,5 +1,6 @@
-﻿@using Microsoft.Extensions.DependencyInjection
-@using System.Security.Principal
+﻿@using System.Security.Principal
+@using Microsoft.Extensions.DependencyInjection
+@using TapToTweetReserved.Client.Pages
 @inherits LayoutComponentBase
 @inject IServiceProvider Services
 @inject AuthenticationStateProvider AuthStateProvider
@@ -20,12 +21,16 @@
                         <div><a href="@menuItem.Url">@menuItem.Caption</a></div>
                     }
                     <div>@User.Name | <a id="sign-out" @onclick="OnClickSignOut">Sign Out</a></div>
+                    <div><a @onclick="OnClickAbout">About...</a></div>
                 </nav>
             </div>
         }
     </header>
 
     <div class="body-wrapper">
+
+        <About @ref="AboutBox" />
+
         <CascadingValue Value="UIContext">
             @Body
         </CascadingValue>
@@ -46,6 +51,8 @@
     private UIContext UIContext = new UIContext();
 
     private HttpClient HttpClient;
+
+    private About AboutBox;
 
     protected override async Task OnInitializedAsync()
     {
@@ -83,5 +90,10 @@
             await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
             await RefreshAuthenticationStateAsync();
         }
+    }
+
+    private void OnClickAbout()
+    {
+        AboutBox.Show();
     }
 }
