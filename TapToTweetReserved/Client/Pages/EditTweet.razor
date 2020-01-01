@@ -1,5 +1,6 @@
 ﻿@page "/edit/{Id:guid}"
 @attribute [Authorize]
+@inject IJSRuntime JS
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
@@ -23,6 +24,7 @@
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
 
         this.EditTarget = await this.HttpClient.GetJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");
+        this.JS.SetInitialFocus();
     }
 
     private async Task OnOK(string textToTweet)

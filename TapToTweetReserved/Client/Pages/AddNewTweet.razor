@@ -1,7 +1,8 @@
 ﻿@page "/addnew"
 @attribute [Authorize]
-@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 @inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
 
 <EditTweetForm OnOK="OnOK"></EditTweetForm>
 
@@ -13,6 +14,7 @@
     protected override void OnInitialized()
     {
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
+        this.JS.SetInitialFocus();
     }
 
     private async Task OnOK(string textToTweet)
