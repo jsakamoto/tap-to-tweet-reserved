@@ -304,9 +304,12 @@ textarea {
   text-align: right;
   color: #aaa;
   font-size: 80%; }
-
-#char-counter.overflow {
-  color: #ffd800; }
+  #char-counter.warning {
+    color: #ffd800;
+    font-weight: bold; }
+  #char-counter.reach-limited {
+    color: #ff6a6a;
+    font-weight: bold; }
 
 .dialog-holder {
   z-index: 100;

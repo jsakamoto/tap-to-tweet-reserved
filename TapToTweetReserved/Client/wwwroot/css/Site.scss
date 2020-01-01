@@ -390,10 +390,16 @@ textarea {
     text-align: right;
     color: #aaa;
     font-size: 80%;
-}
 
-#char-counter.overflow {
-    color: #ffd800;
+    &.warning {
+        color: #ffd800;
+        font-weight: bold;
+    }
+
+    &.reach-limited {
+        color: #ff6a6a;
+        font-weight: bold;
+    }
 }
 
 @import 'dialog.scss';

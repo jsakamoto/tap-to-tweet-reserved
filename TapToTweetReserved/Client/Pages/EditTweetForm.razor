@@ -29,6 +29,8 @@
 {
     private const int MaxTweetChar = 280;
 
+    private const int WarningTweetChar = 20;
+
     [Parameter]
     public string TextToTweet { get; set; } = "";
 
@@ -45,22 +47,31 @@
 
     private MessageBox MessageBox;
 
+    private string LastCharCountedText = null;
+
+    private int _CharCount = 0;
+
     private int CharCount
     {
         get
         {
-            // Regex class of .NET running on mono.wasm is very slow,
-            // therefore, use the power of the JavaScript via JSInterop.
-            var translated = this.JSInProcess.Invoke<string>("sanitizeUrl", EditingTextToTweet);
-
-            var n = 0;
-            var enumerator = StringInfo.GetTextElementEnumerator(translated);
-            while (enumerator.MoveNext())
+            if (LastCharCountedText != this.EditingTextToTweet && this.EditingTextToTweet != null)
             {
-                var text = enumerator.GetTextElement();
-                n += (text.Length == 1 && ((int)text[0]) < 256) ? 1 : 2;
+                // Regex class of .NET running on mono.wasm is very slow,
+                // therefore, use the power of the JavaScript via JSInterop.
+                var translated = this.JSInProcess.Invoke<string>("sanitizeUrl", EditingTextToTweet);
+
+                var n = 0;
+                var enumerator = StringInfo.GetTextElementEnumerator(translated);
+                while (enumerator.MoveNext())
+                {
+                    var text = enumerator.GetTextElement();
+                    n += (text.Length == 1 && ((int)text[0]) < 256) ? 1 : 2;
+                }
+                this._CharCount = n;
+                this.LastCharCountedText = this.EditingTextToTweet;
             }
-            return n;
+            return this._CharCount;
         }
     }
 
@@ -73,7 +84,8 @@
 
     public string GetCharCounterCssClass()
     {
-        return this.IsOverflowTweetChars ? "overflow" : "";
+        var leftChar = (MaxTweetChar - this.CharCount);
+        return leftChar <= 0 ? "reach-limited" : leftChar <= WarningTweetChar ? "warning" : "";
     }
 
     private bool IsInvalidForm()
