@@ -32,7 +32,7 @@
         border-radius: 10px;
         opacity: 0.0;
         margin-bottom: -50vh;
-        transition: all linear 0.2s;
+        transition: all ease-out 0.2s;
 
         .caption {
             color: #ccc;
@@ -85,7 +85,7 @@
     .dialog {
         opacity: 1.0;
         margin-bottom: 0;
-        transition: all linear 0.2s;
+        transition: all ease-out 0.2s;
     }
 
     .action button.hidden {

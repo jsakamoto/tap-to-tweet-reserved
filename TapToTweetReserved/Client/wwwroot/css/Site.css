@@ -377,7 +377,7 @@ textarea {
     border-radius: 10px;
     opacity: 0.0;
     margin-bottom: -50vh;
-    transition: all linear 0.2s; }
+    transition: all ease-out 0.2s; }
     .dialog-holder .dialog .caption {
       color: #ccc;
       font-size: 120%;
@@ -413,7 +413,7 @@ textarea {
   .dialog-holder.visible .dialog {
     opacity: 1.0;
     margin-bottom: 0;
-    transition: all linear 0.2s; }
+    transition: all ease-out 0.2s; }
   .dialog-holder.visible .action button.hidden {
     visibility: hidden; }
 

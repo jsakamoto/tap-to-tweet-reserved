@@ -1,18 +1,21 @@
-﻿<div class="dialog-holder @(IsOpened ? "visible" : "") @CssClass">
-    <div class="screen-mask" @onclick="_OnClickScreenMask"></div>
+﻿@if (this.State != DialogState.Closed)
+{
+    <div class="dialog-holder @(IsOpened ? "visible" : "") @CssClass">
+        <div class="screen-mask" @onclick="_OnClickScreenMask"></div>
 
-    <div class="dialog">
-        <div class="caption">
-            @Caption
-        </div>
-        <div class="body">
-            @Body
-        </div>
-        <div class="action">
-            @Action
+        <div class="dialog">
+            <div class="caption">
+                @Caption
+            </div>
+            <div class="body">
+                @Body
+            </div>
+            <div class="action">
+                @Action
+            </div>
         </div>
     </div>
-</div>
+}
 
 @code
 {
@@ -33,21 +36,39 @@
 
     private TaskCompletionSource<object> CurrentTaskSrc;
 
-    public bool IsOpened { get; private set; } = false;
+    private enum DialogState
+    {
+        Closed,
+        Opening,
+        Opened,
+        Closing
+    }
 
-    public Task<object> Show()
+    private DialogState State = DialogState.Closed;
+
+    public bool IsOpened => this.State == DialogState.Opened;
+
+    public async Task<object> Show()
     {
         this.CurrentTaskSrc = new System.Threading.Tasks.TaskCompletionSource<object>();
-        this.IsOpened = true;
+        this.State = DialogState.Opening;
         this.StateHasChanged();
-        return this.CurrentTaskSrc.Task;
+        await Task.Delay(1);
+        this.State = DialogState.Opened;
+        this.StateHasChanged();
+        return await this.CurrentTaskSrc.Task;
     }
 
     public void Close(object result)
     {
-        this.IsOpened = false;
+        this.State = DialogState.Closing;
         this.CurrentTaskSrc.SetResult(result);
         this.StateHasChanged();
+        Task.Delay(200).ContinueWith(_ =>
+        {
+            this.State = DialogState.Closed;
+            this.StateHasChanged();
+        });
     }
 
     public void _OnClickScreenMask()
