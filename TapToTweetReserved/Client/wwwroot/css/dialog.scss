@@ -61,6 +61,11 @@
                 border-top: solid 1px #666;
                 border-left: solid 1px #666;
                 margin-top: 20px;
+                transition: color linear 0.2s;
+
+                &:hover {
+                    color: #fff;
+                }
 
                 &:first-child {
                     border-bottom-left-radius: 10px;

@@ -31,6 +31,7 @@
     <div class="body-wrapper">
 
         <About @ref="AboutBox" />
+        <MessageBox @ref="MessageBox" />
 
         <CascadingValue Value="UIContext">
             @Body
@@ -58,6 +59,8 @@
     private HttpClient HttpClient;
 
     private About AboutBox;
+
+    private MessageBox MessageBox;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,6 +95,9 @@
     {
         if (this.HttpClient != null)
         {
+            var res = await this.MessageBox.Show(Localized.SignOut, Localized.Confirm_SignOut, new[] { Localized.Yes, Localized.No });
+            if (res != Localized.Yes) return;
+
             await this.HttpClient.PostJsonAsync("/Auth/SignOut", null);
             await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
             await RefreshAuthenticationStateAsync();

@@ -37,6 +37,9 @@ namespace TapToTweetReserved.Client.I18nText
         /// <summary>"The message text has changed.<br/>Are you sure you want to discard this change?"</summary>
         public string Confirm_DiscardChanges;
 
+        /// <summary>"Are you sure you want to sign out?"</summary>
+        public string Confirm_SignOut;
+
         /// <summary>"Delete"</summary>
         public string Delete;
 

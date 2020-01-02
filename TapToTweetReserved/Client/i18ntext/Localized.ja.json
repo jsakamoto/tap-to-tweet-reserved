@@ -18,6 +18,7 @@
 
   "Confirm_DiscardChanges": "メッセージは変更されています。\n変更を破棄してもよろしいですか?",
   "Confirm_DeleteTweets": "選択されている予約ツイートを削除します。\nよろしいですか?",
+  "Confirm_SignOut": "サインアウトします。\nよろしいですか?",
 
   "Tweet_Step0_Error": "何かエラーが発生しました...",
   "Tweet_Step1_Before3Sec": "3 秒後にツイートします....",

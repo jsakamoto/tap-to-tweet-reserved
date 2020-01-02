@@ -18,6 +18,7 @@
 
   "Confirm_DiscardChanges": "The message text has changed.\nAre you sure you want to discard this change?",
   "Confirm_DeleteTweets": "Delete selected tweets.\nAre you sure?",
+  "Confirm_SignOut": "Are you sure you want to sign out?",
 
   "Tweet_Step0_Error": "Oops, something wrong...",
   "Tweet_Step1_Before3Sec": "Tweet after 3sec....",

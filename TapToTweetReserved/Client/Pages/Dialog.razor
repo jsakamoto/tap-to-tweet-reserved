@@ -53,7 +53,7 @@
         this.CurrentTaskSrc = new System.Threading.Tasks.TaskCompletionSource<object>();
         this.State = DialogState.Opening;
         this.StateHasChanged();
-        await Task.Delay(1);
+        await Task.Delay(50);
         this.State = DialogState.Opened;
         this.StateHasChanged();
         return await this.CurrentTaskSrc.Task;

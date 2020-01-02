@@ -8,11 +8,11 @@
 html {
   height: 100%; }
 
-a {
+a, button {
   color: inherit;
   cursor: default;
   transition: color linear 0.2s; }
-  a:hover {
+  a:hover, button:hover {
     color: #fff; }
 
 body {
@@ -399,7 +399,10 @@ textarea {
         border: none;
         border-top: solid 1px #666;
         border-left: solid 1px #666;
-        margin-top: 20px; }
+        margin-top: 20px;
+        transition: color linear 0.2s; }
+        .dialog-holder .dialog .action button:hover {
+          color: #fff; }
         .dialog-holder .dialog .action button:first-child {
           border-bottom-left-radius: 10px;
           border-left: none; }
