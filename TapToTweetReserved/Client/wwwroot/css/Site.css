@@ -140,7 +140,7 @@ h1 {
   list-style: none;
   position: absolute;
   top: 0;
-  bottom: 0;
+  bottom: 40px;
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -158,6 +158,22 @@ h1 {
     background-color: #444;
     overflow: hidden;
     transition: top linear 0.2s; }
+    .reserved-tweets li .tweeted-mark {
+      display: block;
+      background-color: #0674c3;
+      color: #ccc;
+      text-align: center;
+      font-size: 13px;
+      height: 22px;
+      line-height: 22px;
+      width: 145px;
+      right: -44px;
+      position: absolute;
+      transform: rotate(-46deg);
+      top: 40px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity linear 0.2s; }
   .reserved-tweets a {
     font-size: 90%;
     display: block;
@@ -193,10 +209,10 @@ footer {
   background-color: #222;
   position: absolute;
   width: 100%;
-  bottom: 0;
+  bottom: 40px;
   padding: 0;
   display: block;
-  height: 4rem; }
+  height: 58px; }
   footer a,
   footer input[type=submit],
   footer button {
@@ -257,23 +273,7 @@ textarea {
 /* editor
 ----------------------------------------------------*/
 .editor-index .reserved-tweets {
-  bottom: 4rem; }
-  .editor-index .reserved-tweets li .tweeted-mark {
-    display: block;
-    background-color: #0674c3;
-    color: #ccc;
-    text-align: center;
-    font-size: 13px;
-    height: 22px;
-    line-height: 22px;
-    width: 145px;
-    right: -44px;
-    position: absolute;
-    transform: rotate(-46deg);
-    top: 40px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity linear 0.2s; }
+  bottom: 98px; }
   .editor-index .reserved-tweets li:before {
     content: ' ';
     display: block;
@@ -310,6 +310,41 @@ textarea {
   #char-counter.reach-limited {
     color: #ff6a6a;
     font-weight: bold; }
+
+.languages {
+  color: #888;
+  margin: auto;
+  height: 40px;
+  font-size: 0;
+  text-align: right;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 800px;
+  padding-right: 10px; }
+  .languages a, .languages span {
+    font-size: 14px; }
+  .languages .material-icons {
+    font-size: 22px; }
+  .languages * {
+    vertical-align: middle; }
+  .languages a {
+    display: inline-block;
+    padding: 0;
+    width: 78px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center; }
+  .languages .current-lang-marker {
+    position: absolute;
+    display: block;
+    height: 4px;
+    width: 78px;
+    background-color: #666;
+    bottom: 0;
+    right: 0;
+    transition: right ease-out 0.2s; }
 
 .dialog-holder {
   z-index: 100;

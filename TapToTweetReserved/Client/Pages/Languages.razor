@@ -1,0 +1,59 @@
+﻿@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+
+<div class="languages">
+    <span class="material-icons">language</span>
+    @foreach (var lang in SupportedLanguage.List)
+    {
+        <a @onclick="@(() => OnClickLanguage(lang.LangCode))">
+            @lang.Caption
+        </a>
+    }
+    @if (_CurrentLangInitialized)
+    {
+        <span class="current-lang-marker" style="right:@GetCurrentLangMarkerPos()px;"></span>
+    }
+</div>
+
+@code
+{
+    private bool _CurrentLangInitialized = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.I18nText.GetCurrentLanguageAsync();
+        _CurrentLangInitialized = true;
+    }
+
+    private Task OnClickLanguage(string langCode)
+    {
+        return this.I18nText.SetCurrentLanguageAsync(langCode);
+    }
+
+    private const int PaddingRight = 10;
+
+    private const int LangCodeWidth = 78;
+
+    private int _CurrentLangMarkerPos = PaddingRight;
+
+    private int GetCurrentLangMarkerPos()
+    {
+        this.I18nText.GetCurrentLanguageAsync().ContinueWith(t =>
+        {
+            if (t.IsCompletedSuccessfully)
+            {
+                var langCode = t.Result.Split('-').First();
+                var index = Array.IndexOf(SupportedLanguage.List.Select(l => l.LangCode).ToArray(), langCode);
+                if (index != -1)
+                {
+                    var langMarkPos = (SupportedLanguage.List.Count - index - 1) * LangCodeWidth + PaddingRight;
+                    if (langMarkPos != _CurrentLangMarkerPos)
+                    {
+                        _CurrentLangMarkerPos = langMarkPos;
+                        this.StateHasChanged();
+                    }
+                }
+            }
+        });
+        return _CurrentLangMarkerPos;
+    }
+}
