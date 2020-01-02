@@ -6,9 +6,5 @@
   {
     "outputFile": "wwwroot/css/Site.css",
     "inputFile": "wwwroot/css/Site.scss"
-  },
-  {
-    "outputFile": "wwwroot/js/helper.es5.js",
-    "inputFile": "wwwroot/js/helper.js"
   }
 ]

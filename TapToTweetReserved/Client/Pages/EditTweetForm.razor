@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using System.Text.RegularExpressions
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 
@@ -49,6 +50,9 @@
 
     private string LastCharCountedText = null;
 
+    // To make regular expression pattern, https://regex101.com/ is very usefull.
+    private static readonly Regex Regex = new Regex(@"(?<pre>^|[\s~!%^&*\(\)\+=\[\]\{\}\|\\:;'\?,<>])(https?:\/\/)?([a-z0-9\-]{1,63}\.)+(?<tld>[a-z\u00ff-\uffff]{2,20})(((:\d+\/)|\/)([%!?&#.]*[\w\-=#\/]+\/?)*)?", RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private int _CharCount = 0;
 
     private int CharCount
@@ -57,11 +61,14 @@
         {
             if (LastCharCountedText != this.EditingTextToTweet && this.EditingTextToTweet != null)
             {
-                // Regex class of .NET running on mono.wasm is very slow,
-                // therefore, use the power of the JavaScript via JSInterop.
-                var translated = this.JSInProcess.Invoke<string>("sanitizeUrl", EditingTextToTweet);
-
                 var n = 0;
+                var translated = Regex.Replace(this.EditingTextToTweet, m =>
+                {
+                    if (!TLDs.All.Contains(m.Groups["tld"].Value)) return m.Value;
+                    n += 23;
+                    return m.Groups["pre"].Value;
+                });
+
                 var enumerator = StringInfo.GetTextElementEnumerator(translated);
                 while (enumerator.MoveNext())
                 {
