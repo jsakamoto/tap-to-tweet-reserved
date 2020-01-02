@@ -31,7 +31,8 @@
         box-shadow: 0px 0px 10px 4px rgba(0,0,0,0.4);
         border-radius: 10px;
         opacity: 0.0;
-        transition: opacity linear 0.2s;
+        margin-bottom: -50vh;
+        transition: all linear 0.2s;
 
         .caption {
             color: #ccc;
@@ -83,6 +84,8 @@
 
     .dialog {
         opacity: 1.0;
+        margin-bottom: 0;
+        transition: all linear 0.2s;
     }
 
     .action button.hidden {
