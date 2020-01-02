@@ -1,4 +1,5 @@
 ﻿@inject HttpClient HttpClient
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <div class="@CssClass @GetIndexCssClass()">
 
@@ -13,6 +14,7 @@
                     <a @onclick="@(() => _OnClickTweet(tweet))" @ondblclick="@(() => _OnDblClickTweet(tweet))">
                         <span style="white-space:pre-line;">@tweet.TextToTweet</span>
                     </a>
+                    <span class="tweeted-mark">@Localized.Tweeted</span>
                 </li>
             }
         </ul>
@@ -23,6 +25,8 @@
 </div>
 @code
 {
+    private Localized Localized = new Localized();
+
     [Parameter]
     public string CssClass { get; set; }
 
@@ -47,6 +51,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
         this.ReservedTweets = await this.HttpClient.GetJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
         this.RefreshOrderdReservedTweets();
     }

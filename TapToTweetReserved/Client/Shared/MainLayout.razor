@@ -4,12 +4,13 @@
 @inherits LayoutComponentBase
 @inject IServiceProvider Services
 @inject AuthenticationStateProvider AuthStateProvider
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <div @onclick="CloseMenu">
 
     <header class="@HeaderCssClass">
 
-        <h1>@UIContext.PageTitle</h1>
+        <h1>@UIContext.PageTitle()</h1>
 
         @if (this.User?.IsAuthenticated == true)
         {
@@ -18,10 +19,10 @@
                 <nav>
                     @foreach (var menuItem in this.UIContext.MenuItems)
                     {
-                        <div><a href="@menuItem.Url">@menuItem.Caption</a></div>
+                        <div><a href="@menuItem.Url">@menuItem.Caption()</a></div>
                     }
-                    <div>@User.Name | <a id="sign-out" @onclick="OnClickSignOut">Sign Out</a></div>
-                    <div><a @onclick="OnClickAbout">About...</a></div>
+                    <div>@User.Name | <a id="sign-out" @onclick="OnClickSignOut">@Localized.SignOut</a></div>
+                    <div><a @onclick="OnClickAbout">@Localized.OpenAboutBox</a></div>
                 </nav>
             </div>
         }
@@ -42,6 +43,8 @@
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
 
+    private Localized Localized = new Localized();
+
     private IIdentity User;
 
     private bool MenuIsExpanded;
@@ -58,6 +61,7 @@
     {
         this.HttpClient = this.Services.GetService<HttpClient>();
         this.UIContext.StateHasChanged += UIContext_StateHasChanged;
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
         await RefreshAuthenticationStateAsync();
     }
 

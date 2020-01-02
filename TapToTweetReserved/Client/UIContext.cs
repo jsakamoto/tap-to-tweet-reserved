@@ -11,9 +11,9 @@ namespace TapToTweetReserved.Client
 
         public event EventHandler StateHasChanged;
 
-        private string _PageTitle = "";
+        private Func<string> _PageTitle = () => "";
 
-        public string PageTitle
+        public Func<string> PageTitle
         {
             get => _PageTitle;
             set { _PageTitle = value; this.StateHasChanged?.Invoke(this, EventArgs.Empty); }

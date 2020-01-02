@@ -3,6 +3,7 @@
 @inject IJSRuntime JS
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <EditTweetForm OnOK="OnOK"></EditTweetForm>
 
@@ -11,11 +12,15 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
-    protected override void OnInitialized()
+    private Localized Localized = new Localized();
+
+    protected override async Task OnInitializedAsync()
     {
-        this.UIContext.PageTitle = "EDIT MODE - Add";
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
         this.JS.SetInitialFocus();
+
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
+        this.UIContext.PageTitle = () => Localized.EditMode_Add;
     }
 
     private async Task OnOK(string textToTweet)

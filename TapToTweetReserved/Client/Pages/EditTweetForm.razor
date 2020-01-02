@@ -2,6 +2,7 @@
 @using System.Text.RegularExpressions
 @inject IJSRuntime JS
 @inject NavigationManager NavigationManager
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <MessageBox @ref="MessageBox" />
 
@@ -20,14 +21,16 @@
     </fieldset>
 
     <footer class="col2">
-        <button type="button" @onclick="OnClickOK" disabled="@IsInvalidForm()">OK</button>
-        <button type="button" class="cancel" @onclick="OnClickCancel">Cancel</button>
+        <button type="button" @onclick="OnClickOK" disabled="@IsInvalidForm()">@Localized.OK</button>
+        <button type="button" class="cancel" @onclick="OnClickCancel">@Localized.Cancel</button>
     </footer>
 
 </form>
 
 @code
 {
+    private Localized Localized = new Localized();
+
     private const int MaxTweetChar = 280;
 
     private const int WarningTweetChar = 20;
@@ -82,11 +85,12 @@
         }
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         this.JSInProcess = this.JS as IJSInProcessRuntime;
         this.EditingTextToTweet = this.TextToTweet;
         this.OriginalTextToTweet = this.TextToTweet;
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
     }
 
     public string GetCharCounterCssClass()
@@ -110,11 +114,11 @@
         if (this.EditingTextToTweet != this.OriginalTextToTweet)
         {
             var res = await this.MessageBox.Show(
-                caption: "Cancel",
-                message: "The message text has changed.\nAre you sure you want to discard this change?",
-                buttons: new[] { "Yes", "No" }
+                caption: Localized.Cancel,
+                message: Localized.Confirm_DiscardChanges,
+                buttons: new[] { Localized.Yes, Localized.No }
             );
-            if (res != "Yes") return;
+            if (res != Localized.Yes) return;
         }
         this.GoBack();
     }

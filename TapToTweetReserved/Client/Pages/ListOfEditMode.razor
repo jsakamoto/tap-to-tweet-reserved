@@ -2,6 +2,7 @@
 @attribute [Authorize]
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <MessageBox @ref="MessageBox" />
 
@@ -10,7 +11,7 @@
     <BeforeList>
         <div class="guide">
             <div class="text">
-                Click "Add" to reserve a new message to tweet after.
+                @Localized.Guide_in_Edit
             </div>
         </div>
     </BeforeList>
@@ -19,27 +20,27 @@
         <footer class="col6 @GetFooterCssClass()">
             <a href="/addnew">
                 <span class="material-icons">add</span>
-                <span class="help-text">Add</span>
+                <span class="help-text">@Localized.Add</span>
             </a>
             <a @onclick="MoveUpTweet" class="selected-only">
                 <span class="material-icons">arrow_upward</span>
-                <span class="help-text">Up</span>
+                <span class="help-text">@Localized.Up</span>
             </a>
             <a @onclick="MoveDownTweet" class="selected-only">
                 <span class="material-icons">arrow_downward</span>
-                <span class="help-text">Down</span>
+                <span class="help-text">@Localized.Down</span>
             </a>
             <a @onclick="EditTweet" class="selected-only">
                 <span class="material-icons">edit</span>
-                <span class="help-text">Edit</span>
+                <span class="help-text">@Localized.Edit</span>
             </a>
             <a @onclick="DeleteTweet" class="selected-only">
                 <span class="material-icons">delete</span>
-                <span class="help-text">Delete</span>
+                <span class="help-text">@Localized.Delete</span>
             </a>
             <a @onclick="ReloadTweet" class="selected-tweeted-only">
                 <span class="material-icons">replay</span>
-                <span class="help-text">Reload</span>
+                <span class="help-text">@Localized.Reload</span>
             </a>
         </footer>
     </AfterList>
@@ -50,14 +51,17 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
+    private Localized Localized = new Localized();
+
     private ReservedTweetsList ReservedTweetsList;
 
     private MessageBox MessageBox;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        this.UIContext.PageTitle = "EDIT MODE";
-        this.UIContext.SetMenuItem(new MenuItem { Caption = "Home", Url = "/" });
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
+        this.UIContext.PageTitle = () => Localized.EditMode;
+        this.UIContext.SetMenuItem(new MenuItem { Caption = () => Localized.GoToHome, Url = "/" });
     }
 
     private Task SelectTweet(SelectableReservedTweet tweet)
@@ -137,11 +141,11 @@
     private async Task DeleteTweet()
     {
         var res = await this.MessageBox.Show(
-            caption: "Delete",
-            message: "Delete selected tweets.\nAre you sure?",
-            buttons: new[] { "OK", "Cancel" });
+            caption: Localized.Delete,
+            message: Localized.Confirm_DeleteTweets,
+            buttons: new[] { Localized.OK, Localized.Cancel });
 
-        if (res == "OK")
+        if (res == Localized.OK)
         {
             var reservedTweets = this.ReservedTweetsList.ReservedTweets;
             foreach (var tweet in reservedTweets.Where(t => t.Selected))

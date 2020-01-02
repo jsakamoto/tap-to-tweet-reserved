@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using TapToTweetReserved.Client.Services;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace TapToTweetReserved.Client
 {
@@ -11,6 +12,7 @@ namespace TapToTweetReserved.Client
         {
             services.AddScoped<AuthenticationStateProvider, AppAuthenticationStateProvider>();
             services.AddAuthorizationCore();
+            services.AddI18nText<Startup>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

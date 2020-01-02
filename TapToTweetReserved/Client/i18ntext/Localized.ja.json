@@ -1,0 +1,42 @@
+{
+  "SignIn": "Twitter でサインイン",
+  "SignOut": "サインアウト",
+  "ApplicationSummary": "このアプリケーションは、スピーカー自身がプレゼンテーションの最中にツイートするようデザインされています。",
+  "ApplicationSummary_Step1": "Twitter でサインイン。",
+  "ApplicationSummary_Step2": "メッセージを予約。",
+  "ApplicationSummary_Step3": "<strong>あなたのプレゼンテーションの最中に</strong>予約したメッセージをタップしてツイート!",
+  "GoToHome": "ホームへ",
+  "GotToEdit": "編集モードへ...",
+  "OpenAboutBox": "このアプリについて...",
+  "AboutThisApp": "このアプリについて",
+  "EditMode": "編集モード",
+  "EditMode_Add": "編集モード - 追加",
+  "EditMode_Edit": "編集モード - 編集",
+
+  "Guide_in_Home": "メニューを開き、\"編集モードへ...\" をクリックして、ツイートするメッセージを登録してください。",
+  "Guide_in_Edit": "\"追加\" をクリックして、ツイートするメッセージを追加してください。",
+
+  "Confirm_DiscardChanges": "メッセージは変更されています。\n変更を破棄してもよろしいですか?",
+  "Confirm_DeleteTweets": "選択されている予約ツイートを削除します。\nよろしいですか?",
+
+  "Tweet_Step0_Error": "何かエラーが発生しました...",
+  "Tweet_Step1_Before3Sec": "3 秒後にツイートします....",
+  "Tweet_Step2_Before2Sec": "2 秒後にツイートします...",
+  "Tweet_Step3_Before1Sec": "1 秒後にツイートします..",
+  "Tweet_Step4_Posting": "ツイート中...",
+  "Tweet_Step5_Complete": "ツイート完了!",
+
+  "Tweeted": "ツイート済",
+  "Add": "追加",
+  "Up": "上へ",
+  "Down": "下へ",
+  "Edit": "編集",
+  "Delete": "削除",
+  "Reload": "再装填",
+
+  "OK": "OK",
+  "Cancel": "キャンセル",
+  "Yes": "はい",
+  "No": "いいえ",
+  "Close": "閉じる"
+}

@@ -1,5 +1,6 @@
 ﻿@attribute [Authorize]
 @inject HttpClient HttpClient
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <TweetDialog @ref="TweetDialog" />
 
@@ -7,7 +8,7 @@
     <BeforeList>
         <div class="guide">
             <div class="text">
-                Open menu and click "Edit..." to reserve messages to tweet after.
+                @Localized.Guide_in_Home
             </div>
         </div>
     </BeforeList>
@@ -18,12 +19,15 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
+    private Localized Localized = new Localized();
+
     private TweetDialog TweetDialog;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        this.UIContext.PageTitle = AppInfo.AppTitle;
-        this.UIContext.SetMenuItem(new MenuItem { Caption = "Edit...", Url = "/list-of-editmode" });
+        this.UIContext.PageTitle = () => AppInfo.AppTitle;
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
+        this.UIContext.SetMenuItem(new MenuItem { Caption = () => Localized.GotToEdit, Url = "/list-of-editmode" });
     }
 
     private async Task OnClickTweet(ReservedTweet tweet)

@@ -1,5 +1,6 @@
 ﻿@implements IDisposable
 @inject HttpClient HttpClient
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <Dialog @ref="Dialog">
     <Caption>
@@ -17,6 +18,8 @@
 
 @code
 {
+    private Localized Localized = new Localized();
+
     private Dialog Dialog;
 
     private ReservedTweet Tweet;
@@ -40,6 +43,12 @@
         this.Timer.Elapsed += Timer_Elapsed;
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
+    }
+
+
     public async Task<bool> OpenAndPost(ReservedTweet tweet)
     {
         this.Tweet = tweet;
@@ -56,12 +65,12 @@
     {
         switch (this.ProgressState)
         {
-            case ProgressStates.Step0_Error: return "Oops, something wrong...";
-            case ProgressStates.Step1_Before3Sec: return "Tweet after 3sec....";
-            case ProgressStates.Step2_Before2Sec: return "Tweet after 2sec...";
-            case ProgressStates.Step3_Before1Sec: return "Tweet after 1sec..";
-            case ProgressStates.Step4_Posting: return "Posting the tweet...";
-            case ProgressStates.Step5_Complete: return "Tweeted!";
+            case ProgressStates.Step0_Error: return Localized.Tweet_Step0_Error;
+            case ProgressStates.Step1_Before3Sec: return Localized.Tweet_Step1_Before3Sec;
+            case ProgressStates.Step2_Before2Sec: return Localized.Tweet_Step2_Before2Sec;
+            case ProgressStates.Step3_Before1Sec: return Localized.Tweet_Step3_Before1Sec;
+            case ProgressStates.Step4_Posting: return Localized.Tweet_Step4_Posting;
+            case ProgressStates.Step5_Complete: return Localized.Tweet_Step5_Complete;
             default: return "";
         }
     }
@@ -71,12 +80,12 @@
         switch (this.ProgressState)
         {
             case ProgressStates.Step0_Error:
-                return "CLOSE";
+                return Localized.Close;
             case ProgressStates.Step4_Posting:
             case ProgressStates.Step5_Complete:
                 return "";
             default:
-                return "CANCEL";
+                return Localized.Cancel;
         }
     }
 

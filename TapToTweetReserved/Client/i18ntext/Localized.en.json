@@ -1,0 +1,42 @@
+{
+  "SignIn": "Sign In with Twitter",
+  "SignOut": "Sign Out",
+  "ApplicationSummary": "This application is designed for tweeting during a presentation by speaker oneself.",
+  "ApplicationSummary_Step1": "Sign in with Twitter.",
+  "ApplicationSummary_Step2": "Reserve messages.",
+  "ApplicationSummary_Step3": "Tap to tweet the message that was reserved <strong>during your presentation!</strong>",
+  "GoToHome": "Home",
+  "GotToEdit": "Edit Mode...",
+  "OpenAboutBox": "About...",
+  "AboutThisApp": "About this app",
+  "EditMode": "EDIT MODE",
+  "EditMode_Add": "EDIT MODE - Add",
+  "EditMode_Edit": "EDIT MODE - Edit",
+
+  "Guide_in_Home": "Open menu and click \"Edit...\" to reserve messages to tweet after.",
+  "Guide_in_Edit": "Click \"Add\" to reserve a new message to tweet after.",
+
+  "Confirm_DiscardChanges": "The message text has changed.\nAre you sure you want to discard this change?",
+  "Confirm_DeleteTweets": "Delete selected tweets.\nAre you sure?",
+
+  "Tweet_Step0_Error": "Oops, something wrong...",
+  "Tweet_Step1_Before3Sec": "Tweet after 3sec....",
+  "Tweet_Step2_Before2Sec": "Tweet after 2sec...",
+  "Tweet_Step3_Before1Sec": "Tweet after 1sec..",
+  "Tweet_Step4_Posting": "Posting the tweet...",
+  "Tweet_Step5_Complete": "Tweeted!",
+
+  "Tweeted": "Tweeted",
+  "Add": "Add",
+  "Up": "Up",
+  "Down": "Down",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "Reload": "Reload",
+
+  "OK": "OK",
+  "Cancel": "Cancel",
+  "Yes": "Yes",
+  "No": "No",
+  "Close": "Close"
+}

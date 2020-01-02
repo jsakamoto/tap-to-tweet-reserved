@@ -1,5 +1,7 @@
-﻿<Dialog @ref="Dialog" CssClass="about-box" OnClickScreenMask="OnClickClose">
-    <Caption>About this app</Caption>
+﻿@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+
+<Dialog @ref="Dialog" CssClass="about-box" OnClickScreenMask="OnClickClose">
+    <Caption>@Localized.AboutThisApp</Caption>
     <Body>
         <ul>
             <li class="powered-by">
@@ -24,13 +26,20 @@
         </div>
     </Body>
     <Action>
-        <button type="button" @onclick="OnClickClose">Close</button>
+        <button type="button" @onclick="OnClickClose">@Localized.Close</button>
     </Action>
 </Dialog>
 
 @code
 {
     private Dialog Dialog;
+
+    private Localized Localized = new Localized();
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
+    }
 
     public Task Show()
     {

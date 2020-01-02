@@ -1,17 +1,19 @@
-﻿<div class="summary">
-    This application is designed for tweeting during a presentation by speaker oneself.
+﻿@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+
+<div class="summary">
+    @Localized.ApplicationSummary
 </div>
 
 <div class="quick-tour">
     <ol>
-        <li>Sign in with Twitter.</li>
-        <li>Reserve messages.</li>
-        <li>Tap to tweet the message that was reserved <strong>during your presentation!</strong></li>
+        <li>@Localized.ApplicationSummary_Step1</li>
+        <li>@Localized.ApplicationSummary_Step2</li>
+        <li>@(new MarkupString(Localized.ApplicationSummary_Step3))</li>
     </ol>
 </div>
 
 <div id="sign-in">
-    <a href="auth/signin" target="_top">Sign In with Twitter</a>
+    <a href="auth/signin" target="_top">@Localized.SignIn</a>
 </div>
 
 <div class="social-buttons">
@@ -41,8 +43,11 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
-    protected override void OnInitialized()
+    private Localized Localized = new Localized();
+
+    protected override async Task OnInitializedAsync()
     {
-        this.UIContext.PageTitle = AppInfo.AppTitle;
+        this.UIContext.PageTitle = () => AppInfo.AppTitle;
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
     }
 }

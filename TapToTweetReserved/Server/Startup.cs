@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using TapToTweetReserved.Server.Services;
 using TapToTweetReserved.Server.Services.AzureTable;
 using TapToTweetReserved.Server.Services.LocalFile;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace TapToTweetReserved.Server
 {
@@ -70,6 +71,7 @@ namespace TapToTweetReserved.Server
                     break;
                 default: throw new Exception($"Unknown repository type: \"{repositoryType}\"");
             }
+            services.AddI18nText<Startup>();
         }
 
         private static void ConfigureAuthentication(IServiceCollection services, TwitterConfiguration twitterConfig)

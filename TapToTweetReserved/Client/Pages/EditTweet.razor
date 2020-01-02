@@ -3,6 +3,7 @@
 @inject IJSRuntime JS
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 @if (EditTarget != null)
 {
@@ -14,6 +15,8 @@
     [CascadingParameter]
     private UIContext UIContext { get; set; }
 
+    private Localized Localized = new Localized();
+
     [Parameter]
     public Guid Id { get; set; }
 
@@ -21,8 +24,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.UIContext.PageTitle = "EDIT MODE - Edit";
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
+
+        this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
+        this.UIContext.PageTitle = () => Localized.EditMode_Edit;
 
         this.EditTarget = await this.HttpClient.GetJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");
         this.JS.SetInitialFocus();
