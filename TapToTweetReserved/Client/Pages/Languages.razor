@@ -1,4 +1,5 @@
-﻿@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+﻿@using System.Runtime.InteropServices
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
 <div class="languages">
     <span class="material-icons">language</span>
@@ -49,7 +50,7 @@
                     if (langMarkPos != _CurrentLangMarkerPos)
                     {
                         _CurrentLangMarkerPos = langMarkPos;
-                        this.StateHasChanged();
+                        if (RuntimeInformation.OSDescription == "web") this.StateHasChanged();
                     }
                 }
             }
