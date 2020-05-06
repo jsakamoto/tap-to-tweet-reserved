@@ -15,6 +15,7 @@ using TapToTweetReserved.Server.Services;
 using TapToTweetReserved.Server.Services.AzureTable;
 using TapToTweetReserved.Server.Services.LocalFile;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using Toolbelt.Extensions.DependencyInjection;
 
 namespace TapToTweetReserved.Server
 {
@@ -115,6 +116,7 @@ namespace TapToTweetReserved.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
+                app.UseCssLiveReload();
             }
             else
             {
