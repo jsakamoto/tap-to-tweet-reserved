@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +19,7 @@ namespace TapToTweetReserved.Client.Services
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var user = await this.HttpClient.GetJsonAsync<AuthUserInfo>("/api/auth/currentuser");
+            var user = await this.HttpClient.GetFromJsonAsync<AuthUserInfo>("/api/auth/currentuser");
             var identity = default(ClaimsIdentity);
             if (!string.IsNullOrEmpty(user?.Name))
             {

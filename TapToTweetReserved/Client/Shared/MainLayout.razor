@@ -98,7 +98,7 @@
             var res = await this.MessageBox.Show(Localized.SignOut, Localized.Confirm_SignOut, new[] { Localized.Yes, Localized.No });
             if (res != Localized.Yes) return;
 
-            await this.HttpClient.PostJsonAsync("/Auth/SignOut", null);
+            await this.HttpClient.PostAsync("/Auth/SignOut", new StringContent(""));
             await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
             await RefreshAuthenticationStateAsync();
         }

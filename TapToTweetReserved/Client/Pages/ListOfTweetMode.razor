@@ -36,7 +36,7 @@
         if (posted)
         {
             tweet.IsTweeted = true;
-            await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
             this.StateHasChanged();
         }
     }

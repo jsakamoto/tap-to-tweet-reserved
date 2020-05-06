@@ -52,7 +52,7 @@
     protected override async Task OnInitializedAsync()
     {
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
-        this.ReservedTweets = await this.HttpClient.GetJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
+        this.ReservedTweets = await this.HttpClient.GetFromJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
         this.RefreshOrderdReservedTweets();
     }
 

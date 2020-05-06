@@ -25,7 +25,7 @@
 
     private async Task OnOK(string textToTweet)
     {
-        await this.HttpClient.PostJsonAsync("/api/reservedtweets", new ReservedTweet { TextToTweet = textToTweet });
+        await this.HttpClient.PostAsJsonAsync("/api/reservedtweets", new ReservedTweet { TextToTweet = textToTweet });
         this.NavigationManager.NavigateTo("/list-of-editmode");
     }
 }

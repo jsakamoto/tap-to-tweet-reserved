@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -46,15 +44,9 @@ namespace TapToTweetReserved.Server
             });
 
             services.AddRazorPages();
-            services.AddMvc(options =>
+            services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new ResponseCacheAttribute { NoStore = true });
-            });
-
-            services.AddResponseCompression(opts =>
-            {
-                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                    new[] { "application/octet-stream" });
             });
 
             services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
@@ -71,7 +63,7 @@ namespace TapToTweetReserved.Server
                     break;
                 default: throw new Exception($"Unknown repository type: \"{repositoryType}\"");
             }
-            services.AddI18nText<Startup>();
+            services.AddI18nText();
         }
 
         private static void ConfigureAuthentication(IServiceCollection services, TwitterConfiguration twitterConfig)
@@ -119,12 +111,10 @@ namespace TapToTweetReserved.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseResponseCompression();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBlazorDebugging();
+                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -133,8 +123,8 @@ namespace TapToTweetReserved.Server
                 app.UseHttpsRedirection();
             }
 
+            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-            app.UseClientSideBlazorFiles<Client.Startup>();
 
             app.UseRouting();
             app.UseAuthentication();
@@ -142,6 +132,7 @@ namespace TapToTweetReserved.Server
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToPage("/_Host");
             });

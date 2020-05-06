@@ -105,7 +105,7 @@
             Timer.Stop();
             try
             {
-                await this.HttpClient.PostJsonAsync($"/api/reservedtweets/{this.Tweet.Id}/tweet", null);
+                await this.HttpClient.PostAsync($"/api/reservedtweets/{this.Tweet.Id}/tweet", new StringContent(""));
             }
             catch (Exception e)
             {

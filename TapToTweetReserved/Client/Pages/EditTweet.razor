@@ -29,14 +29,14 @@
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
         this.UIContext.PageTitle = () => Localized.EditMode_Edit;
 
-        this.EditTarget = await this.HttpClient.GetJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");
+        this.EditTarget = await this.HttpClient.GetFromJsonAsync<ReservedTweet>($"/api/reservedtweets/{this.Id}");
         this.JS.SetInitialFocus();
     }
 
     private async Task OnOK(string textToTweet)
     {
         this.EditTarget.TextToTweet = textToTweet;
-        await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{this.Id}", this.EditTarget);
+        await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{this.Id}", this.EditTarget);
         this.NavigationManager.NavigateTo("/list-of-editmode");
     }
 }

@@ -115,7 +115,7 @@
             if (tweet.Order != n + 1)
             {
                 tweet.Order = n + 1;
-                await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+                await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
             }
         }
 
@@ -162,7 +162,7 @@
         foreach (var tweet in reservedTweets.Where(t => t.Selected && t.IsTweeted))
         {
             tweet.IsTweeted = false;
-            await this.HttpClient.PutJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
         }
     }
 }
