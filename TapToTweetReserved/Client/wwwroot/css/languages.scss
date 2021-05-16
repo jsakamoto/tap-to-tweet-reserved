@@ -1,17 +1,21 @@
 ﻿@import '_constants.scss';
 
-.languages {
+.languages-bar {
+    --langcode-width: 78px;
+    --langcode-margin: 10px;
     color: #888;
     margin: auto;
-    height: $languages-bar-height;
     font-size: 0;
-    text-align: right;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
+    height: $languages-bar-height;
     max-width: $reserved-tweets-max-width;
     padding-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 
     a, span {
         font-size: 14px;
@@ -21,29 +25,27 @@
         font-size: 22px;
     }
 
-    * {
-        vertical-align: middle;
-    }
+    .languages {
+        position: relative;
 
-    $lang-width: 78px;
+        a {
+            display: inline-block;
+            padding: 0;
+            width: var(--langcode-width);
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
 
-    a {
-        display: inline-block;
-        padding: 0;
-        width: $lang-width;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-    }
-
-    .current-lang-marker {
-        position: absolute;
-        display: block;
-        height: 4px;
-        width: $lang-width;
-        background-color: #666;
-        bottom: 0;
-        right: 0;
-        transition: right ease-out 0.2s;
+        .current-lang-marker {
+            position: absolute;
+            display: block;
+            height: 4px;
+            width: var(--langcode-width);
+            background-color: #666;
+            bottom: 0;
+            right: 0;
+            transition: left ease-out 0.2s;
+        }
     }
 }

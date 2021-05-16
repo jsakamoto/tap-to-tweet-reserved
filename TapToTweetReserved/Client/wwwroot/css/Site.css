@@ -311,40 +311,44 @@ textarea {
     color: #ff6a6a;
     font-weight: bold; }
 
-.languages {
+.languages-bar {
+  --langcode-width: 78px;
+  --langcode-margin: 10px;
   color: #888;
   margin: auto;
-  height: 40px;
   font-size: 0;
-  text-align: right;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  height: 40px;
   max-width: 800px;
-  padding-right: 10px; }
-  .languages a, .languages span {
+  padding-right: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; }
+  .languages-bar a, .languages-bar span {
     font-size: 14px; }
-  .languages .material-icons {
+  .languages-bar .material-icons {
     font-size: 22px; }
-  .languages * {
-    vertical-align: middle; }
-  .languages a {
-    display: inline-block;
-    padding: 0;
-    width: 78px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center; }
-  .languages .current-lang-marker {
-    position: absolute;
-    display: block;
-    height: 4px;
-    width: 78px;
-    background-color: #666;
-    bottom: 0;
-    right: 0;
-    transition: right ease-out 0.2s; }
+  .languages-bar .languages {
+    position: relative; }
+    .languages-bar .languages a {
+      display: inline-block;
+      padding: 0;
+      width: var(--langcode-width);
+      height: 40px;
+      line-height: 40px;
+      text-align: center; }
+    .languages-bar .languages .current-lang-marker {
+      position: absolute;
+      display: block;
+      height: 4px;
+      width: var(--langcode-width);
+      background-color: #666;
+      bottom: 0;
+      right: 0;
+      transition: left ease-out 0.2s; }
 
 .dialog-holder {
   z-index: 100;

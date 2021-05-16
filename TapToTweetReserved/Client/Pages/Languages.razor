@@ -1,60 +1,45 @@
-﻿@using System.Runtime.InteropServices
-@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+﻿@inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
-<div class="languages">
+<div class="languages-bar">
     <span class="material-icons">language</span>
-    @foreach (var lang in SupportedLanguage.List)
-    {
-        <a @onclick="@(() => OnClickLanguage(lang.LangCode))">
-            @lang.Caption
-        </a>
-    }
-    @if (_CurrentLangInitialized)
-    {
-        <span class="current-lang-marker" style="right:@GetCurrentLangMarkerPos()px;"></span>
-    }
+    <span class="languages">
+        @foreach (var lang in SupportedLanguage.List)
+        {
+            <a @onclick="@(() => OnClickLanguage(lang.LangCode))">
+                @lang.Caption
+            </a>
+        }
+        @if (_CurrentLangInitialized)
+        {
+            <span class="current-lang-marker" style="left: calc(@_CurrentLangCodeIndex * var(--langcode-width));"></span>
+        }
+    </span>
 </div>
 
 @code
 {
     private bool _CurrentLangInitialized = false;
 
+    private int _CurrentLangCodeIndex = 0;
+
     protected override async Task OnInitializedAsync()
     {
-        await this.I18nText.GetCurrentLanguageAsync();
+        var langCode = await this.I18nText.GetCurrentLanguageAsync();
+        this.UpdateCurrentLangCodeIndex(langCode);
         _CurrentLangInitialized = true;
     }
 
     private Task OnClickLanguage(string langCode)
     {
+        this.UpdateCurrentLangCodeIndex(langCode);
         return this.I18nText.SetCurrentLanguageAsync(langCode);
     }
 
-    private const int PaddingRight = 10;
-
-    private const int LangCodeWidth = 78;
-
-    private int _CurrentLangMarkerPos = PaddingRight;
-
-    private int GetCurrentLangMarkerPos()
+    private void UpdateCurrentLangCodeIndex(string langCode)
     {
-        this.I18nText.GetCurrentLanguageAsync().ContinueWith(t =>
-        {
-            if (t.IsCompletedSuccessfully)
-            {
-                var langCode = t.Result.Split('-').First();
-                var index = Array.IndexOf(SupportedLanguage.List.Select(l => l.LangCode).ToArray(), langCode);
-                if (index != -1)
-                {
-                    var langMarkPos = (SupportedLanguage.List.Count - index - 1) * LangCodeWidth + PaddingRight;
-                    if (langMarkPos != _CurrentLangMarkerPos)
-                    {
-                        _CurrentLangMarkerPos = langMarkPos;
-                        if (RuntimeInformation.OSDescription == "web") this.StateHasChanged();
-                    }
-                }
-            }
-        });
-        return _CurrentLangMarkerPos;
+        langCode = langCode.Split('-').First();
+        var index = Array.IndexOf(SupportedLanguage.List.Select(l => l.LangCode).ToArray(), langCode);
+        _CurrentLangCodeIndex = index switch { -1 => 0, _ => index };
+        Console.WriteLine($"_CurrentLangCodeIndex is: {_CurrentLangCodeIndex}");
     }
 }
