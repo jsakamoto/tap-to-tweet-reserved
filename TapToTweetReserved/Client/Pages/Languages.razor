@@ -40,6 +40,5 @@
         langCode = langCode.Split('-').First();
         var index = Array.IndexOf(SupportedLanguage.List.Select(l => l.LangCode).ToArray(), langCode);
         _CurrentLangCodeIndex = index switch { -1 => 0, _ => index };
-        Console.WriteLine($"_CurrentLangCodeIndex is: {_CurrentLangCodeIndex}");
     }
 }
