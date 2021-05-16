@@ -14,7 +14,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpGet("/auth/signin")]
-        public IActionResult SignIn()
+        public IActionResult OnSignIn()
         {
             return Challenge(
                 new AuthenticationProperties
@@ -26,7 +26,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpPost("/auth/signout")]
-        public IActionResult SignOut()
+        public IActionResult OnSignOut()
         {
             return SignOut(
                 new AuthenticationProperties { RedirectUri = "/" },
