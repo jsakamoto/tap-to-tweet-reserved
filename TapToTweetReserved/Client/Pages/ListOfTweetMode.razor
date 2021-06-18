@@ -4,7 +4,7 @@
 
 <TweetDialog @ref="TweetDialog" />
 
-<ReservedTweetsList CssClass="tweet-index" Filter="@((SelectableReservedTweet t) => !t.IsTweeted)" OnClickTweet="OnClickTweet">
+<ReservedTweetsList CssClass="tweet-index" Filter="@((SelectableReservedTweet t) => !t.Message.IsTweeted)" OnClickTweet="OnClickTweet">
     <BeforeList>
         <div class="guide">
             <div class="text">
@@ -30,13 +30,13 @@
         this.UIContext.SetMenuItem(new MenuItem { Caption = () => Localized.GotToEdit, Url = "/list-of-editmode" });
     }
 
-    private async Task OnClickTweet(ReservedTweet tweet)
+    private async Task OnClickTweet(SelectableReservedTweet tweet)
     {
-        var posted = await this.TweetDialog.OpenAndPost(tweet);
+        var posted = await this.TweetDialog.OpenAndPost(tweet.Message);
         if (posted)
         {
-            tweet.IsTweeted = true;
-            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            tweet.Message.IsTweeted = true;
+            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Message.Id.Value}", tweet.Message);
             this.StateHasChanged();
         }
     }

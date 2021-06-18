@@ -57,7 +57,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             finally { Lock.Release(); }
         }
 
-        public Task<Guid> AddAsync(string twitterUserId, string textToTweet)
+        public Task<Uuid> AddAsync(string twitterUserId, string textToTweet)
         {
             return ActionAsync(() =>
             {
@@ -70,7 +70,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
 
                 var newTweet = new ReservedTweet
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Uuid.NewUuid(),
                     TextToTweet = textToTweet,
                     Order = tweets.DefaultIfEmpty().Max(t => t?.Order ?? 0) + 1
                 };
@@ -95,7 +95,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             return ActionAsync(() =>
             {
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
-                return tweets.FirstOrDefault(t => t.Id == id);
+                return tweets.FirstOrDefault(t => t.Id.Value == id.ToString());
             });
         }
 
@@ -104,7 +104,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             return ActionAsync<object>(() =>
             {
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
-                var targetTweet = tweets.FirstOrDefault(t => t.Id == id);
+                var targetTweet = tweets.FirstOrDefault(t => t.Id.Value == id.ToString());
                 if (targetTweet != null)
                 {
                     targetTweet.TextToTweet = textToTweet;
@@ -120,7 +120,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             return ActionAsync<object>(() =>
             {
                 if (this.ReservedTweets.TryGetValue(twitterUserId, out var tweets))
-                    tweets.RemoveAll(t => t.Id == id);
+                    tweets.RemoveAll(t => t.Id.Value == id.ToString());
                 return null;
             });
         }

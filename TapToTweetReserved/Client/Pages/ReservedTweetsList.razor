@@ -10,9 +10,9 @@
         <ul class="reserved-tweets">
             @foreach (var tweet in this.ReservedTweets)
             {
-                <li @key="tweet.Id" class="@GetTweetCssClass(tweet)" style="@GetTweetStyle(tweet)">
+                <li @key="tweet.Message.Id" class="@GetTweetCssClass(tweet)" style="@GetTweetStyle(tweet)">
                     <a @onclick="@(() => _OnClickTweet(tweet))" @ondblclick="@(() => _OnDblClickTweet(tweet))">
-                        <span style="white-space:pre-line;">@tweet.TextToTweet</span>
+                        <span style="white-space:pre-line;">@tweet.Message.TextToTweet</span>
                     </a>
                     <span class="tweeted-mark">@Localized.Tweeted</span>
                 </li>
@@ -52,7 +52,8 @@
     protected override async Task OnInitializedAsync()
     {
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
-        this.ReservedTweets = await this.HttpClient.GetFromJsonAsync<SelectableReservedTweet[]>("/api/reservedtweets");
+        var reserved = await this.HttpClient.GetFromJsonAsync<ReservedTweet[]>("/api/reservedtweets");
+        this.ReservedTweets = reserved.Select(r => new SelectableReservedTweet(r)).ToArray();
         this.RefreshOrderdReservedTweets();
     }
 
@@ -66,10 +67,11 @@
         if (this.ReservedTweets != null)
         {
             if (this.Filter != null)
+
             {
                 this.ReservedTweets = this.ReservedTweets.Where(Filter).ToArray();
             }
-            this.OrderdReservedTweets = this.ReservedTweets.OrderBy(t => t.Order).ToArray();
+            this.OrderdReservedTweets = this.ReservedTweets.OrderBy(t => t.Message.Order).ToArray();
         }
     }
 
@@ -85,7 +87,7 @@
     {
         var cssClasses = new List<string>();
         if (tweet.Selected) cssClasses.Add("selected");
-        if (tweet.IsTweeted) cssClasses.Add("tweeted");
+        if (tweet.Message.IsTweeted) cssClasses.Add("tweeted");
         return string.Join(' ', cssClasses);
     }
 

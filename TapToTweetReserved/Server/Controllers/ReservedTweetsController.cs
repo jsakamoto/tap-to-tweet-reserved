@@ -23,20 +23,20 @@ namespace TapToTweetReserved.Server.Controllers
             ReservedTweetsRepository = reservedTweetsRepository;
         }
 
-        [HttpPost("/api/reservedtweets")]
-        public async Task<Guid> PostAsync([FromBody]ReservedTweet newTweet)
-        {
-            var twitterUserId = this.User.Claims.GetTwitterUserId();
-            var newTweetId = await this.ReservedTweetsRepository.AddAsync(twitterUserId, newTweet.TextToTweet);
-            return newTweetId;
-        }
+        //[HttpPost("/api/reservedtweets")]
+        //public async Task<Guid> PostAsync([FromBody]ReservedTweet newTweet)
+        //{
+        //    var twitterUserId = this.User.Claims.GetTwitterUserId();
+        //    var newTweetId = await this.ReservedTweetsRepository.AddAsync(twitterUserId, newTweet.TextToTweet);
+        //    return newTweetId;
+        //}
 
         [HttpGet("/api/reservedtweets")]
         public async Task<ReservedTweet[]> GetAllAsync()
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             var reservedTweets = await this.ReservedTweetsRepository.GetAllAsync(twitterUserId);
-            return reservedTweets.OrderBy(t => t.Id).ToArray();
+            return reservedTweets.OrderBy(t => t.Order).ToArray();
         }
 
         [HttpGet("/api/reservedtweets/{id}")]
@@ -48,7 +48,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpPut("/api/reservedtweets/{id}")]
-        public async Task<IActionResult> PutAsync(Guid id, [FromBody]ReservedTweet tweet)
+        public async Task<IActionResult> PutAsync(Guid id, [FromBody] ReservedTweet tweet)
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             await this.ReservedTweetsRepository.UpdateAsync(twitterUserId, id,

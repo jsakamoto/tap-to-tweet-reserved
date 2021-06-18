@@ -30,7 +30,7 @@ namespace TapToTweetReserved.Server.Services.AzureTable
             return result;
         }
 
-        public Task<Guid> AddAsync(string twitterUserId, string textToTweet)
+        public Task<Uuid> AddAsync(string twitterUserId, string textToTweet)
         {
             return ActionAsync(async table =>
             {
@@ -39,7 +39,7 @@ namespace TapToTweetReserved.Server.Services.AzureTable
 
                 var newTweet = new ReservedTweet
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Uuid.NewUuid(),
                     TextToTweet = textToTweet,
                     Order = maxOrder + 1
                 };

@@ -6,7 +6,7 @@ namespace TapToTweetReserved.Server.Services
 {
     public interface IReservedTweetsRepository
     {
-        Task<Guid> AddAsync(string twitterUserId, string textToTweet);
+        Task<Uuid> AddAsync(string twitterUserId, string textToTweet);
 
         Task<ReservedTweet[]> GetAllAsync(string twitterUserId);
 
