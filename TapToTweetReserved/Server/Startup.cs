@@ -99,6 +99,7 @@ namespace TapToTweetReserved.Server
                 {
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
                     options.SlidingExpiration = true;
+                    options.Cookie.SameSite = SameSiteMode.Strict;
 
                     // https://stackoverflow.com/a/44600389/1268000
                     options.Events.OnRedirectToLogin =
