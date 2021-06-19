@@ -6,14 +6,14 @@ namespace TapToTweetReserved.Server.Services
 {
     public interface IReservedTweetsRepository
     {
-        Task<Guid> AddAsync(string twitterUserId, string textToTweet);
+        Task AddAsync(string twitterUserId, string textToTweet);
 
         Task<ReservedTweet[]> GetAllAsync(string twitterUserId);
 
-        Task<ReservedTweet> GetAsync(string twitterUserId, Guid id);
+        Task<ReservedTweet> GetAsync(string twitterUserId, string id);
 
-        Task UpdateAsync(string twitterUserId, Guid id, string textToTweet, int order, bool isTweeted);
+        Task UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted);
 
-        Task DeleteAsync(string twitterUserId, Guid id);
+        Task DeleteAsync(string twitterUserId, string id);
     }
 }

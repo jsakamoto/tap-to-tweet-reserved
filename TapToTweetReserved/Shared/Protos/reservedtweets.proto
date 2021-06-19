@@ -1,0 +1,32 @@
+﻿syntax = "proto3";
+option csharp_namespace = "TapToTweetReserved.Shared";
+
+import "google/protobuf/empty.proto";
+// import "google/protobuf/timestamp.proto";
+// import "google/protobuf/wrappers.proto";
+
+package reservedtweets;
+
+service ReservedTweets {
+  rpc Add (ReservedTweet) returns (google.protobuf.Empty);
+  rpc GetAll (google.protobuf.Empty) returns (ReservedTweetCollection);
+  rpc Get (ReservedTweetId) returns (ReservedTweet);
+  rpc Update (ReservedTweet) returns (google.protobuf.Empty);
+  rpc Delete (ReservedTweetId) returns (google.protobuf.Empty);
+  rpc Tweet (ReservedTweetId) returns (google.protobuf.Empty);
+}
+
+message ReservedTweetId {
+    string id = 1;
+}
+
+message ReservedTweet {
+    string id = 1;
+    string text_to_tweet = 2;
+    int32 order = 3;
+    bool is_tweeted = 4;
+}
+
+message ReservedTweetCollection {
+    repeated ReservedTweet items = 1;
+}

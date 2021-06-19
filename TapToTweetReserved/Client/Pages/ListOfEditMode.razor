@@ -1,8 +1,8 @@
 ﻿@page "/list-of-editmode"
 @attribute [Authorize]
-@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
+@inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
 
 <MessageBox @ref="MessageBox" />
 
@@ -75,7 +75,7 @@
         var cssClasses = new List<string>();
         var reservedTweets = this.ReservedTweetsList.ReservedTweets;
         if (reservedTweets?.Any(t => t.Selected) != true) cssClasses.Add("no-selected-any");
-        if (reservedTweets?.Where(t => t.IsTweeted).Any(t => t.Selected) != true) cssClasses.Add("no-selected-tweeted");
+        if (reservedTweets?.Where(t => t.Message.IsTweeted).Any(t => t.Selected) != true) cssClasses.Add("no-selected-tweeted");
         return string.Join(' ', cssClasses);
     }
 
@@ -98,10 +98,10 @@
         var comparer = new ReservedTweetComparere(direction);
         var selectedTweets = reservedTweets
             .Where(t => t.Selected)
-            .OrderBy(t => t, comparer)
+            .OrderBy(t => t.Message, comparer)
             .ToList();
 
-        var orderdTweets = reservedTweets.OrderBy(t => t.Order).ToList();
+        var orderdTweets = reservedTweets.OrderBy(t => t.Message.Order).ToList();
         foreach (var tweet in selectedTweets)
         {
             var index = orderdTweets.IndexOf(tweet);
@@ -112,10 +112,10 @@
         for (var n = 0; n < orderdTweets.Count; n++)
         {
             var tweet = orderdTweets[n];
-            if (tweet.Order != n + 1)
+            if (tweet.Message.Order != n + 1)
             {
-                tweet.Order = n + 1;
-                await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+                tweet.Message.Order = n + 1;
+                await this.ReservedTweetsClient.UpdateAsync(tweet.Message);
             }
         }
 
@@ -128,13 +128,13 @@
         var editTarget = reservedTweets.FirstOrDefault(t => t.Selected);
         if (editTarget != null)
         {
-            this.NavigationManager.NavigateTo($"/edit/{editTarget.Id}");
+            this.NavigationManager.NavigateTo($"/edit/{editTarget.Message.Id}");
         }
     }
 
     private Task EditTweet(SelectableReservedTweet tweet)
     {
-        this.NavigationManager.NavigateTo($"/edit/{tweet.Id}");
+        this.NavigationManager.NavigateTo($"/edit/{tweet.Message.Id}");
         return Task.CompletedTask;
     }
 
@@ -150,7 +150,7 @@
             var reservedTweets = this.ReservedTweetsList.ReservedTweets;
             foreach (var tweet in reservedTweets.Where(t => t.Selected))
             {
-                await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Id}");
+                await this.ReservedTweetsClient.DeleteAsync(new ReservedTweetId(tweet.Message.Id));
                 this.ReservedTweetsList.RemoveTweetFromList(tweet);
             }
         }
@@ -159,10 +159,10 @@
     private async Task ReloadTweet()
     {
         var reservedTweets = this.ReservedTweetsList.ReservedTweets;
-        foreach (var tweet in reservedTweets.Where(t => t.Selected && t.IsTweeted))
+        foreach (var tweet in reservedTweets.Where(t => t.Selected && t.Message.IsTweeted))
         {
-            tweet.IsTweeted = false;
-            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Id}", tweet);
+            tweet.Message.IsTweeted = false;
+            await this.ReservedTweetsClient.UpdateAsync(tweet.Message);
         }
     }
 }

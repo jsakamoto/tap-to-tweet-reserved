@@ -1,9 +1,9 @@
 ﻿@page "/addnew"
 @attribute [Authorize]
 @inject IJSRuntime JS
-@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
+@inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
 
 <EditTweetForm OnOK="OnOK"></EditTweetForm>
 
@@ -25,7 +25,7 @@
 
     private async Task OnOK(string textToTweet)
     {
-        await this.HttpClient.PostAsJsonAsync("/api/reservedtweets", new ReservedTweet { TextToTweet = textToTweet });
+        await ReservedTweetsClient.AddAsync(new ReservedTweet { TextToTweet = textToTweet });
         this.NavigationManager.NavigateTo("/list-of-editmode");
     }
 }

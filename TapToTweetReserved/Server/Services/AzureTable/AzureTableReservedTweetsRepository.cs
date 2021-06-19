@@ -30,16 +30,16 @@ namespace TapToTweetReserved.Server.Services.AzureTable
             return result;
         }
 
-        public Task<Guid> AddAsync(string twitterUserId, string textToTweet)
+        public async Task AddAsync(string twitterUserId, string textToTweet)
         {
-            return ActionAsync(async table =>
+            await ActionAsync(async table =>
             {
                 var allTweets = await GetAllAsync(table, twitterUserId);
                 var maxOrder = allTweets.DefaultIfEmpty().Max(e => e?.OriginalEntity.Order ?? 0);
 
                 var newTweet = new ReservedTweet
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
                     TextToTweet = textToTweet,
                     Order = maxOrder + 1
                 };
@@ -69,7 +69,7 @@ namespace TapToTweetReserved.Server.Services.AzureTable
             return allTweets;
         }
 
-        public Task<ReservedTweet> GetAsync(string twitterUserId, Guid id)
+        public Task<ReservedTweet> GetAsync(string twitterUserId, string id)
         {
             return ActionAsync(async table =>
             {
@@ -78,14 +78,14 @@ namespace TapToTweetReserved.Server.Services.AzureTable
             });
         }
 
-        private static async Task<TableEntityAdapter<ReservedTweet>> GetAsync(CloudTable table, string twitterUserId, Guid id)
+        private static async Task<TableEntityAdapter<ReservedTweet>> GetAsync(CloudTable table, string twitterUserId, string id)
         {
-            var operation = TableOperation.Retrieve<TableEntityAdapter<ReservedTweet>>(twitterUserId, id.ToString());
+            var operation = TableOperation.Retrieve<TableEntityAdapter<ReservedTweet>>(twitterUserId, id);
             var res = await table.ExecuteAsync(operation);
             return res.Result as TableEntityAdapter<ReservedTweet>;
         }
 
-        public Task UpdateAsync(string twitterUserId, Guid id, string textToTweet, int order, bool isTweeted)
+        public Task UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
         {
             return ActionAsync<object>(async table =>
             {
@@ -99,7 +99,7 @@ namespace TapToTweetReserved.Server.Services.AzureTable
             });
         }
 
-        public Task DeleteAsync(string twitterUserId, Guid id)
+        public Task DeleteAsync(string twitterUserId, string id)
         {
             return ActionAsync<object>(async (CloudTable table) =>
             {

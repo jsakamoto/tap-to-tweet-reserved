@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +44,7 @@ namespace TapToTweetReserved.Server
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddGrpc();
             services.AddRazorPages();
             services.AddControllersWithViews(options =>
             {
@@ -100,6 +101,7 @@ namespace TapToTweetReserved.Server
                     options.SlidingExpiration = true;
 
                     // https://stackoverflow.com/a/44600389/1268000
+                    options.Events.OnRedirectToLogin =
                     options.Events.OnRedirectToAccessDenied = async (ctx) =>
                     {
                         ctx.Response.StatusCode = 403;
@@ -131,9 +133,11 @@ namespace TapToTweetReserved.Server
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseGrpcWeb();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrpcService<ReservedTweetsService>().EnableGrpcWeb();
                 endpoints.MapRazorPages();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToPage("/_Host");

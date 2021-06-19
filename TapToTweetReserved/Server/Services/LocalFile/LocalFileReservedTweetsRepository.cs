@@ -57,9 +57,9 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             finally { Lock.Release(); }
         }
 
-        public Task<Guid> AddAsync(string twitterUserId, string textToTweet)
+        public async Task AddAsync(string twitterUserId, string textToTweet)
         {
-            return ActionAsync(() =>
+            await ActionAsync(() =>
             {
                 var tweets = default(List<ReservedTweet>);
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out tweets))
@@ -70,7 +70,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
 
                 var newTweet = new ReservedTweet
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.NewGuid().ToString(),
                     TextToTweet = textToTweet,
                     Order = tweets.DefaultIfEmpty().Max(t => t?.Order ?? 0) + 1
                 };
@@ -90,7 +90,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task<ReservedTweet> GetAsync(string twitterUserId, Guid id)
+        public Task<ReservedTweet> GetAsync(string twitterUserId, string id)
         {
             return ActionAsync(() =>
             {
@@ -99,7 +99,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task UpdateAsync(string twitterUserId, Guid id, string textToTweet, int order, bool isTweeted)
+        public Task UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
         {
             return ActionAsync<object>(() =>
             {
@@ -115,7 +115,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task DeleteAsync(string twitterUserId, Guid id)
+        public Task DeleteAsync(string twitterUserId, string id)
         {
             return ActionAsync<object>(() =>
             {
