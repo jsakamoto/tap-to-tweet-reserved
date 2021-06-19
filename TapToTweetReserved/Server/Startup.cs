@@ -101,6 +101,7 @@ namespace TapToTweetReserved.Server
                     options.SlidingExpiration = true;
 
                     // https://stackoverflow.com/a/44600389/1268000
+                    options.Events.OnRedirectToLogin =
                     options.Events.OnRedirectToAccessDenied = async (ctx) =>
                     {
                         ctx.Response.StatusCode = 403;
