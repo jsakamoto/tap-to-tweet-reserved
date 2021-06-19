@@ -57,9 +57,9 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             finally { Lock.Release(); }
         }
 
-        public Task<Uuid> AddAsync(string twitterUserId, string textToTweet)
+        public async Task AddAsync(string twitterUserId, string textToTweet)
         {
-            return ActionAsync(() =>
+            await ActionAsync(() =>
             {
                 var tweets = default(List<ReservedTweet>);
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out tweets))
@@ -70,7 +70,7 @@ namespace TapToTweetReserved.Server.Services.LocalFile
 
                 var newTweet = new ReservedTweet
                 {
-                    Id = Uuid.NewUuid(),
+                    Id = Guid.NewGuid().ToString(),
                     TextToTweet = textToTweet,
                     Order = tweets.DefaultIfEmpty().Max(t => t?.Order ?? 0) + 1
                 };
@@ -90,21 +90,21 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task<ReservedTweet> GetAsync(string twitterUserId, Guid id)
+        public Task<ReservedTweet> GetAsync(string twitterUserId, string id)
         {
             return ActionAsync(() =>
             {
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
-                return tweets.FirstOrDefault(t => t.Id.Value == id.ToString());
+                return tweets.FirstOrDefault(t => t.Id == id);
             });
         }
 
-        public Task UpdateAsync(string twitterUserId, Guid id, string textToTweet, int order, bool isTweeted)
+        public Task UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
         {
             return ActionAsync<object>(() =>
             {
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
-                var targetTweet = tweets.FirstOrDefault(t => t.Id.Value == id.ToString());
+                var targetTweet = tweets.FirstOrDefault(t => t.Id == id);
                 if (targetTweet != null)
                 {
                     targetTweet.TextToTweet = textToTweet;
@@ -115,12 +115,12 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task DeleteAsync(string twitterUserId, Guid id)
+        public Task DeleteAsync(string twitterUserId, string id)
         {
             return ActionAsync<object>(() =>
             {
                 if (this.ReservedTweets.TryGetValue(twitterUserId, out var tweets))
-                    tweets.RemoveAll(t => t.Id.Value == id.ToString());
+                    tweets.RemoveAll(t => t.Id == id);
                 return null;
             });
         }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using TapToTweetReserved.Shared;
 
@@ -18,11 +19,11 @@ namespace TapToTweetReserved.Server.Services
             this.ReservedTweetsRepository = reservedTweetsRepository;
         }
 
-        public override async Task<Uuid> AddTweet(ReservedTweet request, ServerCallContext context)
+        public override async Task<Empty> AddTweet(ReservedTweet request, ServerCallContext context)
         {
             var twitterUserId = context.GetHttpContext().User.Claims.GetTwitterUserId();
-            var newTweetId = await this.ReservedTweetsRepository.AddAsync(twitterUserId, request.TextToTweet);
-            return newTweetId;
+            await this.ReservedTweetsRepository.AddAsync(twitterUserId, request.TextToTweet);
+            return new Empty();
         }
     }
 }

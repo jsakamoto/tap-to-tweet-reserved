@@ -1,10 +1,9 @@
-﻿using System;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TapToTweetReserved.Server.Services;
 using TapToTweetReserved.Shared;
-using System.Linq;
 
 namespace TapToTweetReserved.Server.Controllers
 {
@@ -23,14 +22,6 @@ namespace TapToTweetReserved.Server.Controllers
             ReservedTweetsRepository = reservedTweetsRepository;
         }
 
-        //[HttpPost("/api/reservedtweets")]
-        //public async Task<Guid> PostAsync([FromBody]ReservedTweet newTweet)
-        //{
-        //    var twitterUserId = this.User.Claims.GetTwitterUserId();
-        //    var newTweetId = await this.ReservedTweetsRepository.AddAsync(twitterUserId, newTweet.TextToTweet);
-        //    return newTweetId;
-        //}
-
         [HttpGet("/api/reservedtweets")]
         public async Task<ReservedTweet[]> GetAllAsync()
         {
@@ -40,7 +31,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpGet("/api/reservedtweets/{id}")]
-        public async Task<ReservedTweet> GetAsync(Guid id)
+        public async Task<ReservedTweet> GetAsync(string id)
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             var reservedTweet = await this.ReservedTweetsRepository.GetAsync(twitterUserId, id);
@@ -48,7 +39,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpPut("/api/reservedtweets/{id}")]
-        public async Task<IActionResult> PutAsync(Guid id, [FromBody] ReservedTweet tweet)
+        public async Task<IActionResult> PutAsync(string id, [FromBody] ReservedTweet tweet)
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             await this.ReservedTweetsRepository.UpdateAsync(twitterUserId, id,
@@ -59,7 +50,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpDelete("/api/reservedtweets/{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             await this.ReservedTweetsRepository.DeleteAsync(twitterUserId, id);
@@ -67,7 +58,7 @@ namespace TapToTweetReserved.Server.Controllers
         }
 
         [HttpPost("/api/reservedtweets/{id}/tweet")]
-        public async Task<IActionResult> PostTweetAsync(Guid id)
+        public async Task<IActionResult> PostTweetAsync(string id)
         {
             var twitterUserId = this.User.Claims.GetTwitterUserId();
             var reservedTweet = await this.ReservedTweetsRepository.GetAsync(twitterUserId, id);
