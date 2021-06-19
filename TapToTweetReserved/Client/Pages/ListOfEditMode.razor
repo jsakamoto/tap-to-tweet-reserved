@@ -1,8 +1,8 @@
 ﻿@page "/list-of-editmode"
 @attribute [Authorize]
-@inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
+@inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
 
 <MessageBox @ref="MessageBox" />
 
@@ -115,7 +115,7 @@
             if (tweet.Message.Order != n + 1)
             {
                 tweet.Message.Order = n + 1;
-                await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Message.Id}", tweet.Message);
+                await this.ReservedTweetsClient.UpdateAsync(tweet.Message);
             }
         }
 
@@ -150,11 +150,10 @@
             var reservedTweets = this.ReservedTweetsList.ReservedTweets;
             foreach (var tweet in reservedTweets.Where(t => t.Selected))
             {
-                await this.HttpClient.DeleteAsync($"/api/reservedtweets/{tweet.Message.Id}");
+                await this.ReservedTweetsClient.DeleteAsync(new ReservedTweetId(tweet.Message.Id));
                 this.ReservedTweetsList.RemoveTweetFromList(tweet);
             }
         }
-
     }
 
     private async Task ReloadTweet()
@@ -163,7 +162,7 @@
         foreach (var tweet in reservedTweets.Where(t => t.Selected && t.Message.IsTweeted))
         {
             tweet.Message.IsTweeted = false;
-            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Message.Id}", tweet.Message);
+            await this.ReservedTweetsClient.UpdateAsync(tweet.Message);
         }
     }
 }

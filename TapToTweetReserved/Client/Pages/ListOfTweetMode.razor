@@ -1,6 +1,6 @@
 ﻿@attribute [Authorize]
-@inject HttpClient HttpClient
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
+@inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
 
 <TweetDialog @ref="TweetDialog" />
 
@@ -36,7 +36,7 @@
         if (posted)
         {
             tweet.Message.IsTweeted = true;
-            await this.HttpClient.PutAsJsonAsync($"/api/reservedtweets/{tweet.Message.Id}", tweet.Message);
+            await this.ReservedTweetsClient.UpdateAsync(tweet.Message);
             this.StateHasChanged();
         }
     }

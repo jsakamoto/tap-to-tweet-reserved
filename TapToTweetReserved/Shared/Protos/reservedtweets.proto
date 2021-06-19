@@ -8,12 +8,25 @@ import "google/protobuf/empty.proto";
 package reservedtweets;
 
 service ReservedTweets {
-  rpc AddTweet (ReservedTweet) returns (google.protobuf.Empty);
+  rpc Add (ReservedTweet) returns (google.protobuf.Empty);
+  rpc GetAll (google.protobuf.Empty) returns (ReservedTweetCollection);
+  rpc Get (ReservedTweetId) returns (ReservedTweet);
+  rpc Update (ReservedTweet) returns (google.protobuf.Empty);
+  rpc Delete (ReservedTweetId) returns (google.protobuf.Empty);
+  rpc Tweet (ReservedTweetId) returns (google.protobuf.Empty);
 }
 
-message ReservedTweet{
+message ReservedTweetId {
     string id = 1;
-    string textToTweet = 2;
+}
+
+message ReservedTweet {
+    string id = 1;
+    string text_to_tweet = 2;
     int32 order = 3;
-    bool isTweeted = 4;
+    bool is_tweeted = 4;
+}
+
+message ReservedTweetCollection {
+    repeated ReservedTweet items = 1;
 }

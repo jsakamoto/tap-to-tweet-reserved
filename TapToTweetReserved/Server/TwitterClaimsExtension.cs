@@ -1,24 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
+using Grpc.Core;
 
 namespace TapToTweetReserved.Server
 {
     public static class TwitterClaimsExtension
     {
-        public static string GetTwitterUserId(this IEnumerable<Claim> claims)
+        private static string GetClaimValueOf(this ServerCallContext context, string claimType)
         {
-            return claims.First(c => c.Type == TwitterClaimTypes.UserId).Value;
+            return context.GetHttpContext().User.Claims.First(c => c.Type == claimType).Value;
         }
 
-        public static string GetTwitterAccessToken(this IEnumerable<Claim> claims)
+        public static string GetTwitterUserId(this ServerCallContext context)
         {
-            return claims.First(c => c.Type == TwitterClaimTypes.AccessToken).Value;
+            return context.GetClaimValueOf(TwitterClaimTypes.UserId);
         }
 
-        public static string GetTwitterAccessTokenSecret(this IEnumerable<Claim> claims)
+        public static string GetTwitterAccessToken(this ServerCallContext context)
         {
-            return claims.First(c => c.Type == TwitterClaimTypes.AccessTokenSecret).Value;
+            return context.GetClaimValueOf(TwitterClaimTypes.AccessToken);
+        }
+
+        public static string GetTwitterAccessTokenSecret(this ServerCallContext context)
+        {
+            return context.GetClaimValueOf(TwitterClaimTypes.AccessTokenSecret);
         }
     }
 }

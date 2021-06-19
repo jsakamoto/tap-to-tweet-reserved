@@ -1,5 +1,5 @@
-﻿@inject HttpClient HttpClient
-@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+﻿@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+@inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
 
 <div class="@CssClass @GetIndexCssClass()">
 
@@ -52,8 +52,8 @@
     protected override async Task OnInitializedAsync()
     {
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
-        var reserved = await this.HttpClient.GetFromJsonAsync<ReservedTweet[]>("/api/reservedtweets");
-        this.ReservedTweets = reserved.Select(r => new SelectableReservedTweet(r)).ToArray();
+        var collection = await this.ReservedTweetsClient.GetAllAsync(new Google.Protobuf.WellKnownTypes.Empty());
+        this.ReservedTweets = collection.Items.Select(r => new SelectableReservedTweet(r)).ToArray();
         this.RefreshOrderdReservedTweets();
     }
 
