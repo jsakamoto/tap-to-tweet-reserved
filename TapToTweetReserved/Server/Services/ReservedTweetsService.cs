@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using TapToTweetReserved.Shared;
 
 namespace TapToTweetReserved.Server.Services
 {
+    [Authorize]
     public class ReservedTweetsService : ReservedTweets.ReservedTweetsBase
     {
         private TwitterConfiguration TwitterConfiguration { get; }
