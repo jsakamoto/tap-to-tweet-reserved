@@ -6,6 +6,9 @@
 [*]
 indent_style = space
 indent_size = 4
+[*.json]
+indent_style = space
+indent_size = 2
 # Code files
 [*.{cs,csx,vb,vbx}]
 indent_size = 4
