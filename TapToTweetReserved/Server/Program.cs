@@ -1,16 +1,8 @@
-﻿namespace TapToTweetReserved.Server;
+﻿using TapToTweetReserved.Server;
 
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
+var builder = Host.CreateDefaultBuilder(args);
+builder.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
-}
+var app = builder.Build();
+
+app.Run();
