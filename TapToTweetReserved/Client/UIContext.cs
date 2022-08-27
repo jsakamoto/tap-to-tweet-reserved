@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace TapToTweetReserved.Client;
 
-namespace TapToTweetReserved.Client
+public class UIContext
 {
-    public class UIContext
+    private readonly List<MenuItem> _MenuItems = new List<MenuItem>();
+
+    public IEnumerable<MenuItem> MenuItems => this._MenuItems;
+
+    public event EventHandler StateHasChanged;
+
+    private Func<string> _PageTitle = () => "";
+
+    public Func<string> PageTitle
     {
-        private readonly List<MenuItem> _MenuItems = new List<MenuItem>();
+        get => this._PageTitle;
+        set { this._PageTitle = value; this.StateHasChanged?.Invoke(this, EventArgs.Empty); }
+    }
 
-        public IEnumerable<MenuItem> MenuItems => _MenuItems;
-
-        public event EventHandler StateHasChanged;
-
-        private Func<string> _PageTitle = () => "";
-
-        public Func<string> PageTitle
-        {
-            get => _PageTitle;
-            set { _PageTitle = value; this.StateHasChanged?.Invoke(this, EventArgs.Empty); }
-        }
-
-        public void SetMenuItem(params MenuItem[] menuItems)
-        {
-            this._MenuItems.Clear();
-            this._MenuItems.AddRange(menuItems);
-            this.StateHasChanged?.Invoke(this, EventArgs.Empty);
-        }
+    public void SetMenuItem(params MenuItem[] menuItems)
+    {
+        this._MenuItems.Clear();
+        this._MenuItems.AddRange(menuItems);
+        this.StateHasChanged?.Invoke(this, EventArgs.Empty);
     }
 }

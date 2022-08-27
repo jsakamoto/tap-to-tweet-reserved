@@ -1,7 +1,6 @@
-﻿namespace TapToTweetReserved.Shared
+﻿namespace TapToTweetReserved.Shared;
+
+public class Tweet
 {
-    public class Tweet
-    {
-        public string Message { get; set; }
-    }
+    public string Message { get; set; }
 }

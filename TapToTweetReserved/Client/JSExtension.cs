@@ -1,12 +1,11 @@
 ﻿using Microsoft.JSInterop;
 
-namespace TapToTweetReserved.Client
+namespace TapToTweetReserved.Client;
+
+public static class JSExtension
 {
-    public static class JSExtension
+    public static void SetInitialFocus(this IJSRuntime jSRuntime)
     {
-        public static void SetInitialFocus(this IJSRuntime jSRuntime)
-        {
-            (jSRuntime as IJSInProcessRuntime)?.InvokeVoid("eval", "setTimeout(()=>(document.querySelector('*[autofocus]')||{focus:()=>{}}).focus(), 200)");
-        }
+        (jSRuntime as IJSInProcessRuntime)?.InvokeVoid("eval", "setTimeout(()=>(document.querySelector('*[autofocus]')||{focus:()=>{}}).focus(), 200)");
     }
 }

@@ -1,16 +1,15 @@
 ﻿using TapToTweetReserved.Shared;
 
-namespace TapToTweetReserved.Client
+namespace TapToTweetReserved.Client;
+
+public class SelectableReservedTweet
 {
-    public class SelectableReservedTweet
+    public bool Selected;
+
+    public readonly ReservedTweet Message;
+
+    public SelectableReservedTweet(ReservedTweet message)
     {
-        public bool Selected;
-
-        public readonly ReservedTweet Message;
-
-        public SelectableReservedTweet(ReservedTweet message)
-        {
-            Message = message;
-        }
+        this.Message = message;
     }
 }

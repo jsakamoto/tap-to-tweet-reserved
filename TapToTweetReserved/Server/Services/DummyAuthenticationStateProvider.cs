@@ -1,14 +1,12 @@
 ﻿using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace TapToTweetReserved.Server.Services
+namespace TapToTweetReserved.Server.Services;
+
+public class DummyAuthenticationStateProvider : AuthenticationStateProvider
 {
-    public class DummyAuthenticationStateProvider : AuthenticationStateProvider
+    public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            return Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
-        }
+        return Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
     }
 }

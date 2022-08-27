@@ -1,11 +1,10 @@
-﻿namespace TapToTweetReserved.Server
+﻿namespace TapToTweetReserved.Server;
+
+public class TwitterClaimTypes
 {
-    public class TwitterClaimTypes
-    {
-        public const string UserId = "urn:twitter:userid";
+    public const string UserId = "urn:twitter:userid";
 
-        public const string AccessToken = "urn:twitter:accesstoken";
+    public const string AccessToken = "urn:twitter:accesstoken";
 
-        public const string AccessTokenSecret = "urn:twitter:accesstokensecret";
-    }
+    public const string AccessTokenSecret = "urn:twitter:accesstokensecret";
 }

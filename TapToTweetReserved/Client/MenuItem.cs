@@ -1,10 +1,7 @@
-﻿using System;
+﻿namespace TapToTweetReserved.Client;
 
-namespace TapToTweetReserved.Client
+public class MenuItem
 {
-    public class MenuItem
-    {
-        public Func<string> Caption;
-        public string Url;
-    }
+    public Func<string> Caption;
+    public string Url;
 }

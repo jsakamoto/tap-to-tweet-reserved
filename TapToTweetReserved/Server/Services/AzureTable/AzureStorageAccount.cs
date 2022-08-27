@@ -1,7 +1,6 @@
-﻿namespace TapToTweetReserved.Server.Services.AzureTable
+﻿namespace TapToTweetReserved.Server.Services.AzureTable;
+
+public class AzureStorageAccount
 {
-    public class AzureStorageAccount
-    {
-        public string StorageConnectionString { get; set; }
-    }
+    public string StorageConnectionString { get; set; }
 }

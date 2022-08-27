@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-using TapToTweetReserved.Shared;
+﻿using TapToTweetReserved.Shared;
 
-namespace TapToTweetReserved.Server.Services
+namespace TapToTweetReserved.Server.Services;
+
+public interface IReservedTweetsRepository
 {
-    public interface IReservedTweetsRepository
-    {
-        ValueTask AddAsync(string twitterUserId, string textToTweet);
+    ValueTask AddAsync(string twitterUserId, string textToTweet);
 
-        ValueTask<ReservedTweet[]> GetAllAsync(string twitterUserId);
+    ValueTask<ReservedTweet[]> GetAllAsync(string twitterUserId);
 
-        ValueTask<ReservedTweet> GetAsync(string twitterUserId, string id);
+    ValueTask<ReservedTweet> GetAsync(string twitterUserId, string id);
 
-        ValueTask UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted);
+    ValueTask UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted);
 
-        ValueTask DeleteAsync(string twitterUserId, string id);
-    }
+    ValueTask DeleteAsync(string twitterUserId, string id);
 }

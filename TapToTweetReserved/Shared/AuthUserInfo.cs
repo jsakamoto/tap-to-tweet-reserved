@@ -1,7 +1,6 @@
-﻿namespace TapToTweetReserved.Shared
+﻿namespace TapToTweetReserved.Shared;
+
+public class AuthUserInfo
 {
-    public class AuthUserInfo
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

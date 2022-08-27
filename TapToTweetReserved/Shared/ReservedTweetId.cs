@@ -1,11 +1,10 @@
-﻿namespace TapToTweetReserved.Shared
+﻿namespace TapToTweetReserved.Shared;
+
+public partial class ReservedTweetId
 {
-    public partial class ReservedTweetId
+    public ReservedTweetId(string id)
     {
-        public ReservedTweetId(string id)
-        {
-            this.OnConstruction();
-            this.Id = id;
-        }
+        this.OnConstruction();
+        this.Id = id;
     }
 }
