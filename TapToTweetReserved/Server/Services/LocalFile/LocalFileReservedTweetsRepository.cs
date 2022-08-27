@@ -20,12 +20,12 @@ namespace TapToTweetReserved.Server.Services.LocalFile
 
         public LocalFileReservedTweetsRepository(IWebHostEnvironment hostEnvironment)
         {
-            HostEnvironment = hostEnvironment;
+            this.HostEnvironment = hostEnvironment;
         }
 
-        private async Task<string> GetStoragePathAsync()
+        private async ValueTask<string> GetStoragePathAsync()
         {
-            var appDataDir = Path.Combine(HostEnvironment.ContentRootPath, "App_Data");
+            var appDataDir = Path.Combine(this.HostEnvironment.ContentRootPath, "App_Data");
             if (!Directory.Exists(appDataDir)) Directory.CreateDirectory(appDataDir);
             var storagePath = Path.Combine(appDataDir, "ReservedTweets.json");
             if (!File.Exists(storagePath))
@@ -35,12 +35,12 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             return storagePath;
         }
 
-        private async Task<T> ActionAsync<T>(Func<T> action)
+        private async ValueTask<T> ActionAsync<T>(Func<T> action)
         {
-            await Lock.WaitAsync();
+            await this.Lock.WaitAsync();
             try
             {
-                var storagePath = await GetStoragePathAsync();
+                var storagePath = await this.GetStoragePathAsync();
                 if (this.ReservedTweets == null)
                 {
                     var initialJson = await File.ReadAllTextAsync(storagePath);
@@ -54,12 +54,12 @@ namespace TapToTweetReserved.Server.Services.LocalFile
 
                 return result;
             }
-            finally { Lock.Release(); }
+            finally { this.Lock.Release(); }
         }
 
-        public async Task AddAsync(string twitterUserId, string textToTweet)
+        public async ValueTask AddAsync(string twitterUserId, string textToTweet)
         {
-            await ActionAsync(() =>
+            await this.ActionAsync(() =>
             {
                 var tweets = default(List<ReservedTweet>);
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out tweets))
@@ -80,9 +80,9 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task<ReservedTweet[]> GetAllAsync(string twitterUserId)
+        public ValueTask<ReservedTweet[]> GetAllAsync(string twitterUserId)
         {
-            return ActionAsync(() =>
+            return this.ActionAsync(() =>
             {
                 if (this.ReservedTweets.TryGetValue(twitterUserId, out var tweets))
                     return tweets.ToArray();
@@ -90,18 +90,18 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task<ReservedTweet> GetAsync(string twitterUserId, string id)
+        public ValueTask<ReservedTweet> GetAsync(string twitterUserId, string id)
         {
-            return ActionAsync(() =>
+            return this.ActionAsync(() =>
             {
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
                 return tweets.FirstOrDefault(t => t.Id == id);
             });
         }
 
-        public Task UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
+        public async ValueTask UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
         {
-            return ActionAsync<object>(() =>
+            await this.ActionAsync<object>(() =>
             {
                 if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
                 var targetTweet = tweets.FirstOrDefault(t => t.Id == id);
@@ -115,9 +115,9 @@ namespace TapToTweetReserved.Server.Services.LocalFile
             });
         }
 
-        public Task DeleteAsync(string twitterUserId, string id)
+        public async ValueTask DeleteAsync(string twitterUserId, string id)
         {
-            return ActionAsync<object>(() =>
+            await this.ActionAsync<object>(() =>
             {
                 if (this.ReservedTweets.TryGetValue(twitterUserId, out var tweets))
                     tweets.RemoveAll(t => t.Id == id);
