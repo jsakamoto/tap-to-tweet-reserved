@@ -1,6 +1,5 @@
 ﻿@page "/addnew"
 @attribute [Authorize]
-@inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
 @inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
@@ -17,8 +16,6 @@
     protected override async Task OnInitializedAsync()
     {
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
-        this.JS.SetInitialFocus();
-
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
         this.UIContext.PageTitle = () => Localized.EditMode_Add;
     }

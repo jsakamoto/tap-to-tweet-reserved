@@ -1,6 +1,5 @@
 ﻿@page "/edit/{Id}"
 @attribute [Authorize]
-@inject IJSRuntime JS
 @inject NavigationManager NavigationManager
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
 @inject ReservedTweets.ReservedTweetsClient ReservedTweetsClient
@@ -29,7 +28,6 @@
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
         this.UIContext.PageTitle = () => Localized.EditMode_Edit;
         this.EditTarget = await this.ReservedTweetsClient.GetAsync(new ReservedTweetId(this.Id));
-        this.JS.SetInitialFocus();
     }
 
     private async Task OnOK(string textToTweet)
