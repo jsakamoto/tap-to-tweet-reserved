@@ -12,8 +12,8 @@
     <PackageReference Include="Microsoft.Azure.Cosmos.Table" Version="1.0.8" />
     <PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
     <PackageReference Include="Toolbelt.AspNetCore.CssLiveReloader" Version="1.1.4" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.38.0" />
-    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.38.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.48.0" />
+    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.48.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,9 +23,9 @@
 
   <ItemGroup>
     <Content Remove="appSettings.Development.json" />
-    <Content Remove="App_Data\ReservedTweets.json" />
+    <Content Remove="**\ReservedTweets.json" />
     <None Include="appSettings.Development.json" />
-    <None Include="App_Data\ReservedTweets.json" />
+    <None Include="**\ReservedTweets.json" />
   </ItemGroup>
 
 </Project>
