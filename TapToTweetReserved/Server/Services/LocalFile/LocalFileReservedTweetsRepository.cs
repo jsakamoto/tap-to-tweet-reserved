@@ -5,9 +5,11 @@ namespace TapToTweetReserved.Server.Services.LocalFile;
 
 public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
 {
-    public Dictionary<string, List<ReservedTweet>> ReservedTweets { get; set; }
+    public class ReservedTweetDictionary : Dictionary<string, List<ReservedTweet>> { }
 
-    private SemaphoreSlim Lock { get; } = new SemaphoreSlim(1, 1);
+    public ReservedTweetDictionary? ReservedTweets { get; set; }
+
+    private SemaphoreSlim Lock { get; } = new(1, 1);
 
     private IWebHostEnvironment HostEnvironment { get; }
 
@@ -28,7 +30,7 @@ public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
         return storagePath;
     }
 
-    private async ValueTask<T> ActionAsync<T>(Func<T> action)
+    private async ValueTask<T?> ActionAsync<T>(Func<ReservedTweetDictionary, T?> action)
     {
         await this.Lock.WaitAsync();
         try
@@ -37,10 +39,10 @@ public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
             if (this.ReservedTweets == null)
             {
                 var initialJson = await File.ReadAllTextAsync(storagePath);
-                this.ReservedTweets = JsonSerializer.Deserialize<Dictionary<string, List<ReservedTweet>>>(initialJson);
+                this.ReservedTweets = JsonSerializer.Deserialize<ReservedTweetDictionary>(initialJson) ?? new();
             }
 
-            var result = action();
+            var result = action(this.ReservedTweets);
 
             var json = JsonSerializer.Serialize(this.ReservedTweets);
             await File.WriteAllTextAsync(storagePath, json);
@@ -52,13 +54,13 @@ public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
 
     public async ValueTask AddAsync(string twitterUserId, string textToTweet)
     {
-        await this.ActionAsync(() =>
+        await this.ActionAsync(reservedTweets =>
         {
             var tweets = default(List<ReservedTweet>);
-            if (!this.ReservedTweets.TryGetValue(twitterUserId, out tweets))
+            if (!reservedTweets.TryGetValue(twitterUserId, out tweets))
             {
                 tweets = new List<ReservedTweet>();
-                this.ReservedTweets.Add(twitterUserId, tweets);
+                reservedTweets.Add(twitterUserId, tweets);
             }
 
             var newTweet = new ReservedTweet
@@ -73,30 +75,30 @@ public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
         });
     }
 
-    public ValueTask<ReservedTweet[]> GetAllAsync(string twitterUserId)
+    public async ValueTask<ReservedTweet[]> GetAllAsync(string twitterUserId)
     {
-        return this.ActionAsync(() =>
+        return await this.ActionAsync(reservedTweets =>
         {
-            if (this.ReservedTweets.TryGetValue(twitterUserId, out var tweets))
+            if (reservedTweets.TryGetValue(twitterUserId, out var tweets))
                 return tweets.ToArray();
-            return new ReservedTweet[0];
-        });
+            return null;
+        }) ?? Array.Empty<ReservedTweet>();
     }
 
-    public ValueTask<ReservedTweet> GetAsync(string twitterUserId, string id)
+    public ValueTask<ReservedTweet?> GetAsync(string twitterUserId, string id)
     {
-        return this.ActionAsync(() =>
+        return this.ActionAsync(reservedTweets =>
         {
-            if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
+            if (!reservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
             return tweets.FirstOrDefault(t => t.Id == id);
         });
     }
 
     public async ValueTask UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
     {
-        await this.ActionAsync<object>(() =>
+        await this.ActionAsync<object>(reservedTweets =>
         {
-            if (!this.ReservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
+            if (!reservedTweets.TryGetValue(twitterUserId, out var tweets)) return null;
             var targetTweet = tweets.FirstOrDefault(t => t.Id == id);
             if (targetTweet != null)
             {
@@ -110,9 +112,9 @@ public class LocalFileReservedTweetsRepository : IReservedTweetsRepository
 
     public async ValueTask DeleteAsync(string twitterUserId, string id)
     {
-        await this.ActionAsync<object>(() =>
+        await this.ActionAsync<object>(reservedTweets =>
         {
-            if (this.ReservedTweets.TryGetValue(twitterUserId, out var tweets))
+            if (reservedTweets.TryGetValue(twitterUserId, out var tweets))
                 tweets.RemoveAll(t => t.Id == id);
             return null;
         });

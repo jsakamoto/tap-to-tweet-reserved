@@ -8,7 +8,7 @@ public interface IReservedTweetsRepository
 
     ValueTask<ReservedTweet[]> GetAllAsync(string twitterUserId);
 
-    ValueTask<ReservedTweet> GetAsync(string twitterUserId, string id);
+    ValueTask<ReservedTweet?> GetAsync(string twitterUserId, string id);
 
     ValueTask UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted);
 

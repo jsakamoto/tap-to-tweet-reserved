@@ -2,7 +2,7 @@
 
 public class TwitterConfiguration
 {
-    public string ConsumerAPIKey { get; set; }
+    public string? ConsumerAPIKey { get; set; }
 
-    public string ConsumerSecret { get; set; }
+    public string? ConsumerSecret { get; set; }
 }

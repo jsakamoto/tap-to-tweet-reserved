@@ -2,6 +2,6 @@
 
 public class MenuItem
 {
-    public Func<string> Caption;
-    public string Url;
+    public Func<string?>? Caption;
+    public string? Url;
 }

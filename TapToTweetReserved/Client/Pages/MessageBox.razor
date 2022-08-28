@@ -17,16 +17,18 @@
 
 @code
 {
-    private Dialog Dialog;
+    private Dialog? Dialog;
 
-    private string Caption;
+    private string Caption = "";
 
-    private string Message;
+    private string Message = "";
 
     private string[] Buttons = new string[0];
 
     public async Task<string> Show(string caption, string message, string[] buttons)
     {
+        if (this.Dialog == null) throw new NullReferenceException();
+
         this.Caption = caption;
         this.Message = message;
         this.Buttons = buttons;
@@ -36,16 +38,18 @@
 
         this.StateHasChanged();
 
-        return result;
+        return result ?? "";
     }
 
     private void OnClickButton(string button)
     {
+        if (this.Dialog == null) throw new NullReferenceException();
         this.Dialog.Close(button);
     }
 
     public Task OnClickScreenMask()
     {
+        if (this.Dialog == null) throw new NullReferenceException();
         this.Dialog.Close(this.Buttons.Last());
         return Task.CompletedTask;
     }

@@ -23,18 +23,18 @@
     public string CssClass { get; set; } = "";
 
     [Parameter]
-    public RenderFragment Caption { get; set; }
+    public RenderFragment? Caption { get; set; }
 
     [Parameter]
-    public RenderFragment Body { get; set; }
+    public RenderFragment? Body { get; set; }
 
     [Parameter]
-    public RenderFragment Action { get; set; }
+    public RenderFragment? Action { get; set; }
 
     [Parameter]
-    public Func<Task> OnClickScreenMask { get; set; }
+    public Func<Task>? OnClickScreenMask { get; set; }
 
-    private TaskCompletionSource<object> CurrentTaskSrc;
+    private TaskCompletionSource<object?>? CurrentTaskSrc;
 
     private enum DialogState
     {
@@ -48,9 +48,9 @@
 
     public bool IsOpened => this.State == DialogState.Opened;
 
-    public async Task<object> Show()
+    public async Task<object?> Show()
     {
-        this.CurrentTaskSrc = new System.Threading.Tasks.TaskCompletionSource<object>();
+        this.CurrentTaskSrc = new();
         this.State = DialogState.Opening;
         this.StateHasChanged();
         await Task.Delay(50);
@@ -59,10 +59,10 @@
         return await this.CurrentTaskSrc.Task;
     }
 
-    public void Close(object result)
+    public void Close(object? result)
     {
         this.State = DialogState.Closing;
-        this.CurrentTaskSrc.SetResult(result);
+        this.CurrentTaskSrc?.SetResult(result);
         this.StateHasChanged();
         Task.Delay(200).ContinueWith(_ =>
         {

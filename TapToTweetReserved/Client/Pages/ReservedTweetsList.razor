@@ -28,26 +28,26 @@
     private Localized Localized = new Localized();
 
     [Parameter]
-    public string CssClass { get; set; }
+    public string? CssClass { get; set; }
 
     [Parameter]
-    public RenderFragment BeforeList { get; set; }
+    public RenderFragment? BeforeList { get; set; }
 
     [Parameter]
-    public RenderFragment AfterList { get; set; }
+    public RenderFragment? AfterList { get; set; }
 
     [Parameter]
-    public Func<SelectableReservedTweet, bool> Filter { get; set; }
+    public Func<SelectableReservedTweet, bool>? Filter { get; set; }
 
     [Parameter]
-    public Func<SelectableReservedTweet, Task> OnClickTweet { get; set; }
+    public EventCallback<SelectableReservedTweet> OnClickTweet { get; set; }
 
     [Parameter]
-    public Func<SelectableReservedTweet, Task> OnDblClickTweet { get; set; }
+    public EventCallback<SelectableReservedTweet> OnDblClickTweet { get; set; }
 
-    public SelectableReservedTweet[] ReservedTweets { get; private set; } = null;
+    private SelectableReservedTweet[]? ReservedTweets = null;
 
-    private SelectableReservedTweet[] OrderdReservedTweets = null;
+    private SelectableReservedTweet[]? OrderdReservedTweets = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,6 +57,12 @@
         this.RefreshOrderdReservedTweets();
     }
 
+    public bool TryGetReservedTweets([NotNullWhen(true)] out SelectableReservedTweet[]? reservedTweets)
+    {
+        reservedTweets = this.ReservedTweets;
+        return reservedTweets != null;
+    }
+
     protected override void OnParametersSet()
     {
         this.RefreshOrderdReservedTweets();
@@ -64,15 +70,11 @@
 
     public void RefreshOrderdReservedTweets()
     {
-        if (this.ReservedTweets != null)
-        {
-            if (this.Filter != null)
+        if (this.ReservedTweets == null) return;
+        var filter = this.Filter ?? (_ => true);
 
-            {
-                this.ReservedTweets = this.ReservedTweets.Where(Filter).ToArray();
-            }
-            this.OrderdReservedTweets = this.ReservedTweets.OrderBy(t => t.Message.Order).ToArray();
-        }
+        this.ReservedTweets = this.ReservedTweets.Where(filter).ToArray();
+        this.OrderdReservedTweets = this.ReservedTweets.OrderBy(t => t.Message.Order).ToArray();
     }
 
     private string GetIndexCssClass()
@@ -93,22 +95,24 @@
 
     private string GetTweetStyle(SelectableReservedTweet tweet)
     {
+        if (this.OrderdReservedTweets == null) return "";
         var orderdIndex = Array.IndexOf(this.OrderdReservedTweets, tweet);
         return $"top: {5 * orderdIndex}rem;";
     }
 
     private async Task _OnClickTweet(SelectableReservedTweet tweet)
     {
-        await OnClickTweet?.Invoke(tweet);
+        await this.OnClickTweet.InvokeAsync(tweet);
     }
 
     private async Task _OnDblClickTweet(SelectableReservedTweet tweet)
     {
-        await OnDblClickTweet?.Invoke(tweet);
+        await OnDblClickTweet.InvokeAsync(tweet);
     }
 
     public void RemoveTweetFromList(SelectableReservedTweet tweet)
     {
+        if (this.ReservedTweets == null) return;
         this.ReservedTweets = this.ReservedTweets.Where(t => t != tweet).ToArray();
         this.RefreshOrderdReservedTweets();
     }

@@ -40,7 +40,7 @@ public class AzureTableReservedTweetsRepository : IReservedTweetsRepository
         return ValueTask.FromResult(allTweets);
     }
 
-    public async ValueTask<ReservedTweet> GetAsync(string twitterUserId, string id)
+    public async ValueTask<ReservedTweet?> GetAsync(string twitterUserId, string id)
     {
         var res = await this.TableClient.GetEntityAsync<ReservedTweet>(twitterUserId, id);
         return res.Value;
@@ -49,6 +49,8 @@ public class AzureTableReservedTweetsRepository : IReservedTweetsRepository
     public async ValueTask UpdateAsync(string twitterUserId, string id, string textToTweet, int order, bool isTweeted)
     {
         var entity = await this.GetAsync(twitterUserId, id);
+        if (entity == null) return;
+
         entity.TextToTweet = textToTweet;
         entity.Order = order;
         entity.IsTweeted = isTweeted;

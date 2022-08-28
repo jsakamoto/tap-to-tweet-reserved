@@ -3,6 +3,7 @@
 @using TapToTweetReserved.Client.Pages
 @inherits LayoutComponentBase
 @inject IServiceProvider Services
+@inject HttpClient HttpClient
 @inject AuthenticationStateProvider AuthStateProvider
 @inject Toolbelt.Blazor.I18nText.I18nText I18nText
 
@@ -19,7 +20,7 @@
                 <nav>
                     @foreach (var menuItem in this.UIContext.MenuItems)
                     {
-                        <div><a href="@menuItem.Url">@menuItem.Caption()</a></div>
+                        <div><a href="@menuItem.Url">@menuItem.Caption?.Invoke()</a></div>
                     }
                     <div>@User.Name | <a id="sign-out" @onclick="OnClickSignOut">@Localized.SignOut</a></div>
                     <div><a @onclick="OnClickAbout">@Localized.OpenAboutBox</a></div>
@@ -44,33 +45,30 @@
 
 @code {
     [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private Task<AuthenticationState> authenticationStateTask { get; set; } = null!;
 
-    private Localized Localized = new Localized();
+    private Localized Localized = new();
 
-    private IIdentity User;
+    private IIdentity? User;
 
     private bool MenuIsExpanded;
 
     private string HeaderCssClass => MenuIsExpanded ? "expand-menu" : "";
 
-    private UIContext UIContext = new UIContext();
+    private UIContext UIContext = new();
 
-    private HttpClient HttpClient;
+    private About? AboutBox;
 
-    private About AboutBox;
-
-    private MessageBox MessageBox;
+    private MessageBox? MessageBox;
 
     protected override async Task OnInitializedAsync()
     {
-        this.HttpClient = this.Services.GetService<HttpClient>();
         this.UIContext.StateHasChanged += UIContext_StateHasChanged;
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
         await RefreshAuthenticationStateAsync();
     }
 
-    private void UIContext_StateHasChanged(object sender, EventArgs args)
+    private void UIContext_StateHasChanged(object? sender, EventArgs args)
     {
         this.StateHasChanged();
     }
@@ -93,19 +91,19 @@
 
     private async Task OnClickSignOut()
     {
-        if (this.HttpClient != null)
-        {
-            var res = await this.MessageBox.Show(Localized.SignOut, Localized.Confirm_SignOut, new[] { Localized.Yes, Localized.No });
-            if (res != Localized.Yes) return;
+        if (this.MessageBox == null) throw new NullReferenceException();
+        var res = await this.MessageBox.Show(Localized.SignOut, Localized.Confirm_SignOut, new[] { Localized.Yes, Localized.No });
+        if (res != Localized.Yes) return;
 
-            await this.HttpClient.PostAsync("/Auth/SignOut", new StringContent(""));
-            await (AuthStateProvider as AppAuthenticationStateProvider)?.RefreshAsync();
-            await RefreshAuthenticationStateAsync();
-        }
+        await this.HttpClient.PostAsync("/Auth/SignOut", new StringContent(""));
+        var authStateProvider = AuthStateProvider as AppAuthenticationStateProvider;
+        if (authStateProvider != null) await authStateProvider.RefreshAsync();
+        await RefreshAuthenticationStateAsync();
     }
 
     private void OnClickAbout()
     {
+        if (this.AboutBox == null) throw new NullReferenceException();
         AboutBox.Show();
     }
 }

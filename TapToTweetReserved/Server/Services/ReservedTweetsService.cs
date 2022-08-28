@@ -37,7 +37,7 @@ public class ReservedTweetsService : ReservedTweets.ReservedTweetsBase
         return collection;
     }
 
-    public override async Task<ReservedTweet> Get(ReservedTweetId request, ServerCallContext context)
+    public override async Task<ReservedTweet?> Get(ReservedTweetId request, ServerCallContext context)
     {
         var twitterUserId = context.GetTwitterUserId();
         var reservedTweet = await this.ReservedTweetsRepository.GetAsync(twitterUserId, request.Id);

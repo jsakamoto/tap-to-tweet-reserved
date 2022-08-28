@@ -2,5 +2,5 @@
 
 public class AzureStorageAccount
 {
-    public string StorageConnectionString { get; set; }
+    public string? StorageConnectionString { get; set; }
 }

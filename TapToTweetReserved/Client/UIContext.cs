@@ -6,7 +6,7 @@ public class UIContext
 
     public IEnumerable<MenuItem> MenuItems => this._MenuItems;
 
-    public event EventHandler StateHasChanged;
+    public event EventHandler? StateHasChanged;
 
     private Func<string> _PageTitle = () => "";
 

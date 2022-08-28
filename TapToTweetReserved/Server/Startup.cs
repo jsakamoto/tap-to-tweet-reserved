@@ -43,6 +43,7 @@ public class Startup
             options.Filters.Add(new ResponseCacheAttribute { NoStore = true });
         });
 
+        services.AddScoped(sp => new HttpClient());
         services.AddScoped<AuthenticationStateProvider, DummyAuthenticationStateProvider>();
         ConfigureAuthentication(services, twitterConfig);
 
@@ -74,7 +75,8 @@ public class Startup
                 options.ConsumerSecret = twitterConfig.ConsumerSecret;
                 options.Events.OnCreatingTicket = context =>
                 {
-                    var identity = context.Principal.Identity as ClaimsIdentity;
+                    var identity = context.Principal?.Identity as ClaimsIdentity;
+                    if (identity == null) throw new Exception("context.Principal is null or context.Principal.Identity is not ClaimsIdentity.");
                     identity.AddClaim(new Claim(TwitterClaimTypes.AccessToken, context.AccessToken));
                     identity.AddClaim(new Claim(TwitterClaimTypes.AccessTokenSecret, context.AccessTokenSecret));
                     return Task.CompletedTask;

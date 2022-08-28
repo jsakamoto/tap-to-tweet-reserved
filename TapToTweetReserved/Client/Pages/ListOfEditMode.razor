@@ -49,13 +49,13 @@
 @code
 {
     [CascadingParameter]
-    private UIContext UIContext { get; set; }
+    private UIContext UIContext { get; set; } = null!;
 
-    private Localized Localized = new Localized();
+    private Localized Localized = new();
 
-    private ReservedTweetsList ReservedTweetsList;
+    private ReservedTweetsList? ReservedTweetsList;
 
-    private MessageBox MessageBox;
+    private MessageBox? MessageBox;
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,9 +73,11 @@
     private string GetFooterCssClass()
     {
         var cssClasses = new List<string>();
-        var reservedTweets = this.ReservedTweetsList.ReservedTweets;
-        if (reservedTweets?.Any(t => t.Selected) != true) cssClasses.Add("no-selected-any");
-        if (reservedTweets?.Where(t => t.Message.IsTweeted).Any(t => t.Selected) != true) cssClasses.Add("no-selected-tweeted");
+        if (this.ReservedTweetsList?.TryGetReservedTweets(out var reservedTweets) == true)
+        {
+            if (reservedTweets?.Any(t => t.Selected) != true) cssClasses.Add("no-selected-any");
+            if (reservedTweets?.Where(t => t.Message.IsTweeted).Any(t => t.Selected) != true) cssClasses.Add("no-selected-tweeted");
+        }
         return string.Join(' ', cssClasses);
     }
 
@@ -87,12 +89,12 @@
     {
         private int Direction;
         public ReservedTweetComparere(int direction) { Direction = direction; }
-        public int Compare(ReservedTweet a, ReservedTweet b) => -1 * Direction * (a.Order - b.Order);
+        public int Compare(ReservedTweet? a, ReservedTweet? b) => -1 * Direction * ((a?.Order ?? 0) - (b?.Order ?? 0));
     }
 
     private async Task MoveUpOrDownTweetAsync(int direction)
     {
-        var reservedTweets = this.ReservedTweetsList.ReservedTweets;
+        if (this.ReservedTweetsList?.TryGetReservedTweets(out var reservedTweets) != true || reservedTweets == null) return;
 
         var limit = (reservedTweets.Length - 1) * ((1 + direction) / 2);
         var comparer = new ReservedTweetComparere(direction);
@@ -124,7 +126,8 @@
 
     private void EditTweet()
     {
-        var reservedTweets = this.ReservedTweetsList.ReservedTweets;
+        if (this.ReservedTweetsList?.TryGetReservedTweets(out var reservedTweets) != true || reservedTweets == null) return;
+
         var editTarget = reservedTweets.FirstOrDefault(t => t.Selected);
         if (editTarget != null)
         {
@@ -140,6 +143,9 @@
 
     private async Task DeleteTweet()
     {
+        if (this.MessageBox == null) throw new NullReferenceException();
+        if (this.ReservedTweetsList?.TryGetReservedTweets(out var reservedTweets) != true || reservedTweets == null) return;
+
         var res = await this.MessageBox.Show(
             caption: Localized.Delete,
             message: Localized.Confirm_DeleteTweets,
@@ -147,7 +153,6 @@
 
         if (res == Localized.OK)
         {
-            var reservedTweets = this.ReservedTweetsList.ReservedTweets;
             foreach (var tweet in reservedTweets.Where(t => t.Selected))
             {
                 await this.ReservedTweetsClient.DeleteAsync(new ReservedTweetId(tweet.Message.Id));
@@ -158,7 +163,8 @@
 
     private async Task ReloadTweet()
     {
-        var reservedTweets = this.ReservedTweetsList.ReservedTweets;
+        if (this.ReservedTweetsList?.TryGetReservedTweets(out var reservedTweets) != true || reservedTweets == null) return;
+
         foreach (var tweet in reservedTweets.Where(t => t.Selected && t.Message.IsTweeted))
         {
             tweet.Message.IsTweeted = false;

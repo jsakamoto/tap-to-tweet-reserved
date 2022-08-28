@@ -12,17 +12,19 @@
 @code
 {
     [CascadingParameter]
-    private UIContext UIContext { get; set; }
+    private UIContext UIContext { get; set; } = null!;
 
-    private Localized Localized = new Localized();
+    private Localized Localized = new();
 
     [Parameter]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
-    private ReservedTweet EditTarget;
+    private ReservedTweet? EditTarget;
 
     protected override async Task OnInitializedAsync()
     {
+        if (string.IsNullOrEmpty(this.Id)) throw new InvalidOperationException("The Id parameter is null or empty.");
+
         this.UIContext.SetMenuItem(/* NO MENU ITEMS */);
 
         this.Localized = await I18nText.GetTextTableAsync<Localized>(this);
@@ -32,6 +34,7 @@
 
     private async Task OnOK(string textToTweet)
     {
+        if (this.EditTarget == null) throw new NullReferenceException();
         this.EditTarget.TextToTweet = textToTweet;
         await this.ReservedTweetsClient.UpdateAsync(this.EditTarget);
         this.NavigationManager.NavigateTo("/list-of-editmode");

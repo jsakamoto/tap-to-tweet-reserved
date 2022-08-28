@@ -41,9 +41,9 @@
 @code
 {
     [CascadingParameter]
-    private UIContext UIContext { get; set; }
+    private UIContext UIContext { get; set; } = null!;
 
-    private Localized Localized = new Localized();
+    private Localized Localized = new();
 
     protected override async Task OnInitializedAsync()
     {

@@ -35,7 +35,7 @@ public class AuthenticationController : Controller
     [HttpGet("/api/auth/currentuser")]
     public AuthUserInfo GetCurrentUser()
     {
-        var name = this.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? this.User.Identity.Name ?? "";
+        var name = this.User.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? this.User.Identity?.Name ?? "";
         return new AuthUserInfo { Name = name };
     }
 }

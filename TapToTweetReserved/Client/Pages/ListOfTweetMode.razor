@@ -17,11 +17,11 @@
 @code
 {
     [CascadingParameter]
-    private UIContext UIContext { get; set; }
+    private UIContext UIContext { get; set; } = null!;
 
-    private Localized Localized = new Localized();
+    private Localized Localized = new();
 
-    private TweetDialog TweetDialog;
+    private TweetDialog? TweetDialog;
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,6 +32,8 @@
 
     private async Task OnClickTweet(SelectableReservedTweet tweet)
     {
+        if (this.TweetDialog == null) throw new NullReferenceException();
+
         var posted = await this.TweetDialog.OpenAndPost(tweet.Message);
         if (posted)
         {

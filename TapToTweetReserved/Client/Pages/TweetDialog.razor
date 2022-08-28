@@ -18,11 +18,11 @@
 
 @code
 {
-    private Localized Localized = new Localized();
+    private Localized Localized = new();
 
-    private Dialog Dialog;
+    private Dialog? Dialog;
 
-    private ReservedTweet Tweet;
+    private ReservedTweet? Tweet;
 
     private System.Timers.Timer Timer = new System.Timers.Timer { Interval = 1000, AutoReset = true };
 
@@ -56,9 +56,11 @@
         this.Timer.Start();
         this.StateHasChanged();
 
+        if (this.Dialog == null) return false;
+
         var result = await this.Dialog.Show();
 
-        return (bool)result;
+        return result != null && (bool)result;
     }
 
     private string GetDialogCaption()
@@ -89,7 +91,7 @@
         }
     }
 
-    private async void Timer_Elapsed(object sender, EventArgs args)
+    private async void Timer_Elapsed(object? sender, EventArgs args)
     {
         if (this.ProgressState == ProgressStates.Step5_Complete)
         {
@@ -105,7 +107,10 @@
             Timer.Stop();
             try
             {
-                await this.ReservedTweetsClient.TweetAsync(new ReservedTweetId(this.Tweet.Id));
+                if (this.Tweet != null)
+                {
+                    await this.ReservedTweetsClient.TweetAsync(new ReservedTweetId(this.Tweet.Id));
+                }
             }
             catch (Exception e)
             {
@@ -124,6 +129,7 @@
 
     private void Close()
     {
+        if (this.Dialog == null) throw new NullReferenceException();
         this.Timer.Stop();
         this.StateHasChanged();
         this.Dialog.Close(this.ProgressState >= ProgressStates.Step4_Posting);
